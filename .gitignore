@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Copia personale filigranata con l'email dell'acquirente su ogni pagina, 61 MB.
+# Resta in locale: il container se la copia in fase di build.
+Questions & Explanations.pdf
