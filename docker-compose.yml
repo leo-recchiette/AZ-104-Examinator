@@ -21,15 +21,11 @@ services:
   importer:
     build:
       context: .
-      dockerfile: importer/Dockerfile
+      dockerfile: AZ-104-questions-importer/Dockerfile
+    image: az-104-questions-importer
+    container_name: az-104-questions-importer
     environment:
       DATABASE_URL: postgresql://examinator:examinator@db:5432/examinator
-      PDF_PATH: /data/questions.pdf
-      IMAGES_DIR: /data/images
-    volumes:
-      # Le immagini ritagliate dal PDF vivono qui. Il volume e' condiviso: il
-      # backend lo montera' in sola lettura per servirle come file statici.
-      - question_images:/data/images
     depends_on:
       db:
         condition: service_healthy
@@ -37,18 +33,13 @@ services:
     restart: "no"
 
   # Client SQL via browser su http://localhost:8081, niente da installare.
-  # Non parte con 'docker compose up': si avvia a richiesta con
-  #   docker compose --profile dev up -d pgweb
-  #   docker compose --profile dev stop pgweb 
   pgweb:
     image: sosedoff/pgweb:latest
-    #profiles: ["dev"]
     environment:
       # sslmode=disable: dentro la rete del compose il DB non espone TLS.
       PGWEB_DATABASE_URL: postgresql://examinator:examinator@db:5432/examinator?sslmode=disable
     # --lock-session aggancia la sessione del browser alla connessione aperta
-    # all'avvio. Senza, pgweb la tiene separata e presenta il form di login
-    # anche avendo gia' l'URL del database.
+    # all'avvio, cosi' la UI non chiede le credenziali.
     command: ["--bind=0.0.0.0", "--listen=8081", "--lock-session"]
     ports:
       - "8081:8081"
@@ -59,4 +50,3 @@ services:
 
 volumes:
   pgdata:
-  question_images:

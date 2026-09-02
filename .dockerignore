@@ -6,3 +6,7 @@
 **/venv
 **/.venv
 README.md
+
+# Il PDF non serve piu' alla build: la sorgente e' la conversione markdown.
+# Escluderlo evita di spedire 61 MB al daemon a ogni docker build.
+Questions & Explanations.pdf
