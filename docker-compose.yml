@@ -32,6 +32,26 @@ services:
     # Job una tantum: gira, popola le tabelle ed esce.
     restart: "no"
 
+  api:
+    build:
+      context: .
+      dockerfile: AZ-104-Examinator.Api/Dockerfile
+    image: az-104-examinator-api
+    container_name: az-104-examinator-api
+    environment:
+      ConnectionStrings__Default: Host=db;Port=5432;Database=examinator;Username=examinator;Password=examinator
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      # Cosi' l'API parte solo a import terminato: niente risposte vuote
+      # al primo avvio in attesa che l'importer finisca il suo lavoro.
+      importer:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
   # Client SQL via browser su http://localhost:8081, niente da installare.
   pgweb:
     image: sosedoff/pgweb:latest
