@@ -3,8 +3,11 @@ __pycache__/
 *.pyc
 venv/
 .venv/
+bin/
+obj/
+*.user
 
 # Copia personale filigranata con l'email dell'acquirente su ogni pagina, 61 MB.
-# Non e' piu' una sorgente dell'import (lo e' la conversione markdown): resta in
+# Non e' piu' una sorgente dell'import (lo e' az104_606_domande.json): resta in
 # locale solo come riferimento per verificare a occhio le trascrizioni dubbie.
 *.pdf
