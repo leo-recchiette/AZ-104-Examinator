@@ -20,9 +20,6 @@ var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Connection string 'Default' non configurata.");
 builder.Services.AddSingleton(NpgsqlDataSource.Create(connectionString));
 
-// Un'interfaccia per strato: il controller dipende da IQuestionService, mai
-// direttamente da QuestionRepository. Sostituire l'accesso ai dati (o iniettare
-// un doppio nei test) non richiede toccare service o controller.
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IExamResultService, ExamResultService>();
@@ -33,6 +30,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    // ExcludeFromDescription: e' solo una scorciatoia per Docker Desktop
+    // ("Open in browser" apre sempre la root), non una vera rotta dell'API.
+    app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 }
 
 app.UseCors();
