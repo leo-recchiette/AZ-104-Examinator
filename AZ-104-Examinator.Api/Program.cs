@@ -25,6 +25,7 @@ builder.Services.AddSingleton(NpgsqlDataSource.Create(connectionString));
 // un doppio nei test) non richiede toccare service o controller.
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IExamResultService, ExamResultService>();
 
 var app = builder.Build();
 
@@ -36,6 +37,5 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.MapControllers();
-app.MapGet("/health", () => Results.Ok());
 
 app.Run();

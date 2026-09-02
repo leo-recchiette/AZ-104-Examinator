@@ -1,22 +1,30 @@
 using Examinator.Api.Contracts;
 using Examinator.Api.Domain;
+using Examinator.Api.Mapper;
 using Examinator.Api.Repositories;
 
 namespace Examinator.Api.Services;
 
-public sealed class QuestionService(IQuestionRepository repository) : IQuestionService
+public sealed class QuestionService : IQuestionService
 {
+    private readonly IQuestionRepository _repository;
+
+    public QuestionService(IQuestionRepository repository)
+    {
+        _repository = repository;
+    }
+
     public async Task<IReadOnlyList<QuestionDto>> GetRandomSetAsync(int count, QuestionType? type, CancellationToken cancellationToken)
     {
-        var questions = await repository.GetRandomAsync(count, type, cancellationToken);
+        var questions = await _repository.GetRandomAsync(count, type, cancellationToken);
         if (questions.Count == 0)
             return [];
 
         // Un'unica query per tutte le opzioni/righe del set, invece che una per
         // domanda: evita N+1 query su un set che puo' arrivare a decine di domande.
         var ids = questions.Select(q => q.Id).ToList();
-        var options = await repository.GetOptionsAsync(ids, cancellationToken);
-        var answerRows = await repository.GetAnswerRowsAsync(ids, cancellationToken);
+        var options = await _repository.GetOptionsAsync(ids, cancellationToken);
+        var answerRows = await _repository.GetAnswerRowsAsync(ids, cancellationToken);
 
         var optionsByQuestion = options.ToLookup(o => o.QuestionId);
         var rowsByQuestion = answerRows.ToLookup(r => r.QuestionId);
@@ -24,24 +32,6 @@ public sealed class QuestionService(IQuestionRepository repository) : IQuestionS
         return questions
             .Select(q => ToQuestionDto(q, optionsByQuestion[q.Id], rowsByQuestion[q.Id]))
             .ToList();
-    }
-
-    public async Task<QuestionAnswerDto?> GetAnswerAsync(int number, CancellationToken cancellationToken)
-    {
-        var question = await repository.GetByNumberAsync(number, cancellationToken);
-        if (question is null)
-            return null;
-
-        var options = await repository.GetOptionsAsync([question.Id], cancellationToken);
-        var answerRows = await repository.GetAnswerRowsAsync([question.Id], cancellationToken);
-
-        return new QuestionAnswerDto(
-            Number: question.Number,
-            Explanation: question.Explanation,
-            AnswerText: question.AnswerText,
-            Note: question.Note,
-            CorrectLetters: options.Where(o => o.IsCorrect).Select(o => o.Letter).ToList(),
-            AnswerRows: answerRows.Select(r => new AnswerRowDto(r.Prompt, r.Answer)).ToList());
     }
 
     private static QuestionDto ToQuestionDto(Question question, IEnumerable<Option> options, IEnumerable<AnswerRow> answerRows) => new(

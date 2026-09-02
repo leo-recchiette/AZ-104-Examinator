@@ -1,12 +1,20 @@
 using Dapper;
 using Examinator.Api.Domain;
+using Examinator.Api.Mapper;
 using Npgsql;
 
 namespace Examinator.Api.Repositories;
 
-/// <summary>Implementazione su Postgres via Dapper. Nessun ORM: SQL esplicito, schema definito una sola volta in db/init.</summary>
-public sealed class QuestionRepository(NpgsqlDataSource dataSource) : IQuestionRepository
+/// <summary>Implementazione su Postgres via Dapper.</summary>
+public sealed class QuestionRepository : IQuestionRepository
 {
+    private readonly NpgsqlDataSource _dataSource;
+
+    public QuestionRepository(NpgsqlDataSource dataSource)
+    {
+        _dataSource = dataSource;
+    }
+
     private const string SelectColumns = """
         id, number, type, answer_layout AS "AnswerLayout", question AS "Text",
         explanation, answer_text AS "AnswerText", note, source
@@ -22,19 +30,22 @@ public sealed class QuestionRepository(NpgsqlDataSource dataSource) : IQuestionR
             ? new CommandDefinition(sql, new { count }, cancellationToken: cancellationToken)
             : new CommandDefinition(sql, new { count, type = QuestionTypeMapper.ToDb(type.Value) }, cancellationToken: cancellationToken);
 
-        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
         var rows = await connection.QueryAsync<QuestionRow>(command);
-        return rows.Select(MapQuestion).ToList();
+        return rows.Select(r => r.ToQuestion()).ToList();
     }
 
-    public async Task<Question?> GetByNumberAsync(int number, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<Question>> GetByNumbersAsync(IReadOnlyCollection<int> numbers, CancellationToken cancellationToken)
     {
-        var sql = $"SELECT {SelectColumns} FROM questions WHERE number = @number";
-        var command = new CommandDefinition(sql, new { number }, cancellationToken: cancellationToken);
+        if (numbers.Count == 0)
+            return [];
 
-        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
-        var row = await connection.QuerySingleOrDefaultAsync<QuestionRow>(command);
-        return row is null ? null : MapQuestion(row);
+        var sql = $"SELECT {SelectColumns} FROM questions WHERE number = ANY(@numbers)";
+        var command = new CommandDefinition(sql, new { numbers = numbers.ToArray() }, cancellationToken: cancellationToken);
+
+        await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
+        var rows = await connection.QueryAsync<QuestionRow>(command);
+        return rows.Select(r => r.ToQuestion()).ToList();
     }
 
     public async Task<IReadOnlyList<Option>> GetOptionsAsync(IReadOnlyCollection<int> questionIds, CancellationToken cancellationToken)
@@ -50,7 +61,7 @@ public sealed class QuestionRepository(NpgsqlDataSource dataSource) : IQuestionR
             """;
         var command = new CommandDefinition(sql, new { questionIds = questionIds.ToArray() }, cancellationToken: cancellationToken);
 
-        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
         var rows = await connection.QueryAsync<Option>(command);
         return rows.ToList();
     }
@@ -68,26 +79,8 @@ public sealed class QuestionRepository(NpgsqlDataSource dataSource) : IQuestionR
             """;
         var command = new CommandDefinition(sql, new { questionIds = questionIds.ToArray() }, cancellationToken: cancellationToken);
 
-        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
         var rows = await connection.QueryAsync<AnswerRow>(command);
         return rows.ToList();
     }
-
-    private static Question MapQuestion(QuestionRow row) => new()
-    {
-        Id = row.Id,
-        Number = row.Number,
-        Type = QuestionTypeMapper.FromDb(row.Type),
-        AnswerLayout = row.AnswerLayout,
-        Text = row.Text,
-        Explanation = row.Explanation,
-        AnswerText = row.AnswerText,
-        Note = row.Note,
-        Source = row.Source,
-    };
-
-    // Riga cosi' come la restituisce Dapper: 'Type' e' ancora la stringa grezza
-    // di Postgres. MapQuestion la traduce nell'entita' di dominio con l'enum.
-    private sealed record QuestionRow(int Id, int Number, string Type, string? AnswerLayout,
-        string Text, string Explanation, string AnswerText, string? Note, string Source);
 }
