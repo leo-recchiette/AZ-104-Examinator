@@ -18,18 +18,24 @@ services:
       timeout: 3s
       retries: 20
 
+  # Import una tantum del question bank: NON riparte a ogni 'docker compose up',
+  # va lanciato a mano dopo il primo avvio di 'db' (o dopo aver azzerato il
+  # volume con 'docker compose down -v'):
+  #   docker compose --profile setup run --rm importer
+  # 'run --rm' rimuove gia' da solo il container a fine esecuzione: non serve
+  # (ne' si puo', essendo dietro profilo) fermarlo con un 'docker compose stop' nudo.
   importer:
     build:
       context: .
       dockerfile: AZ-104-questions-importer/Dockerfile
     image: az-104-questions-importer
     container_name: az-104-questions-importer
+    profiles: ["setup"]
     environment:
       DATABASE_URL: postgresql://examinator:examinator@db:5432/examinator
     depends_on:
       db:
         condition: service_healthy
-    # Job una tantum: gira, popola le tabelle ed esce.
     restart: "no"
 
   api:
@@ -46,15 +52,18 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      # Cosi' l'API parte solo a import terminato: niente risposte vuote
-      # al primo avvio in attesa che l'importer finisca il suo lavoro.
-      importer:
-        condition: service_completed_successfully
     restart: unless-stopped
 
   # Client SQL via browser su http://localhost:8081, niente da installare.
+  #   docker compose --profile dev up -d pgweb
+  # ATTENZIONE: essendo dietro profilo, un 'docker compose stop' o 'down' NUDO
+  # (senza --profile dev) lo ignora del tutto e lo lascia acceso. Per fermarlo
+  # o rimuoverlo va nominato esplicitamente o richiamato lo stesso profilo:
+  #   docker compose stop pgweb            (nominarlo basta, anche senza --profile)
+  #   docker compose --profile dev down    (per una pulizia completa)
   pgweb:
     image: sosedoff/pgweb:latest
+    profiles: ["dev"]
     environment:
       # sslmode=disable: dentro la rete del compose il DB non espone TLS.
       PGWEB_DATABASE_URL: postgresql://examinator:examinator@db:5432/examinator?sslmode=disable
