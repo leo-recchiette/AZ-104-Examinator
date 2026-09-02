@@ -1,86 +1,65 @@
--- Schema del question bank.
+-- Question bank AZ-104, alimentato da az104_606_domande.json.
 --
--- Tre tipi di domanda convivono nelle stesse tabelle:
---   MCQ       - pool unico di opzioni (letter A..H), 1+ risposte corrette
---   HOTSPOT   - piu' slot indipendenti, ognuno con il proprio pool di opzioni
---   DRAG_DROP - pool unico, la risposta e' una sequenza ordinata (position)
+-- Il JSON distingue 4 tipi di domanda (campo "type"):
+--   multiple_choice  - scelta fra un pool di opzioni A..H, una o piu' corrette
+--   drag_and_drop    - risposta come sequenza ordinata, o come coppie prompt/scelta
+--   hotspot          - coppie prompt/scelta (un menu per riga)
+--   hotspot_yes_no   - coppie statement/risposta, risposta sempre Yes o No
 --
--- La answer key sta in tabella separata invece che come flag booleano sulle
--- opzioni: solo cosi' si possono esprimere l'ordinamento dei DRAG_DROP e il
--- riuso dello stesso valore su piu' slot degli HOTSPOT ("may be used once,
--- more than once, or not at all").
+-- Solo multiple_choice porta anche le opzioni sbagliate (serve un pool da cui
+-- l'utente sceglie): per gli altri tre tipi il JSON contiene solo la risposta
+-- corretta, quindi in app si comportano da autovalutazione ("mostra, poi
+-- rivela"), non da quiz a scelta cliccabile.
 
-CREATE TYPE question_type AS ENUM ('MCQ', 'HOTSPOT', 'DRAG_DROP');
-
-CREATE TABLE questions (
-    id                SERIAL PRIMARY KEY,
-    number            INTEGER       NOT NULL UNIQUE,
-    type              question_type NOT NULL,
-    question          TEXT          NOT NULL,
-    -- Materiale di supporto a cui il testo rimanda ("shown in the following
-    -- table"): tabelle, JSON, output CLI. E' testo markdown, non un file:
-    -- nel PDF esiste solo come immagine e lo trascrive la passata vision.
-    question_attachment TEXT,
-    explanation       TEXT,
-    source_page_start INTEGER       NOT NULL,
-    source_page_end   INTEGER       NOT NULL,
-    -- Immagini presenti nel PDF: >0 significa che c'e' contenuto non ancora
-    -- trasposto a testo. Va a 0 quando la passata vision ha convertito tutto.
-    image_count       INTEGER       NOT NULL DEFAULT 0,
-    needs_review      BOOLEAN       NOT NULL DEFAULT FALSE,
-    review_note       TEXT
+CREATE TYPE question_type AS ENUM (
+    'multiple_choice',
+    'drag_and_drop',
+    'hotspot',
+    'hotspot_yes_no'
 );
 
+CREATE TABLE questions (
+    id            SERIAL PRIMARY KEY,
+    number        INTEGER       NOT NULL UNIQUE,  -- "id" nel JSON, 1..606
+    type          question_type NOT NULL,
+    -- Forma della risposta per i tipi non-MCQ: 'ordered_answer' | 'selection'
+    -- | 'yes_no'. NULL per multiple_choice, che non ne ha bisogno.
+    answer_layout TEXT,
+    question      TEXT          NOT NULL,
+    explanation   TEXT          NOT NULL,
+    -- Riassunto della risposta gia' pronto per la UI (es. "C. Assign tags...",
+    -- oppure "1. An Azure Key Vault -> 2. An access policy"): evita di dover
+    -- ricostruire la formattazione lato frontend da options/answer_rows.
+    answer_text   TEXT          NOT NULL,
+    -- Chiarimento aggiuntivo per le domande basate su immagine (es. il comando
+    -- CLI esatto o il percorso evidenziato nello screenshot originale).
+    note          TEXT,
+    -- 'text_layer' (estratto dal PDF), 'manual_vision' (letto a mano
+    -- dall'immagine) o 'ocr' (letto automaticamente, da controllare).
+    source        TEXT          NOT NULL
+);
+
+-- Il pool di scelte di una multiple_choice. Non usata dagli altri tipi.
 CREATE TABLE options (
     id          SERIAL  PRIMARY KEY,
     question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
-    -- NULL per MCQ e DRAG_DROP (pool unico); per HOTSPOT identifica il campo
-    -- a cui il pool appartiene (es. '--sku', 'Box 1', il testo dello statement).
-    slot        TEXT,
-    -- A..H per le MCQ; NULL per gli altri tipi, che non hanno lettere.
-    letter      TEXT,
+    ord         INTEGER NOT NULL,
+    letter      TEXT    NOT NULL,
     text        TEXT    NOT NULL,
-    ord         INTEGER NOT NULL
+    is_correct  BOOLEAN NOT NULL
 );
 
-CREATE TABLE answer_keys (
-    id          SERIAL  PRIMARY KEY,
-    question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
-    option_id   INTEGER NOT NULL REFERENCES options (id) ON DELETE CASCADE,
-    slot        TEXT,
-    -- Ordine 1..N nella sequenza di risposta; significativo solo per DRAG_DROP.
-    position    INTEGER,
-    UNIQUE (question_id, option_id, slot, position)
-);
-
--- Immagini ritagliate dal PDF. Il binario sta su volume, qui solo il percorso
--- relativo alla radice delle immagini (es. 'q0380/1.png'): il percorso assoluto
--- dipende da dove il volume e' montato e non va congelato nel database.
-CREATE TABLE question_images (
+-- La risposta corretta di drag_and_drop, hotspot e hotspot_yes_no, una riga
+-- per elemento. 'prompt' e' NULL quando la domanda e' un drag_and_drop in
+-- sequenza: li' la risposta e' l'ordine stesso, dato da 'ord'.
+CREATE TABLE answer_rows (
     id          SERIAL  PRIMARY KEY,
     question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
     ord         INTEGER NOT NULL,
-    path        TEXT    NOT NULL,
-    width       INTEGER NOT NULL,
-    height      INTEGER NOT NULL,
-    -- Pagina del PDF di provenienza, per poter risalire alla fonte.
-    source_page INTEGER NOT NULL,
-    UNIQUE (question_id, ord)
+    prompt      TEXT,
+    answer      TEXT    NOT NULL
 );
 
-CREATE INDEX idx_question_images_question ON question_images (question_id);
 CREATE INDEX idx_options_question ON options (question_id);
-CREATE INDEX idx_answer_keys_question ON answer_keys (question_id);
+CREATE INDEX idx_answer_rows_question ON answer_rows (question_id);
 CREATE INDEX idx_questions_type ON questions (type);
-CREATE INDEX idx_questions_needs_review ON questions (needs_review);
-
--- Domande somministrabili: hanno opzioni da mostrare e una risposta con cui
--- correggere. Le eventuali immagini di supporto si servono da question_images,
--- quindi averle non impedisce di giocare la domanda; restano fuori solo
--- HOTSPOT e DRAG_DROP, che di opzioni non ne hanno affatto.
---   SELECT * FROM answerable_questions ORDER BY random() LIMIT 40;
-CREATE VIEW answerable_questions AS
-SELECT q.*
-FROM questions q
-WHERE EXISTS (SELECT 1 FROM options o WHERE o.question_id = q.id)
-  AND EXISTS (SELECT 1 FROM answer_keys a WHERE a.question_id = q.id);

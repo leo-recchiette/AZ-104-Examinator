@@ -5,5 +5,6 @@ venv/
 .venv/
 
 # Copia personale filigranata con l'email dell'acquirente su ogni pagina, 61 MB.
-# Resta in locale: il container se la copia in fase di build.
-Questions & Explanations.pdf
+# Non e' piu' una sorgente dell'import (lo e' la conversione markdown): resta in
+# locale solo come riferimento per verificare a occhio le trascrizioni dubbie.
+*.pdf
