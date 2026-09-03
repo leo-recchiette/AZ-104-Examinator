@@ -23,6 +23,8 @@ builder.Services.AddSingleton(NpgsqlDataSource.Create(connectionString));
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IExamResultService, ExamResultService>();
+// Singleton: nessuno stato, nessuna dipendenza da una richiesta specifica.
+builder.Services.AddSingleton<IScoreService, ScoreService>();
 
 var app = builder.Build();
 
@@ -30,8 +32,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    // ExcludeFromDescription: e' solo una scorciatoia per Docker Desktop
-    // ("Open in browser" apre sempre la root), non una vera rotta dell'API.
     app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 }
 

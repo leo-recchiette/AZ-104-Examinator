@@ -30,16 +30,7 @@ public sealed class QuestionService : IQuestionService
         var rowsByQuestion = answerRows.ToLookup(r => r.QuestionId);
 
         return questions
-            .Select(q => ToQuestionDto(q, optionsByQuestion[q.Id], rowsByQuestion[q.Id]))
+            .Select(q => q.ToQuestionDto(optionsByQuestion[q.Id], rowsByQuestion[q.Id]))
             .ToList();
     }
-
-    private static QuestionDto ToQuestionDto(Question question, IEnumerable<Option> options, IEnumerable<AnswerRow> answerRows) => new(
-        Number: question.Number,
-        Type: QuestionTypeMapper.ToDb(question.Type),
-        Text: question.Text,
-        Options: options.Select(o => new OptionDto(o.Letter, o.Text)).ToList(),
-        // Solo i prompt, senza rivelare la risposta: da' la struttura della
-        // domanda (es. gli statement di uno hotspot) prima che l'utente la riveli.
-        Prompts: answerRows.Where(r => r.Prompt is not null).Select(r => r.Prompt!).ToList());
 }
