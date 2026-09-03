@@ -1,5 +1,5 @@
-using Examinator.Api.Contracts;
-using Examinator.Api.Domain;
+using Examinator.Api.Models.Contracts;
+using Examinator.Api.Models.Domains;
 
 namespace Examinator.Api.Mapper;
 

@@ -1,4 +1,4 @@
-namespace Examinator.Api.Domain;
+namespace Examinator.Api.Models.Domains;
 
 /// <summary>
 /// Rispecchia l'enum <c>question_type</c> del database.

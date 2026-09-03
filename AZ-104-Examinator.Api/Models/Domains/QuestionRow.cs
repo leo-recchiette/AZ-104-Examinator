@@ -1,4 +1,4 @@
-namespace Examinator.Api.Domain;
+namespace Examinator.Api.Models.Domains;
 
 /// <summary>
 /// Riga grezza cosi' come la restituisce Dapper da Postgres: 'Type' e' ancora

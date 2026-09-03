@@ -1,6 +1,6 @@
 using Dapper;
-using Examinator.Api.Domain;
 using Examinator.Api.Mapper;
+using Examinator.Api.Models.Domains;
 using Npgsql;
 
 namespace Examinator.Api.Repositories;

@@ -1,4 +1,4 @@
-namespace Examinator.Api.Contracts;
+namespace Examinator.Api.Models.Contracts;
 
 /// <summary>
 /// Una risposta data dall'utente a una domanda. UserAnswers e' posizionale e

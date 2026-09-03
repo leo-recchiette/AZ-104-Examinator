@@ -1,4 +1,4 @@
-namespace Examinator.Api.Domain;
+namespace Examinator.Api.Models.Domains;
 
 /// <summary>Una scelta del pool di una MultipleChoice. Gli altri tipi non ne hanno.</summary>
 public sealed class Option
