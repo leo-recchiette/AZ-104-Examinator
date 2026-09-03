@@ -6,12 +6,34 @@ namespace Examinator.Api.Mapper;
 /// <summary>Traduce una Question (con le sue opzioni/righe) nella forma esposta prima che l'utente risponda (QuestionDto).</summary>
 public static class QuestionMapper
 {
-    public static QuestionDto ToQuestionDto(this Question question, IEnumerable<Option> options, IEnumerable<AnswerRow> answerRows) => new(
-        Number: question.Number,
-        Type: QuestionTypeMapper.ToDb(question.Type),
-        Text: question.Text,
-        Options: options.Select(o => new OptionDto(o.Letter, o.Text)).ToList(),
-        // Solo i prompt, senza rivelare la risposta: da' la struttura della
-        // domanda (es. gli statement di uno hotspot) prima che l'utente la riveli.
-        Prompts: answerRows.Where(r => r.Prompt is not null).Select(r => r.Prompt!).ToList());
+    private const string OrderedAnswer = "ordered_answer";
+    private const string YesNo = "yes_no";
+    private static readonly string[] YesNoOptions = ["Yes", "No"];
+
+    public static QuestionDto ToQuestionDto(
+        this Question question,
+        IEnumerable<Option> options,
+        IEnumerable<AnswerRow> answerRows,
+        ILookup<int, AnswerRowOption> rowOptionsByAnswerRowId)
+    {
+        // La forma da popolare segue AnswerLayout, non Type: DragAndDrop puo'
+        // essere sia 'ordered_answer' (sequenza) sia 'selection' (righe con
+        // pool proprio, indistinguibile da Hotspot lato contratto).
+        var isMultipleChoice = question.Type == QuestionType.MultipleChoice;
+        var isOrderedAnswer = question.AnswerLayout == OrderedAnswer;
+        var isYesNo = question.AnswerLayout == YesNo;
+
+        return new QuestionDto(
+            Number: question.Number,
+            Type: QuestionTypeMapper.ToDb(question.Type),
+            Text: question.Text,
+            Options: isMultipleChoice ? options.Select(o => new OptionDto(o.Letter!, o.Text)).ToList() : [],
+            DraggableItems: isOrderedAnswer ? options.Select(o => o.Text).ToList() : [],
+            
+            Prompts: isMultipleChoice || isOrderedAnswer
+                ? []
+                : answerRows.Where(r => r.Prompt is not null).Select(r => new PromptOptionsDto(
+                    r.Prompt!,
+                    isYesNo ? YesNoOptions : rowOptionsByAnswerRowId[r.Id].Select(o => o.Text).ToList())).ToList());
+    }
 }

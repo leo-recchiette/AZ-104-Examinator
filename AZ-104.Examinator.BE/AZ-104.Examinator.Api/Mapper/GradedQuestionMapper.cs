@@ -11,6 +11,12 @@ internal static class GradedQuestionMapper
         Explanation: question.Explanation,
         AnswerText: question.AnswerText,
         Note: question.Note,
-        CorrectLetters: question.Options.Where(o => o.IsCorrect).Select(o => o.Letter).ToList(),
+        // Solo MultipleChoice ha lettere: per gli altri tipi Options puo'
+        // comunque essere non vuota (pool 'ordered_answer'), ma quelle non
+        // sono "la risposta corretta", sono il pool da cui l'utente sceglie -
+        // niente a che vedere con CorrectLetters.
+        CorrectLetters: question.Type == QuestionType.MultipleChoice
+            ? question.Options.Where(o => o.IsCorrect).Select(o => o.Letter!).ToList()
+            : [],
         AnswerRows: question.AnswerRows.Select(r => new AnswerRowDto(r.Prompt, r.Answer)).ToList());
 }

@@ -27,6 +27,7 @@ DATABASE_URL = os.environ.get(
 )
 
 MULTIPLE_CHOICE = "multiple_choice"
+ORDERED_ANSWER = "ordered_answer"
 
 
 def load_questions(path: str) -> list[dict]:
@@ -66,29 +67,26 @@ def insert_question(cur: psycopg.Cursor, q: dict) -> int:
     return cur.fetchone()[0]
 
 
-def insert_options(cur: psycopg.Cursor, question_id: int, q: dict) -> None:
-    """Il pool di scelte di una multiple_choice, con il flag di correttezza."""
-    correct_letters = set(q["correct_answers"])
-    for ord_, option in enumerate(q["options"]):
+def insert_option_pool(cur: psycopg.Cursor, question_id: int, items: list[tuple[str | None, str, bool]]) -> None:
+    """Pool di scelte question-scoped: le opzioni A..H di una multiple_choice
+    (con lettera) o il pool trascinabile di un drag_and_drop 'ordered_answer'
+    (senza lettera). is_correct segnala l'appartenenza alla risposta corretta,
+    non la posizione: per ordered_answer la posizione la da' answer_rows.ord.
+    """
+    for ord_, (letter, text, is_correct) in enumerate(items):
         cur.execute(
             """
             INSERT INTO options (question_id, ord, letter, text, is_correct)
             VALUES (%s, %s, %s, %s, %s)
             """,
-            (question_id, ord_, option["letter"], option["text"], option["letter"] in correct_letters),
+            (question_id, ord_, letter, text, is_correct),
         )
 
 
-def insert_answer_rows(cur: psycopg.Cursor, question_id: int, q: dict) -> None:
-    """La risposta di drag_and_drop, hotspot e hotspot_yes_no, riga per riga.
-
-    Il JSON la porta in due forme, mai insieme nella stessa domanda:
-      - answer_items: una sequenza ordinata (drag & drop) -> prompt resta NULL,
-        l'ordine e' la risposta.
-      - answer_rows: coppie prompt/risposta, con chiavi che cambiano nome a
-        seconda del tipo ('prompt'/'selected' oppure 'statement'/'answer').
-    """
-    for ord_, item_text in enumerate(q.get("answer_items", [])):
+def insert_ordered_sequence(cur: psycopg.Cursor, question_id: int, answer_items: list[str]) -> None:
+    """La sequenza corretta di un drag_and_drop 'ordered_answer': prompt resta
+    NULL, l'ordine stesso e' la risposta."""
+    for ord_, item_text in enumerate(answer_items):
         cur.execute(
             """
             INSERT INTO answer_rows (question_id, ord, prompt, answer)
@@ -97,16 +95,53 @@ def insert_answer_rows(cur: psycopg.Cursor, question_id: int, q: dict) -> None:
             (question_id, ord_, item_text),
         )
 
-    for ord_, row in enumerate(q.get("answer_rows", [])):
+
+def insert_answer_rows(cur: psycopg.Cursor, question_id: int, rows: list[dict]) -> None:
+    """Righe prompt/risposta di 'selection' (hotspot, e la minoranza di
+    drag_and_drop che sono in realta' selezioni, non sequenze) o 'yes_no'
+    (hotspot_yes_no). Le chiavi cambiano nome a seconda del tipo
+    ('prompt'/'selected' oppure 'statement'/'answer'). Le righe 'selection'
+    portano anche un pool di opzioni proprio (assente per 'yes_no'), salvato
+    in answer_row_options usando l'id della riga appena inserita.
+    """
+    for ord_, row in enumerate(rows):
         prompt = row.get("prompt", row.get("statement"))
         answer = row.get("selected", row.get("answer"))
         cur.execute(
             """
             INSERT INTO answer_rows (question_id, ord, prompt, answer)
             VALUES (%s, %s, %s, %s)
+            RETURNING id
             """,
             (question_id, ord_, prompt, answer),
         )
+        answer_row_id = cur.fetchone()[0]
+
+        options = row.get("options")
+        if options:
+            for opt_ord, option_text in enumerate(options):
+                cur.execute(
+                    """
+                    INSERT INTO answer_row_options (answer_row_id, ord, text)
+                    VALUES (%s, %s, %s)
+                    """,
+                    (answer_row_id, opt_ord, option_text),
+                )
+
+
+def find_selection_mismatches(questions: list[dict]) -> list[tuple[int, str | None, str]]:
+    """Righe 'selection' dove la risposta corretta non compare nel proprio
+    pool di opzioni: puro controllo sul JSON, nessuna scrittura sul DB."""
+    mismatches = []
+    for q in questions:
+        for row in q.get("answer_rows", []):
+            options = row.get("options")
+            if options is None:
+                continue
+            answer = row.get("selected", row.get("answer"))
+            if answer not in options:
+                mismatches.append((q["id"], row.get("prompt", row.get("statement")), answer))
+    return mismatches
 
 
 def import_all(conn: psycopg.Connection, questions: list[dict]) -> None:
@@ -115,9 +150,16 @@ def import_all(conn: psycopg.Connection, questions: list[dict]) -> None:
         for q in questions:
             question_id = insert_question(cur, q)
             if q["type"] == MULTIPLE_CHOICE:
-                insert_options(cur, question_id, q)
+                correct_letters = set(q["correct_answers"])
+                items = [(o["letter"], o["text"], o["letter"] in correct_letters) for o in q["options"]]
+                insert_option_pool(cur, question_id, items)
+            elif q.get("answer_layout") == ORDERED_ANSWER:
+                correct_items = set(q["answer_items"])
+                items = [(None, text, text in correct_items) for text in q["all_actions"]]
+                insert_option_pool(cur, question_id, items)
+                insert_ordered_sequence(cur, question_id, q["answer_items"])
             else:
-                insert_answer_rows(cur, question_id, q)
+                insert_answer_rows(cur, question_id, q.get("answer_rows", []))
 
 
 def main() -> int:
@@ -133,6 +175,15 @@ def main() -> int:
     if unverified:
         numbers = ", ".join(str(q["id"]) for q in unverified[:10])
         print(f"  attenzione: {len(unverified)} domande non verificate ({numbers}...)", file=sys.stderr)
+
+    mismatches = find_selection_mismatches(questions)
+    if mismatches:
+        numbers = ", ".join(str(question_id) for question_id, _, _ in mismatches[:10])
+        print(
+            f"  attenzione: {len(mismatches)} righe con risposta non presente nel proprio pool di opzioni "
+            f"({numbers}...)",
+            file=sys.stderr,
+        )
 
     if args.dry_run:
         print("dry run: database non toccato")

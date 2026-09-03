@@ -72,7 +72,7 @@ public sealed class QuestionRepository : IQuestionRepository
             return [];
 
         const string sql = """
-            SELECT question_id AS "QuestionId", ord AS "Ord", prompt, answer
+            SELECT id AS "Id", question_id AS "QuestionId", ord AS "Ord", prompt, answer
             FROM answer_rows
             WHERE question_id = ANY(@questionIds)
             ORDER BY question_id, ord
@@ -81,6 +81,24 @@ public sealed class QuestionRepository : IQuestionRepository
 
         await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
         var rows = await connection.QueryAsync<AnswerRow>(command);
+        return rows.ToList();
+    }
+
+    public async Task<IReadOnlyList<AnswerRowOption>> GetAnswerRowOptionsAsync(IReadOnlyCollection<int> answerRowIds, CancellationToken cancellationToken)
+    {
+        if (answerRowIds.Count == 0)
+            return [];
+
+        const string sql = """
+            SELECT answer_row_id AS "AnswerRowId", ord AS "Ord", text
+            FROM answer_row_options
+            WHERE answer_row_id = ANY(@answerRowIds)
+            ORDER BY answer_row_id, ord
+            """;
+        var command = new CommandDefinition(sql, new { answerRowIds = answerRowIds.ToArray() }, cancellationToken: cancellationToken);
+
+        await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
+        var rows = await connection.QueryAsync<AnswerRowOption>(command);
         return rows.ToList();
     }
 }

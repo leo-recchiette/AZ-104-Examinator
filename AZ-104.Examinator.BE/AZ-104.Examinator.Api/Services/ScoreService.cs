@@ -23,7 +23,10 @@ public sealed class ScoreService : IScoreService
     {
         if (type is QuestionType.MultipleChoice)
         {
-            var correctLetters = options.Where(o => o.IsCorrect).Select(o => o.Letter);
+            // Letter e' nullable a livello di dominio (il pool di un DragAndDrop
+            // 'ordered_answer' non ne ha), ma in questo ramo 'options' e' sempre
+            // il pool lettered di una MultipleChoice: mai null qui.
+            var correctLetters = options.Where(o => o.IsCorrect).Select(o => o.Letter!);
             var correctSet = new HashSet<string>(correctLetters, StringComparer.OrdinalIgnoreCase);
             var givenSet = new HashSet<string>(userAnswers.Select(a => a.Trim()), StringComparer.OrdinalIgnoreCase);
             return (correctSet.Count(givenSet.Contains), correctSet.Count);

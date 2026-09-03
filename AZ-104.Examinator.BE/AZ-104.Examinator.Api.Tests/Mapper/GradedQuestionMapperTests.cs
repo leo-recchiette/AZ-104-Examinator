@@ -30,6 +30,26 @@ public sealed class GradedQuestionMapperTests
         sut.Should().BeEquivalentTo(expected);
     }
 
+    [TestMethod]
+    public void Should_Not_Populate_CorrectLetters_For_NonMultipleChoice_Even_When_Options_Is_Not_Empty()
+    {
+        // Un DragAndDrop 'ordered_answer' ha un pool in Options (i suoi
+        // all_actions, con IsCorrect valorizzato) che pero' non sono "lettere
+        // corrette": CorrectLetters resta [], la risposta vera sta in AnswerRows.
+        var question = Question() with { Type = QuestionType.DragAndDrop };
+        var options = new[]
+        {
+            new Option { QuestionId = 1, Ord = 0, Letter = null, Text = "An Azure Key Vault", IsCorrect = true },
+            new Option { QuestionId = 1, Ord = 1, Letter = null, Text = "An Azure Storage account", IsCorrect = false },
+        };
+        var answerRows = new[] { AnswerRow(ord: 0, prompt: null, answer: "An Azure Key Vault") };
+        var input = new GradedQuestion(question, options, answerRows);
+
+        var sut = input.ToAnswerDto();
+
+        sut.CorrectLetters.Should().BeEmpty();
+    }
+
     #region Utils
 
     private static Question Question() => new()

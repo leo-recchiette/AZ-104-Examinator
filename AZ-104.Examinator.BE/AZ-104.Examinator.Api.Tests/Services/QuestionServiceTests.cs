@@ -28,6 +28,7 @@ public sealed class QuestionServiceTests
                 Type: "multiple_choice",
                 Text: "Domanda di prova",
                 Options: [new OptionDto("C", "Opzione corretta")],
+                DraggableItems: [],
                 Prompts: []),
         };
 

@@ -6,3 +6,4 @@ venv/
 bin/
 obj/
 *.user
+CLAUDE.md

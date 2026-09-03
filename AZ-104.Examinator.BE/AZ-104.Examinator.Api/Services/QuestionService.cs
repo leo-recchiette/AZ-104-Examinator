@@ -21,17 +21,18 @@ public sealed class QuestionService : IQuestionService
         if (questions.Count == 0)
             return [];
 
-        // Un'unica query per tutte le opzioni/righe del set, invece che una per
-        // domanda: evita N+1 query su un set che puo' arrivare a decine di domande.
         var ids = questions.Select(q => q.Id).ToList();
         var options = await _repository.GetOptionsAsync(ids, cancellationToken);
         var answerRows = await _repository.GetAnswerRowsAsync(ids, cancellationToken);
+        var rowIds = answerRows.Select(r => r.Id).ToList();
+        var rowOptions = await _repository.GetAnswerRowOptionsAsync(rowIds, cancellationToken);
 
         var optionsByQuestion = options.ToLookup(o => o.QuestionId);
         var rowsByQuestion = answerRows.ToLookup(r => r.QuestionId);
+        var rowOptionsByAnswerRowId = rowOptions.ToLookup(o => o.AnswerRowId);
 
         return questions
-            .Select(q => q.ToQuestionDto(optionsByQuestion[q.Id], rowsByQuestion[q.Id]))
+            .Select(q => q.ToQuestionDto(optionsByQuestion[q.Id], rowsByQuestion[q.Id], rowOptionsByAnswerRowId))
             .ToList();
     }
 }
