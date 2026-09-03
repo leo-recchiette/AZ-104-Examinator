@@ -6,10 +6,23 @@
 --   hotspot          - coppie prompt/scelta (un menu per riga)
 --   hotspot_yes_no   - coppie statement/risposta, risposta sempre Yes o No
 --
--- Solo multiple_choice porta anche le opzioni sbagliate (serve un pool da cui
--- l'utente sceglie): per gli altri tre tipi il JSON contiene solo la risposta
--- corretta, quindi in app si comportano da autovalutazione ("mostra, poi
--- rivela"), non da quiz a scelta cliccabile.
+-- La forma di storage pero' non segue "type" ma "answer_layout":
+--   ordered_answer - sequenza pura (solo drag_and_drop): pool di elementi
+--                    trascinabili question-scoped in "options" (letter NULL),
+--                    ordine corretto in "answer_rows".
+--   selection      - coppie prompt/scelta con un pool per riga (hotspot, ma
+--                    anche una minoranza di drag_and_drop che in realta' sono
+--                    selezioni, non sequenze): pool row-scoped in
+--                    "answer_row_options".
+--   yes_no         - coppie statement/risposta (hotspot_yes_no): dominio
+--                    Si'/No implicito, nessun pool salvato.
+--   (assente)      - multiple_choice: pool question-scoped in "options",
+--                    con "letter" valorizzata.
+--
+-- Solo multiple_choice e ordered_answer/selection portano anche le opzioni
+-- sbagliate (un pool da cui l'utente sceglie): solo per yes_no il JSON
+-- contiene esclusivamente la risposta corretta (il dominio Si'/No e' fisso,
+-- non serve salvarlo).
 
 CREATE TYPE question_type AS ENUM (
     'multiple_choice',
@@ -39,19 +52,24 @@ CREATE TABLE questions (
     source        TEXT          NOT NULL
 );
 
--- Il pool di scelte di una multiple_choice. Non usata dagli altri tipi.
+-- Il pool di scelte question-scoped: le opzioni A..H di una multiple_choice
+-- (letter valorizzata), oppure gli elementi trascinabili di un drag_and_drop
+-- 'ordered_answer' (letter NULL, non hanno una lettera). is_correct significa
+-- "fa parte della risposta corretta", non "e' la scelta giusta in questa
+-- posizione": per ordered_answer la posizione la da' answer_rows.ord.
 CREATE TABLE options (
     id          SERIAL  PRIMARY KEY,
     question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
     ord         INTEGER NOT NULL,
-    letter      TEXT    NOT NULL,
+    letter      TEXT,
     text        TEXT    NOT NULL,
     is_correct  BOOLEAN NOT NULL
 );
 
 -- La risposta corretta di drag_and_drop, hotspot e hotspot_yes_no, una riga
 -- per elemento. 'prompt' e' NULL quando la domanda e' un drag_and_drop in
--- sequenza: li' la risposta e' l'ordine stesso, dato da 'ord'.
+-- sequenza (answer_layout 'ordered_answer'): li' la risposta e' l'ordine
+-- stesso, dato da 'ord'.
 CREATE TABLE answer_rows (
     id          SERIAL  PRIMARY KEY,
     question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
@@ -60,6 +78,18 @@ CREATE TABLE answer_rows (
     answer      TEXT    NOT NULL
 );
 
+-- Il pool di scelte row-scoped di una riga 'selection' (hotspot, e la
+-- minoranza di drag_and_drop che sono in realta' selezioni): a differenza di
+-- 'options', qui non serve is_correct, la risposta corretta della riga e'
+-- gia' in answer_rows.answer.
+CREATE TABLE answer_row_options (
+    id            SERIAL  PRIMARY KEY,
+    answer_row_id INTEGER NOT NULL REFERENCES answer_rows (id) ON DELETE CASCADE,
+    ord           INTEGER NOT NULL,
+    text          TEXT    NOT NULL
+);
+
 CREATE INDEX idx_options_question ON options (question_id);
 CREATE INDEX idx_answer_rows_question ON answer_rows (question_id);
+CREATE INDEX idx_answer_row_options_row ON answer_row_options (answer_row_id);
 CREATE INDEX idx_questions_type ON questions (type);

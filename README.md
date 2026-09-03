@@ -7,7 +7,7 @@ Simulatore d'esame per la certificazione Microsoft AZ-104, con un question bank 
 ```
 AZ-104.Examinator.BE/          Backend .NET (API + progetto di test)
 AZ-104.Examinator.Database/    Schema SQL e importer del question bank
-AZ-104.QuestionsDump/          Dati sorgente (JSON + versione leggibile in Markdown)
+AZ-104.QuestionsDataset/       Dati sorgente (JSON + versione leggibile in Markdown)
 docker-compose.yml
 ```
 
@@ -38,7 +38,7 @@ Il database e le domande restano nel volume Docker: basta questo comando, senza 
 docker compose --profile setup run --rm importer
 ```
 
-Legge `AZ-104.QuestionsDump/az104_606_domande.json` e popola il database con le 606 domande, sostituendo quelle già presenti. A differenza di `db` e `api`, l'importer non fa parte dei servizi avviati automaticamente da `docker compose up` e non riparte da solo a ogni riavvio: va lanciato esplicitamente ogni volta che serve.
+Legge `AZ-104.QuestionsDataset/az104_606_domande.json` e popola il database con le 606 domande, sostituendo quelle già presenti. A differenza di `db` e `api`, l'importer non fa parte dei servizi avviati automaticamente da `docker compose up` e non riparte da solo a ogni riavvio: va lanciato esplicitamente ogni volta che serve.
 
 ### Servizi opzionali
 

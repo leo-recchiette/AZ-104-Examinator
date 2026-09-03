@@ -503,6 +503,14 @@
    "An Azure Key Vault",
    "An access policy"
   ],
+  "all_actions": [
+   "An Azure Key Vault",
+   "An Azure Storage account",
+   "Azure Active Directory (AD) Identity Protection",
+   "An access policy",
+   "An Azure policy",
+   "A backup policy"
+  ],
   "answer_text": "1. An Azure Key Vault -> 2. An access policy",
   "images_question": [
    "q020_pre0.png"
@@ -587,6 +595,14 @@
    "Hyper-V site",
    "Azure Recovery Services Vault",
    "Replication policy"
+  ],
+  "all_actions": [
+   "Hyper-V site",
+   "Storage account",
+   "Azure Recovery Services Vault",
+   "Azure Traffic Manager instance",
+   "Replication policy",
+   "Endpoint"
   ],
   "answer_text": "1. Hyper-V site -> 2. Azure Recovery Services Vault -> 3. Replication policy",
   "images_question": [
@@ -1077,14 +1093,27 @@
   "answer_rows": [
    {
     "prompt": "To add a backend pool to LB1",
-    "selected": "Network Contributor on LB1"
+    "selected": "Network Contributor on LB1",
+    "options": [
+     "Contributor on LB1",
+     "Network Contributor on LB1",
+     "Network Contributor on RG1",
+     "Owner on LB1"
+    ]
    },
    {
     "prompt": "To add a health probe to LB2",
-    "selected": "Network Contributor on LB2"
+    "selected": "Network Contributor on LB2",
+    "options": [
+     "Contributor on LB2",
+     "Network Contributor on LB2",
+     "Network Contributor on RG1",
+     "Owner on LB2"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "To add a backend pool to LB1 -> Network Contributor on LB1 | To add a health probe to LB2 -> Network Contributor on LB2",
   "images_question": [
    "q041_pre0.png"
@@ -1184,6 +1213,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User3 can perform an access review of User1 -> No | User3 can perform an access review of UserA -> No | User3 can perform an access review of UserB -> Yes",
   "images_question": [
    "q044_pre0.png",
@@ -1218,6 +1248,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can create a virtual network in Subscription1. -> No | You can create a virtual machine in Subscription2. -> No | You can add Subscription1 to ManagementGroup11. -> No",
   "images_question": [
    "q045_pre0.png",
@@ -1272,14 +1303,28 @@
   "answer_rows": [
    {
     "prompt": "VNET1",
-    "selected": "Department: D1 only"
+    "selected": "Department: D1 only",
+    "options": [
+     "None",
+     "Department: D1 only",
+     "Department: D1, and RGroup: RG6 only",
+     "Department: D1, and Label: Value1 only",
+     "Department: D1, RGroup: RG6, and Label: Value1"
+    ]
    },
    {
     "prompt": "VNET2",
-    "selected": "Label: Value1 only"
+    "selected": "Label: Value1 only",
+    "options": [
+     "None",
+     "RGroup: RG6 only",
+     "Label: Value1 only",
+     "RGroup: RG6, and Label: Value1"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "VNET1 -> Department: D1 only | VNET2 -> Label: Value1 only",
   "images_question": [
    "q047_pre0.png",
@@ -1496,6 +1541,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 can add Device2 to Group1 -> No | User2 can add Device1 to Group1 -> Yes | User2 can add Device2 to Group2 -> No",
   "images_question": [
    "q054_pre0.png",
@@ -1684,6 +1730,13 @@
    "From the Cost analysis blade, filter the view by tag.",
    "Download the usage report."
   ],
+  "all_actions": [
+   "Assign a tag to each resource group.",
+   "Assign a tag to each resource.",
+   "Download the usage report.",
+   "From the Cost analysis blade, filter the view by tag.",
+   "Open the Resource costs blade of each resource group."
+  ],
   "answer_text": "1. Assign a tag to each resource. -> 2. From the Cost analysis blade, filter the view by tag. -> 3. Download the usage report.",
   "images_question": [
    "q061_pre0.png"
@@ -1747,6 +1800,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "VM1 and VM2 can connect to VNET1 -> Yes | If an Azure datacenter becomes unavailable, VM1 or VM2 will be available. -> Yes | If the East US 2 region becomes unavailable, VM1 or VM2 will be available. -> No",
   "images_question": [
    "q063_pre0.png",
@@ -1799,14 +1853,25 @@
   "answer_rows": [
    {
     "prompt": "assignableScopes",
-    "selected": "\"/subscriptions/c276fc76-9cd4-44c9-99a7-4fd71546436e\""
+    "selected": "\"/subscriptions/c276fc76-9cd4-44c9-99a7-4fd71546436e\"",
+    "options": [
+     "\"/\"",
+     "\"/subscriptions/c276fc76-9cd4-44c9-99a7-4fd71546436e\"",
+     "\"/subscriptions/c276fc76-9cd4-44c9-99a7-4fd71546436e/resourceGroups\""
+    ]
    },
    {
     "prompt": "notActions",
-    "selected": "\"Microsoft.Authorization/*\""
+    "selected": "\"Microsoft.Authorization/*\"",
+    "options": [
+     "\"Microsoft.Authorization/*\"",
+     "\"Microsoft.Resources/*\"",
+     "\"Microsoft.Security/*\""
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "assignableScopes -> \"/subscriptions/c276fc76-9cd4-44c9-99a7-4fd71546436e\" | notActions -> \"Microsoft.Authorization/*\"",
   "images_question": [
    "q065_pre0.png"
@@ -1894,18 +1959,33 @@
   "answer_rows": [
    {
     "prompt": "Assignments",
-    "selected": "Users and groups"
+    "selected": "Users and groups",
+    "options": [
+     "Users and groups",
+     "Cloud apps",
+     "Conditions"
+    ]
    },
    {
     "prompt": "Assignments",
-    "selected": "Cloud apps"
+    "selected": "Cloud apps",
+    "options": [
+     "Users and groups",
+     "Cloud apps",
+     "Conditions"
+    ]
    },
    {
     "prompt": "Access controls",
-    "selected": "Grant"
+    "selected": "Grant",
+    "options": [
+     "Grant",
+     "Session"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Assignments -> Users and groups | Assignments -> Cloud apps | Access controls -> Grant",
   "images_question": [
    "q068_pre0.png"
@@ -1989,14 +2069,33 @@
   "answer_rows": [
    {
     "prompt": "User1",
-    "selected": "Group1 only"
+    "selected": "Group1 only",
+    "options": [
+     "Group1 only",
+     "Group2 only",
+     "Group3 only",
+     "Group1 and Group2 only",
+     "Group1 and Group3 only",
+     "Group2 and Group3 only",
+     "Group1, Group2, and Group3"
+    ]
    },
    {
     "prompt": "User2",
-    "selected": "Group1 and Group2 only"
+    "selected": "Group1 and Group2 only",
+    "options": [
+     "Group1 only",
+     "Group2 only",
+     "Group3 only",
+     "Group1 and Group2 only",
+     "Group1 and Group3 only",
+     "Group2 and Group3 only",
+     "Group1, Group2, and Group3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 -> Group1 only | User2 -> Group1 and Group2 only",
   "images_question": [
    "q071_pre0.png",
@@ -2019,14 +2118,27 @@
   "answer_rows": [
    {
     "prompt": "JobTitle",
-    "selected": "User1 and User3 only"
+    "selected": "User1 and User3 only",
+    "options": [
+     "User1 only",
+     "User1 and User2 only",
+     "User1 and User3 only",
+     "User1, User2, and User3"
+    ]
    },
    {
     "prompt": "UsageLocation",
-    "selected": "User1, User2, and User3"
+    "selected": "User1, User2, and User3",
+    "options": [
+     "User1 only",
+     "User1 and User2 only",
+     "User1 and User3 only",
+     "User1, User2, and User3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "JobTitle -> User1 and User3 only | UsageLocation -> User1, User2, and User3",
   "images_question": [
    "q072_pre0.png",
@@ -2160,6 +2272,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Admin1 can add Admin 2 as an owner of the subscription. -> Yes | Admin3 can add Admin 2 as an owner of the subscription. -> Yes | Admin2 can create a resource group in the subscription. -> No",
   "images_question": [
    "q077_pre0.png",
@@ -2278,6 +2391,14 @@
    "Add a record to the public contoso.com DNS zone",
    "Verify the domain"
   ],
+  "all_actions": [
+   "Add a record to the public contoso.com DNS zone",
+   "Add an Azure AD tenant",
+   "Configure company branding",
+   "Create an Azure DNS zone",
+   "Add a custom name",
+   "Verify the domain"
+  ],
   "answer_text": "1. Add a custom name -> 2. Add a record to the public contoso.com DNS zone -> 3. Verify the domain",
   "images_question": [
    "q081_pre0.png"
@@ -2372,6 +2493,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can assign the Storage File Data SMB Share Contributor role to User1 for share1. -> Yes | You can assign the Storage File Data SMB Share Reader role to Computer1 for share1. -> No | You can assign the Storage File Data SMB Share Elevated Contributor role to User2 for share1. -> Yes",
   "images_question": [
    "q084_pre0.png",
@@ -2394,14 +2516,30 @@
   "answer_rows": [
    {
     "prompt": "Add a subnet to VNet1",
-    "selected": "User1 and User3 only"
+    "selected": "User1 and User3 only",
+    "options": [
+     "User1 only",
+     "User3 only",
+     "User1 and User3 only",
+     "User2 and User3 only",
+     "User1, User2, and User3"
+    ]
    },
    {
     "prompt": "Assign a user the Reader role to VNet1",
-    "selected": "User1 only"
+    "selected": "User1 only",
+    "options": [
+     "User1 only",
+     "User2 only",
+     "User3 only",
+     "User1 and User2 only",
+     "User2 and User3 only",
+     "User1, User2, and User3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Add a subnet to VNet1 -> User1 and User3 only | Assign a user the Reader role to VNet1 -> User1 only",
   "images_question": [
    "q085_pre0.png",
@@ -2423,14 +2561,29 @@
   "answer_rows": [
    {
     "prompt": "Locks",
-    "selected": "Sub1, RG1, and VM1 only"
+    "selected": "Sub1, RG1, and VM1 only",
+    "options": [
+     "RG1 and VM1 only",
+     "Sub1 and RG1 only",
+     "Sub1, RG1, and VM1 only",
+     "MG1, Sub1, RG1, and VM1 only",
+     "Tenant Root Group, MG1, Sub1, RG1, and VM1"
+    ]
    },
    {
     "prompt": "Tags",
-    "selected": "Sub1, RG1, and VM1 only"
+    "selected": "Sub1, RG1, and VM1 only",
+    "options": [
+     "RG1 and VM1 only",
+     "Sub1 and RG1 only",
+     "Sub1, RG1, and VM1 only",
+     "MG1, Sub1, RG1, and VM1 only",
+     "Tenant Root Group, MG1, Sub1, RG1, and VM1"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Locks -> Sub1, RG1, and VM1 only | Tags -> Sub1, RG1, and VM1 only",
   "images_question": [
    "q086_pre0.png",
@@ -2499,6 +2652,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "RG1 has the Tag2:IT tag assigned only -> No | Storage1 has the Tag1:subscription, Tag2:IT, Tag3:value1, and Tag4:value4 tags assigned. -> No | VNET1 has the Tag2:IT and Tag3:value2 tags assigned only -> No",
   "images_question": [
    "q088_pre0.png",
@@ -2598,14 +2752,25 @@
   "answer_rows": [
    {
     "prompt": "User1 can [answer choice] LB1.",
-    "selected": "assign access to other users for"
+    "selected": "assign access to other users for",
+    "options": [
+     "delete",
+     "create a NAT rule for",
+     "assign access to other users for"
+    ]
    },
    {
     "prompt": "User1 can [answer choice] the resource group.",
-    "selected": "delete a virtual machine from"
+    "selected": "delete a virtual machine from",
+    "options": [
+     "delete a virtual machine from",
+     "modify the load balancing rules in",
+     "deploy an Azure Kubernetes Service (AKS) cluster to"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 can [answer choice] LB1. -> assign access to other users for | User1 can [answer choice] the resource group. -> delete a virtual machine from",
   "images_question": [
    "q092_pre0.png",
@@ -2658,14 +2823,31 @@
   "answer_rows": [
    {
     "prompt": "To ensure that users can sign in to virtual machines that are assigned role1, modify the [answer choice] section",
-    "selected": "dataActions"
+    "selected": "dataActions",
+    "options": [
+     "actions",
+     "roletype",
+     "notActions",
+     "dataActions",
+     "notDataActions",
+     "assignableScopes"
+    ]
    },
    {
     "prompt": "To ensure that role1 can be assigned only to a resource group named RG1, modify the [answer choice] section",
-    "selected": "assignableScopes"
+    "selected": "assignableScopes",
+    "options": [
+     "actions",
+     "roletype",
+     "notActions",
+     "dataActions",
+     "notDataActions",
+     "assignableScopes"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "To ensure that users can sign in to virtual machines that are assigned role1, modify the [answer choice] section -> dataActions | To ensure that role1 can be assigned only to a resource group named RG1, modify the [answer choice] section -> assignableScopes",
   "images_question": [
    "q094_pre0.png",
@@ -2749,14 +2931,29 @@
   "answer_rows": [
    {
     "prompt": "You can assign Policy1 to",
-    "selected": "Tenant Root Group, ManagementGroup1, Subscription1, and RG1 only"
+    "selected": "Tenant Root Group, ManagementGroup1, Subscription1, and RG1 only",
+    "options": [
+     "Subscription1 and RG1 only",
+     "ManagementGroup1 and Subscription1 only",
+     "Tenant Root Group, ManagementGroup1, and Subscription1 only",
+     "Tenant Root Group, ManagementGroup1, Subscription1, and RG1 only",
+     "Tenant Root Group, ManagementGroup1, Subscription1, RG1, and VM1"
+    ]
    },
    {
     "prompt": "You can exclude Policy1 from",
-    "selected": "ManagementGroup1, Subscription1, RG1, and VM1 only"
+    "selected": "ManagementGroup1, Subscription1, RG1, and VM1 only",
+    "options": [
+     "VM1 only",
+     "RG1 and VM1 only",
+     "Subscription1, RG1, and VM1 only",
+     "ManagementGroup1, Subscription1, RG1, and VM1 only",
+     "Tenant Root Group, ManagementGroup1, Subscription1, RG1, and VM1"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can assign Policy1 to -> Tenant Root Group, ManagementGroup1, Subscription1, and RG1 only | You can exclude Policy1 from -> ManagementGroup1, Subscription1, RG1, and VM1 only",
   "images_question": [
    "q097_pre0.png",
@@ -2999,14 +3196,29 @@
   "answer_rows": [
    {
     "prompt": "Role3",
-    "selected": "Role1 and built-in Azure subscription roles only"
+    "selected": "Role1 and built-in Azure subscription roles only",
+    "options": [
+     "Role1 only",
+     "Built-in Azure subscription roles only",
+     "Role1 and built-in Azure subscription roles only",
+     "Built-in Azure subscription roles and built-in Azure AD roles only",
+     "Role1, Role2, built-in Azure subscription roles, and built-in Azure AD roles"
+    ]
    },
    {
     "prompt": "Role4",
-    "selected": "Role2 only"
+    "selected": "Role2 only",
+    "options": [
+     "Role2 only",
+     "Built-in Azure AD roles only",
+     "Role2 and built-in Azure AD roles only",
+     "Built-in Azure AD roles and built-in Azure subscription roles only",
+     "Role1, Role2, built-in Azure AD, and built-in Azure subscription roles"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Role3 -> Role1 and built-in Azure subscription roles only | Role4 -> Role2 only",
   "images_question": [
    "q106_pre0.png",
@@ -3028,14 +3240,32 @@
   "answer_rows": [
    {
     "prompt": "User1",
-    "selected": "Reader and Data Access"
+    "selected": "Reader and Data Access",
+    "options": [
+     "Owner",
+     "Contributor",
+     "Reader and Data Access",
+     "Storage Account Contributor"
+    ]
    },
    {
     "prompt": "User2",
-    "selected": "Owner"
+    "selected": "Owner",
+    "options": [
+     "Owner",
+     "Contributor",
+     "Reader and Data Access",
+     "Storage Account Contributor"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [
+   "Owner",
+   "Contributor",
+   "Reader and Data Access",
+   "Storage Account Contributor"
+  ],
   "answer_text": "User1 -> Reader and Data Access | User2 -> Owner",
   "images_question": [
    "q107_pre0.png"
@@ -3126,6 +3356,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Litwareinc.com users can be assigned to package1. -> No | After 365 days, fabrikam.com users will be removed from Group1. -> Yes | After 395 days, fabrikam.com users will be removed from the contoso.com tenant. -> Yes",
   "images_question": [
    "q110_pre0.png",
@@ -3191,6 +3422,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can assign User2 the Owner role for RG1 by adding Group2 as a member of Group1. -> No | You can assign User3 the Owner role for RG1 by adding Group3 as a member of Group1. -> No | You can assign User3 the Owner role for RG1 by assigning the Owner role to Group3 for RG1. -> Yes",
   "images_question": [
    "q112_pre0.png",
@@ -3288,6 +3520,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 can create a storage account in RG1. -> Yes | User1 can modify the DNS settings of networkinterface1. -> No | User1 can create an inbound security rule to filter inbound traffic to networkinterface1. -> Yes",
   "images_question": [
    "q115_pre0.png",
@@ -3353,6 +3586,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The Group1 members can view the configurations of the Azure functions. -> Yes | User1 can assign the Owner role for RG1. -> Yes | User1 can create a new resource group and deploy a virtual machine to the new group. -> No",
   "images_question": [
    "q117_pre0.png"
@@ -3447,6 +3681,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can assign User1 the Microsoft Defender for Cloud Apps Discovery license. -> Yes | You can remove the Azure Active Directory Premium P2 license from User1. -> No | User2 is assigned the Azure Active Directory Premium P2. -> No",
   "images_question": [
    "q120_pre0.png",
@@ -3470,14 +3705,27 @@
   "answer_rows": [
    {
     "prompt": "JobTitle",
-    "selected": "User1 and User3 only"
+    "selected": "User1 and User3 only",
+    "options": [
+     "User1 only",
+     "User1 and User2 only",
+     "User1 and User3 only",
+     "User1, User2, and User3"
+    ]
    },
    {
     "prompt": "UsageLocation",
-    "selected": "User1, User2, and User3"
+    "selected": "User1, User2, and User3",
+    "options": [
+     "User1 only",
+     "User1 and User2 only",
+     "User1 and User3 only",
+     "User1, User2, and User3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "JobTitle -> User1 and User3 only | UsageLocation -> User1, User2, and User3",
   "images_question": [
    "q121_pre0.png",
@@ -3607,14 +3855,25 @@
   "answer_rows": [
    {
     "prompt": "Blob storage",
-    "selected": "Azure AD and shared access signatures (SAS)"
+    "selected": "Azure AD and shared access signatures (SAS)",
+    "options": [
+     "Azure AD only",
+     "Shared access signatures (SAS) only",
+     "Azure AD and shared access signatures (SAS)"
+    ]
    },
    {
     "prompt": "File storage",
-    "selected": "Shared access signatures (SAS) only"
+    "selected": "Shared access signatures (SAS) only",
+    "options": [
+     "Azure AD only",
+     "Shared access signatures (SAS) only",
+     "Azure AD and shared access signatures (SAS)"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Blob storage -> Azure AD and shared access signatures (SAS) | File storage -> Shared access signatures (SAS) only",
   "images_question": [
    "q126_pre0.png"
@@ -3635,15 +3894,58 @@
   "answer_rows": [
    {
     "prompt": "Setting 1",
-    "selected": "Identities (the mail identity in Basic info)"
+    "selected": "Identities",
+    "options": [
+     "Overview",
+     "Audit logs",
+     "Sign-in logs",
+     "Diagnose and solve problems",
+     "Assigned roles",
+     "Administrative units",
+     "Groups",
+     "Applications",
+     "Licenses",
+     "Devices",
+     "Azure role assignments",
+     "Authentication methods",
+     "User principal name",
+     "Object ID",
+     "Created date time",
+     "Identities",
+     "Account status",
+     "Sign-ins",
+     "B2B collaboration"
+    ]
    },
    {
     "prompt": "Setting 2",
-    "selected": "B2B collaboration"
+    "selected": "B2B collaboration",
+    "options": [
+     "Overview",
+     "Audit logs",
+     "Sign-in logs",
+     "Diagnose and solve problems",
+     "Assigned roles",
+     "Administrative units",
+     "Groups",
+     "Applications",
+     "Licenses",
+     "Devices",
+     "Azure role assignments",
+     "Authentication methods",
+     "User principal name",
+     "Object ID",
+     "Created date time",
+     "Identities",
+     "Account status",
+     "Sign-ins",
+     "B2B collaboration"
+    ]
    }
   ],
   "answer_items": [],
-  "answer_text": "Setting 1 -> Identities (the mail identity in Basic info) | Setting 2 -> B2B collaboration",
+  "all_actions": [],
+  "answer_text": "Setting 1 -> Identities | Setting 2 -> B2B collaboration",
   "images_question": [
    "q127_pre0.png"
   ],
@@ -3760,18 +4062,36 @@
   "answer_rows": [
    {
     "prompt": "Box 1",
-    "selected": "user.department"
+    "selected": "user.department",
+    "options": [
+     "device.managementType",
+     "device.organizationalUnit",
+     "user.department",
+     "user.usageLocation"
+    ]
    },
    {
     "prompt": "Box 2",
-    "selected": "and"
+    "selected": "and",
+    "options": [
+     "and",
+     "or",
+     "typeof"
+    ]
    },
    {
     "prompt": "Box 3",
-    "selected": "-eq"
+    "selected": "-eq",
+    "options": [
+     "-and",
+     "-eq",
+     "-in",
+     "-match"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Box 1 -> user.department | Box 2 -> and | Box 3 -> -eq",
   "images_question": [
    "q131_pre0.png"
@@ -3792,16 +4112,25 @@
   "answer_layout": "selection",
   "answer_rows": [
    {
-    "prompt": "Impostazione 1",
-    "selected": "Users can register applications (Yes)"
+    "prompt": "Users can register applications",
+    "selected": "Yes",
+    "options": [
+     "Yes",
+     "No"
+    ]
    },
    {
-    "prompt": "Impostazione 2",
-    "selected": "Restrict access to Azure AD administration portal (No)"
+    "prompt": "Restrict access to Azure AD administration portal",
+    "selected": "No",
+    "options": [
+     "Yes",
+     "No"
+    ]
    }
   ],
   "answer_items": [],
-  "answer_text": "Impostazione 1 -> Users can register applications (Yes) | Impostazione 2 -> Restrict access to Azure AD administration portal (No)",
+  "all_actions": [],
+  "answer_text": "Users can register applications -> Yes | Restrict access to Azure AD administration portal -> No",
   "images_question": [
    "q132_pre0.png"
   ],
@@ -3834,6 +4163,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 can read blob2. -> No | User1 can read blob3. -> No | User2 can read blob1. -> Yes",
   "images_question": [
    "q133_pre0.png",
@@ -3893,6 +4223,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Three resource groups are created when you run the script. -> No | A resource group named RGroup5 is created. -> No | All the resource groups are created in the East US Azure region. -> Yes",
   "images_question": [
    "q135_pre0.png",
@@ -4039,14 +4370,27 @@
   "answer_rows": [
    {
     "prompt": "Users",
-    "selected": "User1, User2, User3, and User4"
+    "selected": "User1, User2, User3, and User4",
+    "options": [
+     "User4 only",
+     "User1 and User4 only",
+     "User2 and User4 only",
+     "User1, User2, User3, and User4"
+    ]
    },
    {
     "prompt": "Groups",
-    "selected": "Group2 and Group4 only"
+    "selected": "Group2 and Group4 only",
+    "options": [
+     "Group2 only",
+     "Group2 and Group3 only",
+     "Group2 and Group4 only",
+     "Group1, Group2, Group3, and Group4"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Users -> User1, User2, User3, and User4 | Groups -> Group2 and Group4 only",
   "images_question": [
    "q140_pre0.png",
@@ -4112,6 +4456,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 can resize VM1. -> Yes | User2 can create a new storage account in RG1. -> No | User3 can assign User1 the Owner role for RG3. -> Yes",
   "images_question": [
    "q142_pre0.png",
@@ -4279,6 +4624,15 @@
    "Set Add prefix to Attribute.",
    "Set Select type to Department."
   ],
+  "all_actions": [
+   "Set Add suffix to Attribute.",
+   "Create a group naming policy.",
+   "Set Add prefix to Attribute.",
+   "Set Add suffix to String.",
+   "Set Add prefix to String.",
+   "Set Select type to Department.",
+   "Customize the company branding."
+  ],
   "answer_text": "1. Create a group naming policy. -> 2. Set Add prefix to Attribute. -> 3. Set Select type to Department.",
   "images_question": [
    "q147_pre0.png",
@@ -4300,14 +4654,27 @@
   "answer_rows": [
    {
     "prompt": "Users",
-    "selected": "User1, User2, User3, and User4"
+    "selected": "User1, User2, User3, and User4",
+    "options": [
+     "User4 only",
+     "User3 and User4 only",
+     "User2 and User4 only",
+     "User1, User2, User3, and User4"
+    ]
    },
    {
     "prompt": "Groups",
-    "selected": "Group1 and Group3 only"
+    "selected": "Group1 and Group3 only",
+    "options": [
+     "Group1 only",
+     "Group4 only",
+     "Group1 and Group3 only",
+     "Group1, Group2, Group3, and Group4"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Users -> User1, User2, User3, and User4 | Groups -> Group1 and Group3 only",
   "images_question": [
    "q148_pre0.png",
@@ -4330,14 +4697,27 @@
   "answer_rows": [
    {
     "prompt": "Create a",
-    "selected": "Managed identity"
+    "selected": "Managed identity",
+    "options": [
+     "Managed identity",
+     "Private endpoint",
+     "Service principal",
+     "User account"
+    ]
    },
    {
     "prompt": "Use the secret from",
-    "selected": "Vault1, Vault2, or Vault3"
+    "selected": "Vault1, Vault2, or Vault3",
+    "options": [
+     "Vault1 only",
+     "Vault1 and Vault2 only",
+     "Vault1 and Vault3 only",
+     "Vault1, Vault2, or Vault3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Create a -> Managed identity | Use the secret from -> Vault1, Vault2, or Vault3",
   "images_question": [
    "q149_pre0.png",
@@ -4442,6 +4822,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Admin1 can assign Attribute1 to Group1. -> No | Admin2 can assign Attribute1 to User1. -> No | Admin3 can assign Attribute1 to Group2. -> No",
   "images_question": [
    "q152_pre0.png",
@@ -4563,14 +4944,28 @@
   "answer_rows": [
    {
     "prompt": "You can use [answer choice] for Azure Table Storage.",
-    "selected": "storageaccount1 and storageaccount2 only"
+    "selected": "storageaccount1 and storageaccount2 only",
+    "options": [
+     "storageaccount1 only",
+     "storageaccount2 only",
+     "storageaccount3 only",
+     "storageaccount1 and storageaccount2 only",
+     "storageaccount2 and storageaccount3 only"
+    ]
    },
    {
     "prompt": "You can use [answer choice] for Azure Blob storage.",
-    "selected": "all the storage accounts"
+    "selected": "all the storage accounts",
+    "options": [
+     "storageaccount3 only",
+     "storageaccount2 and storageaccount3 only",
+     "storageaccount1 and storageaccount3 only",
+     "all the storage accounts"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can use [answer choice] for Azure Table Storage. -> storageaccount1 and storageaccount2 only | You can use [answer choice] for Azure Blob storage. -> all the storage accounts",
   "images_question": [
    "q156_pre0.png",
@@ -4623,14 +5018,27 @@
   "answer_rows": [
    {
     "prompt": "App1",
-    "selected": "Access control (IAM)"
+    "selected": "Access control (IAM)",
+    "options": [
+     "Access keys",
+     "Advanced security",
+     "Access control (IAM)",
+     "Shared access signatures (SAS)"
+    ]
    },
    {
     "prompt": "App2",
-    "selected": "Shared access signatures (SAS)"
+    "selected": "Shared access signatures (SAS)",
+    "options": [
+     "Access keys",
+     "Advanced security",
+     "Access control (IAM)",
+     "Shared access signatures (SAS)"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "App1 -> Access control (IAM) | App2 -> Shared access signatures (SAS)",
   "images_question": [
    "q158_pre0.png"
@@ -4651,14 +5059,26 @@
   "answer_rows": [
    {
     "prompt": "--kind",
-    "selected": "StorageV2"
+    "selected": "StorageV2",
+    "options": [
+     "FileStorage",
+     "Storage",
+     "StorageV2"
+    ]
    },
    {
     "prompt": "--sku",
-    "selected": "Standard_GRS"
+    "selected": "Standard_GRS",
+    "options": [
+     "Standard_GRS",
+     "Standard_LRS",
+     "Standard_RAGRS",
+     "Premium_LRS"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "--kind -> StorageV2 | --sku -> Standard_GRS",
   "images_question": [
    "q159_pre0.png"
@@ -4729,6 +5149,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "An administrator can move VNET1 to RG2 -> Yes | The state of VM1 changed to deallocated -> No | An administrator can modify the address space of VNET2 -> No",
   "images_question": [
    "q161_pre0.png",
@@ -4754,6 +5175,12 @@
    "From the Azure portal, create an import job",
    "Detach the external disks from Server1 and ship the disks to an Azure data center",
    "From the Azure portal, update the import job"
+  ],
+  "all_actions": [
+   "From the Azure portal, update the import job",
+   "From the Azure portal, create an import job",
+   "Attach an external disk to Server1 and then run waimportexport.exe",
+   "Detach the external disks from Server1 and ship the disks to an Azure data center"
   ],
   "answer_text": "1. Attach an external disk to Server1 and then run waimportexport.exe -> 2. From the Azure portal, create an import job -> 3. Detach the external disks from Server1 and ship the disks to an Azure data center -> 4. From the Azure portal, update the import job",
   "images_question": [
@@ -4787,6 +5214,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "share2 can be added as a cloud endpoint for Group1 -> No | E:\\Folder2 on Server1 can be added as a server endpoint for Group1 -> No | D:\\Data on Server2 can be added as a server endpoint for Group1 -> Yes",
   "images_question": [
    "q163_pre0.png",
@@ -4812,6 +5240,16 @@
    "file.core.windows.net",
    "data"
   ],
+  "all_actions": [
+   "blob",
+   "contosostorage",
+   "file",
+   "portal.azure.com",
+   "blob.core.windows.net",
+   "data",
+   "file.core.windows.net",
+   "subscription1"
+  ],
   "answer_text": "1. contosostorage -> 2. file.core.windows.net -> 3. data",
   "images_question": [
    "q164_pre0.png"
@@ -4834,14 +5272,28 @@
   "answer_rows": [
    {
     "prompt": "azcopy [box 1]",
-    "selected": "make"
+    "selected": "make",
+    "options": [
+     "make",
+     "sync",
+     "copy"
+    ]
    },
    {
     "prompt": "'https://mystorageaccount.[box 2].core.windows.net/vmimages'",
-    "selected": "blob"
+    "selected": "blob",
+    "options": [
+     "blob",
+     "dfs",
+     "queue",
+     "table",
+     "images",
+     "file"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "azcopy [box 1] -> make | 'https://mystorageaccount.[box 2].core.windows.net/vmimages' -> blob",
   "images_question": [
    "q165_pre0.png"
@@ -4863,14 +5315,27 @@
   "answer_rows": [
    {
     "prompt": "File1",
-    "selected": "Endpoint1 only"
+    "selected": "Endpoint1 only",
+    "options": [
+     "Endpoint1 only",
+     "Endpoint3 only",
+     "Endpoint2 and Endpoint3 only",
+     "Endpoint1, Endpoint2, and Endpoint3"
+    ]
    },
    {
     "prompt": "File2",
-    "selected": "Endpoint1, Endpoint2, and Endpoint3"
+    "selected": "Endpoint1, Endpoint2, and Endpoint3",
+    "options": [
+     "Endpoint2 only",
+     "Endpoint3 only",
+     "Endpoint2 and Endpoint3 only",
+     "Endpoint1, Endpoint2, and Endpoint3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "File1 -> Endpoint1 only | File2 -> Endpoint1, Endpoint2, and Endpoint3",
   "images_question": [
    "q166_pre0.png",
@@ -4892,14 +5357,25 @@
   "answer_rows": [
    {
     "prompt": "The virtual machines on the 10.2.9.0/24 subnet will have network connectivity to the file shares in the storage account [answer choice].",
-    "selected": "never"
+    "selected": "never",
+    "options": [
+     "always",
+     "during a backup",
+     "never"
+    ]
    },
    {
     "prompt": "Azure Backup will be able to back up the unmanaged hard disks of the virtual machines in the storage account [answer choice].",
-    "selected": "never"
+    "selected": "never",
+    "options": [
+     "always",
+     "during a backup",
+     "never"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The virtual machines on the 10.2.9.0/24 subnet will have network connectivity to the file shares in the storage account [answer choice]. -> never | Azure Backup will be able to back up the unmanaged hard disks of the virtual machines in the storage account [answer choice]. -> never",
   "images_question": [
    "q167_pre0.png",
@@ -4934,6 +5410,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "On the cloud endpoint, File1.txt is overwritten by File1.txt from Share1. -> No | On Server1, File1.txt is overwritten by File1.txt from the cloud endpoint. -> No | File1.txt from Share1 replicates to Share2. -> Yes",
   "images_question": [
    "q168_pre0.png",
@@ -5025,6 +5502,14 @@
    "Register Server1",
    "Add a server endpoint"
   ],
+  "all_actions": [
+   "Install the Azure File Sync agent on Server1",
+   "Create an Azure on-premises data gateway",
+   "Create a Recovery Services vault",
+   "Register Server1",
+   "Add a server endpoint",
+   "Install the DFS Replication server role on Server1"
+  ],
   "answer_text": "1. Install the Azure File Sync agent on Server1 -> 2. Register Server1 -> 3. Add a server endpoint",
   "images_question": [
    "q171_pre0.png"
@@ -5045,14 +5530,26 @@
   "answer_rows": [
    {
     "prompt": "Replication",
-    "selected": "Zone-redundant storage (ZRS)"
+    "selected": "Zone-redundant storage (ZRS)",
+    "options": [
+     "Geo-redundant storage (GRS)",
+     "Locally-redundant storage (LRS)",
+     "Read-access geo-redundant storage (RA GRS)",
+     "Zone-redundant storage (ZRS)"
+    ]
    },
    {
     "prompt": "Account type",
-    "selected": "StorageV2 (general purpose v2)"
+    "selected": "StorageV2 (general purpose v2)",
+    "options": [
+     "Blob storage",
+     "Storage (general purpose v1)",
+     "StorageV2 (general purpose v2)"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Replication -> Zone-redundant storage (ZRS) | Account type -> StorageV2 (general purpose v2)",
   "images_question": [
    "q172_pre0.png"
@@ -5140,14 +5637,29 @@
   "answer_rows": [
    {
     "prompt": "Can use Vault1 for backups",
-    "selected": "VM1 only"
+    "selected": "VM1 only",
+    "options": [
+     "VM1 only",
+     "VM1 and share1 only",
+     "VM1 and SQL1 only",
+     "VM1, storage1, and SQL1 only",
+     "VM1, blob1, share1, and SQL1"
+    ]
    },
    {
     "prompt": "Can use Vault2 for backups",
-    "selected": "share1 only"
+    "selected": "share1 only",
+    "options": [
+     "storage1 only",
+     "share1 only",
+     "VM1 and share1 only",
+     "blob1 and share1 only",
+     "storage1 and SQL1 only"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Can use Vault1 for backups -> VM1 only | Can use Vault2 for backups -> share1 only",
   "images_question": [
    "q175_pre0.png",
@@ -5200,14 +5712,27 @@
   "answer_rows": [
    {
     "prompt": "The minimum number of copies of the storage account will be [answer choice]",
-    "selected": "3"
+    "selected": "3",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4"
+    ]
    },
    {
     "prompt": "To reduce the cost of infrequently accessed data in the storage account, you must modify the [answer choice] setting",
-    "selected": "Access tier (default)"
+    "selected": "Access tier (default)",
+    "options": [
+     "Access tier (default)",
+     "Performance",
+     "Account kind",
+     "Replication"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The minimum number of copies of the storage account will be [answer choice] -> 3 | To reduce the cost of infrequently accessed data in the storage account, you must modify the [answer choice] setting -> Access tier (default)",
   "images_question": [
    "q177_pre0.png",
@@ -5264,14 +5789,29 @@
   "answer_rows": [
    {
     "prompt": "Blob storage",
-    "selected": "Azure Active Directory (Azure AD) and shared access signatures (SAS) only"
+    "selected": "Azure Active Directory (Azure AD) and shared access signatures (SAS) only",
+    "options": [
+     "Azure Active Directory (Azure AD) only",
+     "Shared access signatures (SAS) only",
+     "Access keys and shared access signatures (SAS) only",
+     "Azure Active Directory (Azure AD) and shared access signatures (SAS) only",
+     "Azure Active Directory (Azure AD), access keys, and shared access signatures (SAS)"
+    ]
    },
    {
     "prompt": "File storage",
-    "selected": "Shared access signatures (SAS) only"
+    "selected": "Shared access signatures (SAS) only",
+    "options": [
+     "Azure Active Directory (Azure AD) only",
+     "Shared access signatures (SAS) only",
+     "Access keys and shared access signatures (SAS) only",
+     "Azure Active Directory (Azure AD) and shared access signatures (SAS) only",
+     "Azure Active Directory (Azure AD), access keys, and shared access signatures (SAS)"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Blob storage -> Azure Active Directory (Azure AD) and shared access signatures (SAS) only | File storage -> Shared access signatures (SAS) only",
   "images_question": [
    "q179_pre0.png"
@@ -5387,6 +5927,12 @@
    "Create a Storage Sync Service",
    "Create a sync group"
   ],
+  "all_actions": [
+   "Create a Storage Sync Service",
+   "Install the Azure File Sync agent",
+   "Create a sync group",
+   "Run Server Registration"
+  ],
   "answer_text": "1. Create a Storage Sync Service -> 2. Create a sync group",
   "images_question": [
    "q183_pre0.png"
@@ -5419,6 +5965,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can add share3 as an additional cloud endpoint for Sync1. -> No | You can add data2 as an additional server endpoint for Sync1. -> Yes | You can add data3 as an additional server endpoint for Sync1. -> No",
   "images_question": [
    "q184_pre0.png",
@@ -5441,14 +5988,27 @@
   "answer_rows": [
    {
     "prompt": "Storage accounts",
-    "selected": "storage1, storage2, and storage3"
+    "selected": "storage1, storage2, and storage3",
+    "options": [
+     "storage1 only",
+     "storage2 only",
+     "storage3 only",
+     "storage1, storage2, and storage3"
+    ]
    },
    {
     "prompt": "Log Analytics workspaces",
-    "selected": "Analytics3 only"
+    "selected": "Analytics3 only",
+    "options": [
+     "Analytics1 only",
+     "Analytics2 only",
+     "Analytics3 only",
+     "Analytics1, Analytics2, and Analytics3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Storage accounts -> storage1, storage2, and storage3 | Log Analytics workspaces -> Analytics3 only",
   "images_question": [
    "q185_pre0.png",
@@ -5470,14 +6030,29 @@
   "answer_rows": [
    {
     "prompt": "You can create a premium file share in",
-    "selected": "contoso104 only"
+    "selected": "contoso104 only",
+    "options": [
+     "contoso101 only",
+     "contoso104 only",
+     "contoso101 or contoso104 only",
+     "contoso101, contoso102, or contoso104 only",
+     "contoso101, contoso102, contoso103, or contoso104"
+    ]
    },
    {
     "prompt": "You can use the Archive access tier in",
-    "selected": "contoso101 or contoso103 only"
+    "selected": "contoso101 or contoso103 only",
+    "options": [
+     "contoso101 only",
+     "contoso101 or contoso103 only",
+     "contoso101, contoso102, and contoso103 only",
+     "contoso101, contoso102, and contoso104 only",
+     "contoso101, contoso102, contoso103, and contoso104"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can create a premium file share in -> contoso104 only | You can use the Archive access tier in -> contoso101 or contoso103 only",
   "images_question": [
    "q186_pre0.png",
@@ -5499,14 +6074,27 @@
   "answer_rows": [
    {
     "prompt": "If on September 2, 2018, you run Microsoft Azure Storage Explorer on a computer that has an IP address of 193.77.134.1, and you use SAS1 to connect to the storage account, you [answer choice].",
-    "selected": "will have no access"
+    "selected": "will have no access",
+    "options": [
+     "will be prompted for credentials",
+     "will have no access",
+     "will have read, write, and list access",
+     "will have read-only access"
+    ]
    },
    {
     "prompt": "If on September 10, 2018, you run the net use command on a computer that has an IP address of 193.77.134.50, and you use SAS1 as the password to connect to share1, you [answer choice].",
-    "selected": "will have no access"
+    "selected": "will have no access",
+    "options": [
+     "will be prompted for credentials",
+     "will have no access",
+     "will have read, write, and list access",
+     "will have read-only access"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "If on September 2, 2018, you run Microsoft Azure Storage Explorer on a computer that has an IP address of 193.77.134.1, and you use SAS1 to connect to the storage account, you [answer choice]. -> will have no access | If on September 10, 2018, you run the net use command on a computer that has an IP address of 193.77.134.50, and you use SAS1 as the password to connect to share1, you [answer choice]. -> will have no access",
   "images_question": [
    "q187_pre0.png",
@@ -5699,6 +6287,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "A server that has a public IP address of 131.107.103.10 can access storageaccount1 -> Yes | Individual blobs in storageaccount1 can be set to use the archive tier -> Yes | Global administrations in Azure Active Directory (Azure AD) can access a file share hosted in storageaccount1 by using their Azure AD credentials -> No",
   "images_question": [
    "q193_pre0.png",
@@ -5794,6 +6383,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "On October 10, you can read Dep1File1.docx. -> No | On October 10, you can read File2.docx. -> Yes | On October 10, you can read File3.docx. -> Yes",
   "images_question": [
    "q196_pre0.png",
@@ -5852,14 +6442,27 @@
   "answer_rows": [
    {
     "prompt": "Account type",
-    "selected": "StorageV2 or BlobStorage only"
+    "selected": "StorageV2 or BlobStorage only",
+    "options": [
+     "StorageV2 only",
+     "StorageV2 or FileStorage only",
+     "StorageV2 or BlobStorage only",
+     "StorageV2, BlobStorage, or FileStorage"
+    ]
    },
    {
     "prompt": "Object type to create in the new account",
-    "selected": "Container"
+    "selected": "Container",
+    "options": [
+     "Container",
+     "File share",
+     "Table",
+     "Queue"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Account type -> StorageV2 or BlobStorage only | Object type to create in the new account -> Container",
   "images_question": [
    "q198_pre0.png"
@@ -5942,14 +6545,32 @@
   "answer_rows": [
    {
     "prompt": "storage1",
-    "selected": "A shared access signature (SAS) token"
+    "selected": "A shared access signature (SAS) token",
+    "options": [
+     "OAuth",
+     "Anonymous",
+     "A storage account access key",
+     "A shared access signature (SAS) token"
+    ]
    },
    {
     "prompt": "storage2",
-    "selected": "A shared access signature (SAS) token"
+    "selected": "A shared access signature (SAS) token",
+    "options": [
+     "OAuth",
+     "Anonymous",
+     "A storage account access key",
+     "A shared access signature (SAS) token"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [
+   "OAuth",
+   "Anonymous",
+   "A storage account access key",
+   "A shared access signature (SAS) token"
+  ],
   "answer_text": "storage1 -> A shared access signature (SAS) token | storage2 -> A shared access signature (SAS) token",
   "images_question": [
    "q201_pre0.png",
@@ -6014,6 +6635,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "On June 6, File1 will be stored in the Cool access tier. -> No | On June 1, File2 will be stored in the Cool access tier. -> No | On June 16, File2 will be stored in the Archive access tier. -> No",
   "images_question": [
    "q203_pre0.png",
@@ -6048,6 +6670,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Changes made to the data in storage1 can be rolled back after seven days. -> No | Only users located in the East US Azure region can connect to storage1. -> No | Three copies of storage1 will be maintained in the East US Azure region. -> Yes",
   "images_question": [
    "q204_pre0.png",
@@ -6100,14 +6723,25 @@
   "answer_rows": [
    {
     "prompt": "\"baseBlob\" (box 1)",
-    "selected": "\"tierToArchive\":{"
+    "selected": "\"tierToArchive\":{",
+    "options": [
+     "\"enableAutoTierToHotFromCool\":{",
+     "\"tierToArchive\":{",
+     "\"tierToCool\":{"
+    ]
    },
    {
     "prompt": "\"filters\" (box 2)",
-    "selected": "\"prefixMatch\":["
+    "selected": "\"prefixMatch\":[",
+    "options": [
+     "\"blobIndexMatch\":[",
+     "\"blobTypes\":[",
+     "\"prefixMatch\":["
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "\"baseBlob\" (box 1) -> \"tierToArchive\":{ | \"filters\" (box 2) -> \"prefixMatch\":[",
   "images_question": [
    "q206_pre0.png"
@@ -6130,6 +6764,13 @@
    "Create a Recovery Services vault.",
    "Set Replication to Zone-redundant storage (ZRS).",
    "For VM1, create a backup policy and configure the backup."
+  ],
+  "all_actions": [
+   "Configure a replication policy.",
+   "Set Replication to Zone-redundant storage (ZRS).",
+   "For VM1, create a backup policy and configure the backup.",
+   "Set Replication to Locally-redundant storage (LRS).",
+   "Create a Recovery Services vault."
   ],
   "answer_text": "1. Create a Recovery Services vault. -> 2. Set Replication to Zone-redundant storage (ZRS). -> 3. For VM1, create a backup policy and configure the backup.",
   "images_question": [
@@ -6217,14 +6858,61 @@
   "answer_rows": [
    {
     "prompt": "Setting 1",
-    "selected": "Access Control (IAM)"
+    "selected": "Access Control (IAM)",
+    "options": [
+     "Diagnose and solve problems",
+     "Access Control (IAM)",
+     "Data migration",
+     "Events",
+     "Storage browser",
+     "Containers",
+     "File shares",
+     "Queues",
+     "Tables",
+     "Networking",
+     "Azure CDN",
+     "Access keys",
+     "Shared access signature",
+     "Encryption",
+     "Microsoft Defender for Cloud",
+     "Geo-replication",
+     "Data protection",
+     "Object replication",
+     "Blob inventory",
+     "Static website",
+     "Lifecycle management"
+    ]
    },
    {
     "prompt": "Setting 2",
-    "selected": "Geo-replication"
+    "selected": "Geo-replication",
+    "options": [
+     "Diagnose and solve problems",
+     "Access Control (IAM)",
+     "Data migration",
+     "Events",
+     "Storage browser",
+     "Containers",
+     "File shares",
+     "Queues",
+     "Tables",
+     "Networking",
+     "Azure CDN",
+     "Access keys",
+     "Shared access signature",
+     "Encryption",
+     "Microsoft Defender for Cloud",
+     "Geo-replication",
+     "Data protection",
+     "Object replication",
+     "Blob inventory",
+     "Static website",
+     "Lifecycle management"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Setting 1 -> Access Control (IAM) | Setting 2 -> Geo-replication",
   "images_question": [
    "q210_pre0.png",
@@ -6281,14 +6969,29 @@
   "answer_rows": [
    {
     "prompt": "key1",
-    "selected": "Table1, folder1, and container1"
+    "selected": "Table1, folder1, and container1",
+    "options": [
+     "Table1 only",
+     "Table1 and container1 only",
+     "folder1 and Table1 only",
+     "folder1 and container1 only",
+     "Table1, folder1, and container1"
+    ]
    },
    {
     "prompt": "SAS1",
-    "selected": "Table1 only"
+    "selected": "Table1 only",
+    "options": [
+     "Table1 only",
+     "Table1 and container1 only",
+     "folder1 and Table1 only",
+     "folder1 and container1 only",
+     "Table1, folder1, and container1"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "key1 -> Table1, folder1, and container1 | SAS1 -> Table1 only",
   "images_question": [
    "q212_pre0.png",
@@ -6311,14 +7014,29 @@
   "answer_rows": [
    {
     "prompt": "The maximum number of additional stored access policies that you can create for container1 is [answer choice].",
-    "selected": "3"
+    "selected": "3",
+    "options": [
+     "0",
+     "1",
+     "3",
+     "5",
+     "6"
+    ]
    },
    {
     "prompt": "The maximum number of additional immutable blob storage policies that you can create for container1 is [answer choice].",
-    "selected": "1"
+    "selected": "1",
+    "options": [
+     "0",
+     "1",
+     "2",
+     "4",
+     "5"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The maximum number of additional stored access policies that you can create for container1 is [answer choice]. -> 3 | The maximum number of additional immutable blob storage policies that you can create for container1 is [answer choice]. -> 1",
   "images_question": [
    "q213_pre0.png",
@@ -6402,14 +7120,29 @@
   "answer_rows": [
    {
     "prompt": "Lifecycle management",
-    "selected": "storage1, storage2, and storage3"
+    "selected": "storage1, storage2, and storage3",
+    "options": [
+     "storage1 only",
+     "storage2 only",
+     "storage1 and storage3 only",
+     "storage2 and storage3 only",
+     "storage1, storage2, and storage3"
+    ]
    },
    {
     "prompt": "The Archive access tier",
-    "selected": "storage2 only"
+    "selected": "storage2 only",
+    "options": [
+     "storage1 only",
+     "storage2 only",
+     "storage1 and storage3 only",
+     "storage2 and storage3 only",
+     "storage1, storage2, and storage3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Lifecycle management -> storage1, storage2, and storage3 | The Archive access tier -> storage2 only",
   "images_question": [
    "q216_pre0.png",
@@ -6462,14 +7195,25 @@
   "answer_rows": [
    {
     "prompt": "\"tierToCool\" (box 1)",
-    "selected": "\"daysAfterModificationGreaterThan\""
+    "selected": "\"daysAfterModificationGreaterThan\"",
+    "options": [
+     "\"daysAfterCreationCreaterThan\"",
+     "\"daysAfterLastAccessTimeGreaterThan\"",
+     "\"daysAfterModificationGreaterThan\""
+    ]
    },
    {
     "prompt": "\"blobTypes\" (box 2)",
-    "selected": "\"Blockblob\""
+    "selected": "\"Blockblob\"",
+    "options": [
+     "\"AppendBlob\"",
+     "\"Blockblob\"",
+     "\"Pageblob\""
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "\"tierToCool\" (box 1) -> \"daysAfterModificationGreaterThan\" | \"blobTypes\" (box 2) -> \"Blockblob\"",
   "images_question": [
    "q218_pre0.png"
@@ -6634,6 +7378,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can deploy AKS1 to VNet2. -> No | You can deploy AKS2 to VNet1. -> Yes | You can deploy AKS3 to VNet3. -> Yes",
   "images_question": [
    "q223_pre0.png",
@@ -6680,14 +7425,28 @@
   "answer_rows": [
    {
     "prompt": "To minimize the network costs of accessing adatum22, modify the [answer choice] setting.",
-    "selected": "Default routing tier"
+    "selected": "Default routing tier",
+    "options": [
+     "Default routing tier",
+     "Endpoint type",
+     "Location",
+     "Network connectivity",
+     "Performance"
+    ]
    },
    {
     "prompt": "After adatum22 is created, you can modify the [answer choice] setting.",
-    "selected": "Encryption type"
+    "selected": "Encryption type",
+    "options": [
+     "Enable infrastructure encryption",
+     "Enable support for customer-managed keys",
+     "Encryption type",
+     "Premium account type"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "To minimize the network costs of accessing adatum22, modify the [answer choice] setting. -> Default routing tier | After adatum22 is created, you can modify the [answer choice] setting. -> Encryption type",
   "images_question": [
    "q225_pre0.png",
@@ -6710,14 +7469,26 @@
   "answer_rows": [
    {
     "prompt": "Key",
-    "selected": "RSA"
+    "selected": "RSA",
+    "options": [
+     "AES",
+     "3DES",
+     "RSA"
+    ]
    },
    {
     "prompt": "Bit length",
-    "selected": "4096"
+    "selected": "4096",
+    "options": [
+     "2048",
+     "3072",
+     "4096",
+     "8192"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Key -> RSA | Bit length -> 4096",
   "images_question": [
    "q226_pre0.png"
@@ -6808,14 +7579,25 @@
   "answer_rows": [
    {
     "prompt": "Perform all actions on a virtual network",
-    "selected": "\"Microsoft.Network/virtualNetworks/*\""
+    "selected": "\"Microsoft.Network/virtualNetworks/*\"",
+    "options": [
+     "\"Microsoft.Network/virtualNetworks/*\"",
+     "\"Microsoft.Network/virtualNetworks/delete\"",
+     "\"Microsoft.Network/virtualNetworks/write\""
+    ]
    },
    {
     "prompt": "View the configuration data of a storage account",
-    "selected": "\"Microsoft.Storage/StorageAccounts/read\""
+    "selected": "\"Microsoft.Storage/StorageAccounts/read\"",
+    "options": [
+     "\"Microsoft.Storage/StorageAccounts/*\"",
+     "\"Microsoft.Storage/StorageAccounts/read\"",
+     "\"Microsoft.Storage/StorageAccounts/blobServices/containers/blob/read\""
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Perform all actions on a virtual network -> \"Microsoft.Network/virtualNetworks/*\" | View the configuration data of a storage account -> \"Microsoft.Storage/StorageAccounts/read\"",
   "images_question": [
    "q229_pre0.png"
@@ -6867,14 +7649,26 @@
   "answer_rows": [
    {
     "prompt": "Storage type",
-    "selected": "Premium SSD that uses zone-redundant storage (ZRS)"
+    "selected": "Premium SSD that uses zone-redundant storage (ZRS)",
+    "options": [
+     "Premium SSD that uses locally-redundant storage (LRS)",
+     "Premium SSD that uses zone-redundant storage (ZRS)",
+     "Standard SSD that uses locally-redundant storage (LRS)",
+     "Standard SSD that uses zone-redundant storage (ZRS)"
+    ]
    },
    {
     "prompt": "Host caching",
-    "selected": "Read-only"
+    "selected": "Read-only",
+    "options": [
+     "None",
+     "Read-only",
+     "Read/Write"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Storage type -> Premium SSD that uses zone-redundant storage (ZRS) | Host caching -> Read-only",
   "images_question": [
    "q231_pre0.png"
@@ -6962,14 +7756,32 @@
   "answer_rows": [
    {
     "prompt": "Allowed resource types",
-    "selected": "Object"
+    "selected": "Object",
+    "options": [
+     "Service",
+     "Container",
+     "Object"
+    ]
    },
    {
     "prompt": "Allowed permissions",
-    "selected": "Read"
+    "selected": "Read",
+    "options": [
+     "Read",
+     "Write",
+     "Delete",
+     "List",
+     "Add",
+     "Create",
+     "Update",
+     "Process",
+     "Immutable storage",
+     "Permanent delete"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Allowed resource types -> Object | Allowed permissions -> Read",
   "images_question": [
    "q234_pre0.png"
@@ -7071,6 +7883,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "A blob snapshot automatically moves to the Cool access tier after 15 days. -> Yes | A blob version in container2 automatically moves to the Archive access tier after 30 days. -> No | A rehydrated version automatically moves to the Archive access tier after 30 days. -> No",
   "images_question": [
    "q237_pre0.png",
@@ -7181,14 +7994,25 @@
   "answer_rows": [
    {
     "prompt": "\"blobTypes\"",
-    "selected": "blockBlob"
+    "selected": "blockBlob",
+    "options": [
+     "appendBlob",
+     "blockBlob",
+     "pageBlob"
+    ]
    },
    {
     "prompt": "\"prefixMatch\"",
-    "selected": "container1/finance"
+    "selected": "container1/finance",
+    "options": [
+     "container1/*",
+     "container1/finance",
+     "finance"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "\"blobTypes\" -> blockBlob | \"prefixMatch\" -> container1/finance",
   "images_question": [
    "q241_pre0.png"
@@ -7209,19 +8033,43 @@
   "answer_rows": [
    {
     "prompt": "Allowed services",
-    "selected": "Blob"
+    "selected": "Blob",
+    "options": [
+     "Blob",
+     "File",
+     "Queue",
+     "Table"
+    ]
    },
    {
     "prompt": "Allowed resource types",
-    "selected": "Container"
+    "selected": "Container",
+    "options": [
+     "Service",
+     "Container",
+     "Object"
+    ]
    },
    {
     "prompt": "Allowed permissions",
-    "selected": "Read e List"
+    "selected": "Read, List",
+    "options": [
+     "Read",
+     "Write",
+     "Delete",
+     "List",
+     "Add",
+     "Create",
+     "Update",
+     "Process",
+     "Immutable storage",
+     "Permanent delete"
+    ]
    }
   ],
   "answer_items": [],
-  "answer_text": "Allowed services -> Blob | Allowed resource types -> Container | Allowed permissions -> Read e List",
+  "all_actions": [],
+  "answer_text": "Allowed services -> Blob | Allowed resource types -> Container | Allowed permissions -> Read, List",
   "images_question": [
    "q242_pre0.png"
   ],
@@ -7253,6 +8101,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "On June 6, File1 will be stored in the Cool access tier. -> No | On June 7, File2 will be stored in the Cool access tier. -> Yes | On June 16, File2 will be stored in the Archive access tier. -> No",
   "images_question": [
    "q243_pre0.png",
@@ -7287,6 +8136,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 can read File1. -> No | User2 can read File2. -> No | User3 can read File1 and File2. -> No",
   "images_question": [
    "q244_pre0.png",
@@ -7322,6 +8172,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 can access the content in share1. -> No | User2 can access the content in share2. -> Yes | User2 can access the content in share3. -> No",
   "images_question": [
    "q245_pre0.png",
@@ -7357,6 +8208,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 can access content in share1. -> Yes | User2 can access content in share1. -> Yes | User3 can access content in share1. -> No",
   "images_question": [
    "q246_pre0.png",
@@ -7472,14 +8324,31 @@
   "answer_rows": [
    {
     "prompt": "Stored access policies",
-    "selected": "2"
+    "selected": "2",
+    "options": [
+     "0",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
    },
    {
     "prompt": "Immutable blob storage policies",
-    "selected": "1"
+    "selected": "1",
+    "options": [
+     "0",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Stored access policies -> 2 | Immutable blob storage policies -> 1",
   "images_question": [
    "q250_pre0.png",
@@ -7666,14 +8535,27 @@
   "answer_rows": [
    {
     "prompt": "First action",
-    "selected": "Delete VM1."
+    "selected": "Delete VM1.",
+    "options": [
+     "Create a network interface in RG2.",
+     "Detach a network interface.",
+     "Delete VM1.",
+     "Move a network interface to RG2."
+    ]
    },
    {
     "prompt": "Second action",
-    "selected": "Create a new virtual machine."
+    "selected": "Create a new virtual machine.",
+    "options": [
+     "Attach a network interface.",
+     "Create a network interface in RG2.",
+     "Create a new virtual machine.",
+     "Move VM1 to RG2."
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "First action -> Delete VM1. | Second action -> Create a new virtual machine.",
   "images_question": [
    "q257_pre0.png",
@@ -7726,14 +8608,29 @@
   "answer_rows": [
    {
     "prompt": "WebApp1",
-    "selected": "ASP1 and ASP3 only"
+    "selected": "ASP1 and ASP3 only",
+    "options": [
+     "ASP1 only",
+     "ASP3 only",
+     "ASP1 and ASP2 only",
+     "ASP1 and ASP3 only",
+     "ASP1, ASP2, and ASP3"
+    ]
    },
    {
     "prompt": "WebApp2",
-    "selected": "ASP1 only"
+    "selected": "ASP1 only",
+    "options": [
+     "ASP1 only",
+     "ASP3 only",
+     "ASP1 and ASP2 only",
+     "ASP1 and ASP3 only",
+     "ASP1, ASP2, and ASP3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "WebApp1 -> ASP1 and ASP3 only | WebApp2 -> ASP1 only",
   "images_question": [
    "q259_pre0.png",
@@ -7756,14 +8653,29 @@
   "answer_rows": [
    {
     "prompt": "If Scale1 is utilized at 85 percent for six minutes after it is deployed, Scale1 will be running [answer choice].",
-    "selected": "6 virtual machines"
+    "selected": "6 virtual machines",
+    "options": [
+     "2 virtual machines",
+     "4 virtual machines",
+     "6 virtual machines",
+     "10 virtual machines",
+     "20 virtual machines"
+    ]
    },
    {
     "prompt": "If Scale1 is first utilized at 25 percent for six minutes after it is deployed, and then utilized at 50 percent for six minutes, Scale1 will be running [answer choice].",
-    "selected": "2 virtual machines"
+    "selected": "2 virtual machines",
+    "options": [
+     "2 virtual machines",
+     "4 virtual machines",
+     "6 virtual machines",
+     "8 virtual machines",
+     "10 virtual machines"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "If Scale1 is utilized at 85 percent for six minutes after it is deployed, Scale1 will be running [answer choice]. -> 6 virtual machines | If Scale1 is first utilized at 25 percent for six minutes after it is deployed, and then utilized at 50 percent for six minutes, Scale1 will be running [answer choice]. -> 2 virtual machines",
   "images_question": [
    "q260_pre0.png",
@@ -7821,14 +8733,27 @@
   "answer_rows": [
    {
     "prompt": "Box 1",
-    "selected": "az"
+    "selected": "az",
+    "options": [
+     "az",
+     "docker",
+     "msiexec.exe",
+     "Install-Module"
+    ]
    },
    {
     "prompt": "Box 2",
-    "selected": "aks"
+    "selected": "aks",
+    "options": [
+     "aks",
+     "/package",
+     "-name",
+     "pull"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Box 1 -> az | Box 2 -> aks",
   "images_question": [
    "q262_pre0.png"
@@ -7852,6 +8777,13 @@
    "Upload a configuration to Azure Automation State Configuration",
    "Compile a configuration into a node configuration",
    "Check the compliance status of the node"
+  ],
+  "all_actions": [
+   "Assign tags to the virtual machines",
+   "Check the compliance status of the node",
+   "Compile a configuration into a node configuration",
+   "Upload a configuration to Azure Automation State Configuration",
+   "Create a management group"
   ],
   "answer_text": "1. Upload a configuration to Azure Automation State Configuration -> 2. Compile a configuration into a node configuration -> 3. Check the compliance status of the node",
   "images_question": [
@@ -8166,6 +9098,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can deploy VM3 to West US. -> Yes | You can deploy VM4 to West US. -> No | You can deploy VM5 to West US. -> No",
   "images_question": [
    "q275_pre0.png",
@@ -8189,14 +9122,27 @@
   "answer_rows": [
    {
     "prompt": "When Microsoft performs planned maintenance in East US 2, the maximum number of unavailable virtual machines will be [answer choice].",
-    "selected": "2"
+    "selected": "2",
+    "options": [
+     "2",
+     "7",
+     "10",
+     "14"
+    ]
    },
    {
     "prompt": "If the server rack in the Azure datacenter that hosts WEBPROD-AS-USE2 experiences a power failure, the maximum number of unavailable virtual machines will be [answer choice].",
-    "selected": "7"
+    "selected": "7",
+    "options": [
+     "2",
+     "7",
+     "10",
+     "14"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "When Microsoft performs planned maintenance in East US 2, the maximum number of unavailable virtual machines will be [answer choice]. -> 2 | If the server rack in the Azure datacenter that hosts WEBPROD-AS-USE2 experiences a power failure, the maximum number of unavailable virtual machines will be [answer choice]. -> 7",
   "images_question": [
    "q276_pre0.png",
@@ -8284,14 +9230,25 @@
   "answer_rows": [
    {
     "prompt": "Internet users [answer choice].",
-    "selected": "can connect to the container from any device"
+    "selected": "can connect to the container from any device",
+    "options": [
+     "can connect to the container from any device",
+     "cannot connect to the container",
+     "can only connect to the container from devices that run Windows"
+    ]
    },
    {
     "prompt": "If Internet Information Services (IIS) in the container fail, [answer choice].",
-    "selected": "the container will restart automatically"
+    "selected": "the container will restart automatically",
+    "options": [
+     "the container will restart automatically",
+     "the container will only restart manually",
+     "the container must be redeployed"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Internet users [answer choice]. -> can connect to the container from any device | If Internet Information Services (IIS) in the container fail, [answer choice]. -> the container will restart automatically",
   "images_question": [
    "q279_pre0.png",
@@ -8483,14 +9440,26 @@
   "answer_rows": [
    {
     "prompt": "When the maximum amount in Budget1 is reached, [answer choice].",
-    "selected": "VM1 and VM2 continue to run"
+    "selected": "VM1 and VM2 continue to run",
+    "options": [
+     "VM1 and VM2 are turned off",
+     "VM1 and VM2 continue to run",
+     "VM1 is turned off, and VM2 continues to run"
+    ]
    },
    {
     "prompt": "Based on the current usage costs of the virtual machines, [answer choice].",
-    "selected": "one email notification will be sent each month"
+    "selected": "one email notification will be sent each month",
+    "options": [
+     "no email notifications will be sent each month",
+     "one email notification will be sent each month",
+     "two email notifications will be sent each month",
+     "three email notifications will be sent each month"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "When the maximum amount in Budget1 is reached, [answer choice]. -> VM1 and VM2 continue to run | Based on the current usage costs of the virtual machines, [answer choice]. -> one email notification will be sent each month",
   "images_question": [
    "q285_pre0.png",
@@ -8606,6 +9575,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "App1 can be moved to RG2 -> Yes | App1 can be moved to RG3 -> Yes | App1 can be moved to RG4 -> Yes",
   "images_question": [
    "q289_pre0.png",
@@ -8628,14 +9598,26 @@
   "answer_rows": [
    {
     "prompt": "Tags assigned to RG1",
-    "selected": "\"tag1\": \"value1\" only"
+    "selected": "\"tag1\": \"value1\" only",
+    "options": [
+     "\"tag1\": \"value1\" only",
+     "\"tag2\": \"value2\" only",
+     "\"tag1\": \"value1\" and \"tag2\": \"value2\""
+    ]
    },
    {
     "prompt": "Tags assigned to storage1",
-    "selected": "\"tag2\": \"value2\" and \"tag3\": \"value3\" only"
+    "selected": "\"tag2\": \"value2\" and \"tag3\": \"value3\" only",
+    "options": [
+     "\"tag3\": \"value3\" only",
+     "\"tag1\": \"value1\" and \"tag3\": \"value3\" only",
+     "\"tag2\": \"value2\" and \"tag3\": \"value3\" only",
+     "\"tag1\": \"value1\", \"tag2\": \"value2\", and \"tag3\": \"value3\""
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Tags assigned to RG1 -> \"tag1\": \"value1\" only | Tags assigned to storage1 -> \"tag2\": \"value2\" and \"tag3\": \"value3\" only",
   "images_question": [
    "q290_pre0.png",
@@ -8657,14 +9639,29 @@
   "answer_rows": [
    {
     "prompt": "The number of email messages that Alert1 will send in an hour is",
-    "selected": "60"
+    "selected": "60",
+    "options": [
+     "0",
+     "4",
+     "6",
+     "12",
+     "60"
+    ]
    },
    {
     "prompt": "The number of SMS messages that Alert2 will send in an hour is",
-    "selected": "12"
+    "selected": "12",
+    "options": [
+     "0",
+     "4",
+     "6",
+     "12",
+     "60"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The number of email messages that Alert1 will send in an hour is -> 60 | The number of SMS messages that Alert2 will send in an hour is -> 12",
   "images_question": [
    "q291_pre0.png",
@@ -8919,14 +9916,27 @@
   "answer_rows": [
    {
     "prompt": "Internet users [answer choice].",
-    "selected": "can connect to only the web server on VM1"
+    "selected": "can connect to only the web server on VM1",
+    "options": [
+     "can connect to only the DNS server on VM1",
+     "can connect to only the web server on VM1",
+     "can connect to the web server and the DNS server on VM1",
+     "cannot connect to the web server and the DNS server on VM1"
+    ]
    },
    {
     "prompt": "If you delete Rule2, Internet users [answer choice].",
-    "selected": "can connect to the web server and the DNS server on VM1"
+    "selected": "can connect to the web server and the DNS server on VM1",
+    "options": [
+     "can connect to only the DNS server on VM1",
+     "can connect to only the web server on VM1",
+     "can connect to the web server and the DNS server on VM1",
+     "cannot connect to the web server and the DNS server on VM1"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Internet users [answer choice]. -> can connect to only the web server on VM1 | If you delete Rule2, Internet users [answer choice]. -> can connect to the web server and the DNS server on VM1",
   "images_question": [
    "q300_pre0.png",
@@ -9076,14 +10086,25 @@
   "answer_rows": [
    {
     "prompt": "Containers will be assigned an IP address in the [answer choice] subnet.",
-    "selected": "10.244.0.0/16"
+    "selected": "10.244.0.0/16",
+    "options": [
+     "10.244.0.0/16",
+     "10.0.0.0/16",
+     "172.17.0.1/16"
+    ]
    },
    {
     "prompt": "Services in the AKS cluster will be assigned an IP address in the [answer choice] subnet.",
-    "selected": "10.0.0.0/16"
+    "selected": "10.0.0.0/16",
+    "options": [
+     "10.244.0.0/16",
+     "10.0.0.0/16",
+     "172.17.0.1/16"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Containers will be assigned an IP address in the [answer choice] subnet. -> 10.244.0.0/16 | Services in the AKS cluster will be assigned an IP address in the [answer choice] subnet. -> 10.0.0.0/16",
   "images_question": [
    "q305_pre0.png",
@@ -9105,14 +10126,29 @@
   "answer_rows": [
    {
     "prompt": "If after deployment CPU usage is 70 percent for one hour and then reaches 90 percent for five minutes, at that time the total number of instances will be [answer choice].",
-    "selected": "5"
+    "selected": "5",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
    },
    {
     "prompt": "If after deployment the CPU maintains constant usage of 90 percent for one hour, and then the average CPU usage is below 25 percent for nine minutes, at that point the number of instances will be [answer choice].",
-    "selected": "3"
+    "selected": "3",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "If after deployment CPU usage is 70 percent for one hour and then reaches 90 percent for five minutes, at that time the total number of instances will be [answer choice]. -> 5 | If after deployment the CPU maintains constant usage of 90 percent for one hour, and then the average CPU usage is below 25 percent for nine minutes, at that point the number of instances will be [answer choice]. -> 3",
   "images_question": [
    "q306_pre0.png",
@@ -9201,14 +10237,27 @@
   "answer_rows": [
    {
     "prompt": "When an administrator changes the virtual machine size, the size will be changed on up to [answer choice] virtual machines simultaneously.",
-    "selected": "4"
+    "selected": "4",
+    "options": [
+     "0",
+     "1",
+     "2",
+     "4"
+    ]
    },
    {
     "prompt": "When a new build of the Windows Server 2016 image is released, the new build will be deployed to up to [answer choice] virtual machines simultaneously.",
-    "selected": "1"
+    "selected": "1",
+    "options": [
+     "0",
+     "1",
+     "2",
+     "4"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "When an administrator changes the virtual machine size, the size will be changed on up to [answer choice] virtual machines simultaneously. -> 4 | When a new build of the Windows Server 2016 image is released, the new build will be deployed to up to [answer choice] virtual machines simultaneously. -> 1",
   "images_question": [
    "q309_pre0.png",
@@ -9292,14 +10341,28 @@
   "answer_rows": [
    {
     "prompt": "You can perform a file recovery of VM1 to",
-    "selected": "Any Windows computer that has Internet connectivity"
+    "selected": "Any Windows computer that has Internet connectivity",
+    "options": [
+     "VM1 only",
+     "VM1 or a new Azure virtual machine only",
+     "VM1 and VM2 only",
+     "A new Azure virtual machine only",
+     "Any Windows computer that has Internet connectivity"
+    ]
    },
    {
     "prompt": "You can restore VM1 to",
-    "selected": "VM1 or a new Azure virtual machine only"
+    "selected": "VM1 or a new Azure virtual machine only",
+    "options": [
+     "VM1 only",
+     "VM1 or a new Azure virtual machine only",
+     "VM1 and VM2 only",
+     "Any Windows computer that has Internet connectivity"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can perform a file recovery of VM1 to -> Any Windows computer that has Internet connectivity | You can restore VM1 to -> VM1 or a new Azure virtual machine only",
   "images_question": [
    "q312_pre0.png"
@@ -9374,14 +10437,30 @@
   "answer_rows": [
    {
     "prompt": "\"platformFaultDomainCount\"",
-    "selected": "3"
+    "selected": "3",
+    "options": [
+     "0",
+     "1",
+     "2",
+     "3",
+     "4"
+    ]
    },
    {
     "prompt": "\"platformUpdateDomainCount\"",
-    "selected": "20"
+    "selected": "20",
+    "options": [
+     "10",
+     "20",
+     "25",
+     "30",
+     "40",
+     "50"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "\"platformFaultDomainCount\" -> 3 | \"platformUpdateDomainCount\" -> 20",
   "images_question": [
    "q315_pre0.png"
@@ -9425,14 +10504,27 @@
   "answer_rows": [
    {
     "prompt": "At 9:00 AM, the scale set starts and CPU utilization is 90 percent for 15 minutes. How many virtual machine instances will be running at 9:15 AM?",
-    "selected": "3"
+    "selected": "3",
+    "options": [
+     "2",
+     "3",
+     "4",
+     "5"
+    ]
    },
    {
     "prompt": "At 10:00 AM, the scale set has five virtual machine instances running and CPU utilization falls to less than 15 percent for 60 minutes. How many virtual machine instances will be running at 11:00 AM?",
-    "selected": "1"
+    "selected": "1",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "At 9:00 AM, the scale set starts and CPU utilization is 90 percent for 15 minutes. How many virtual machine instances will be running at 9:15 AM? -> 3 | At 10:00 AM, the scale set has five virtual machine instances running and CPU utilization falls to less than 15 percent for 60 minutes. How many virtual machine instances will be running at 11:00 AM? -> 1",
   "images_question": [
    "q317_pre0.png",
@@ -9516,14 +10608,27 @@
   "answer_rows": [
    {
     "prompt": "Cmdlet",
-    "selected": "New-AzResourceGroupDeployment"
+    "selected": "New-AzResourceGroupDeployment",
+    "options": [
+     "New-AzVm",
+     "New-AzResource",
+     "New-AzTemplateSpec",
+     "New-AzResourceGroupDeployment"
+    ]
    },
    {
     "prompt": "Parametro",
-    "selected": "-ResourceGroupName RG1 `"
+    "selected": "-ResourceGroupName RG1 `",
+    "options": [
+     "-Tag Tag1 `",
+     "-ResourceGroupName RG1 `",
+     "-GroupName ManagementGroup1`",
+     "-Subscription 9c8bc1cd-765S-4c66-b3ea-a8ee101d8f75"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Cmdlet -> New-AzResourceGroupDeployment | Parametro -> -ResourceGroupName RG1 `",
   "images_question": [
    "q320_pre0.png",
@@ -9645,14 +10750,25 @@
   "answer_rows": [
    {
     "prompt": "Box 1 (storageProfile)",
-    "selected": "\"copy\":["
+    "selected": "\"copy\":[",
+    "options": [
+     "\"copy\":[",
+     "\"copyIndex\":[",
+     "\"dependsOn\":["
+    ]
    },
    {
     "prompt": "Box 2 (\"lun\")",
-    "selected": "\"[copyIndex"
+    "selected": "\"[copyIndex",
+    "options": [
+     "\"[copy",
+     "\"[copyIndex",
+     "\"[dependsOn"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Box 1 (storageProfile) -> \"copy\":[ | Box 2 (\"lun\") -> \"[copyIndex",
   "images_question": [
    "q325_pre0.png"
@@ -9773,14 +10889,27 @@
   "answer_rows": [
    {
     "prompt": "First create",
-    "selected": "An Azure Storage account"
+    "selected": "An Azure Storage account",
+    "options": [
+     "An Azure Storage account",
+     "A Backup vault",
+     "A Recovery Services vault",
+     "A resource group"
+    ]
    },
    {
     "prompt": "To exclude Folder2, use",
-    "selected": "A _backup.filter file"
+    "selected": "A _backup.filter file",
+    "options": [
+     "A _backup.filter file",
+     "A backup policy",
+     "A lock",
+     "A WebJob"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "First create -> An Azure Storage account | To exclude Folder2, use -> A _backup.filter file",
   "images_question": [
    "q330_pre0.png"
@@ -9832,14 +10961,25 @@
   "answer_rows": [
    {
     "prompt": "\"type\"",
-    "selected": "\"Microsoft.Compute/virtualMachines/extensions\","
+    "selected": "\"Microsoft.Compute/virtualMachines/extensions\",",
+    "options": [
+     "\"Extensions\",",
+     "\"Microsoft.Compute/VirtualMachines\",",
+     "\"Microsoft.Compute/virtualMachines/extensions\","
+    ]
    },
    {
     "prompt": "Box 2 (dopo settings)",
-    "selected": "\"ProtectedSettings\":{"
+    "selected": "\"ProtectedSettings\":{",
+    "options": [
+     "\"ProtectedSettings\":{",
+     "\"Settings\":{",
+     "\"Statuses\":{"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "\"type\" -> \"Microsoft.Compute/virtualMachines/extensions\", | Box 2 (dopo settings) -> \"ProtectedSettings\":{",
   "images_question": [
    "q332_pre0.png"
@@ -9891,14 +11031,28 @@
   "answer_rows": [
    {
     "prompt": "To ensure that you can create Windows containers in AKS1, you must [answer choice].",
-    "selected": "modify the Network configuration setting"
+    "selected": "modify the Network configuration setting",
+    "options": [
+     "enable virtual nodes",
+     "increase the number of node pools",
+     "modify the Kubernetes version setting",
+     "modify the Network configuration setting"
+    ]
    },
    {
     "prompt": "To ensure that you can integrate AKS1 with an Azure container registry, you must modify the [answer choice] setting.",
-    "selected": "AKS-managed Azure Active Directory"
+    "selected": "AKS-managed Azure Active Directory",
+    "options": [
+     "AKS-managed Azure Active Directory",
+     "Authentication method",
+     "Authorized IP ranges",
+     "Kubernetes version",
+     "Network configuration"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "To ensure that you can create Windows containers in AKS1, you must [answer choice]. -> modify the Network configuration setting | To ensure that you can integrate AKS1 with an Azure container registry, you must modify the [answer choice] setting. -> AKS-managed Azure Active Directory",
   "images_question": [
    "q334_pre0.png",
@@ -9920,14 +11074,27 @@
   "answer_rows": [
    {
     "prompt": "az aks nodepool [box 1]",
-    "selected": "updates"
+    "selected": "updates",
+    "options": [
+     "add",
+     "get-updates",
+     "scale",
+     "updates"
+    ]
    },
    {
     "prompt": "[box 2] (dopo -n pool1 -g RG1 --cluster-name cluster1)",
-    "selected": "--max-surge 2"
+    "selected": "--max-surge 2",
+    "options": [
+     "--max-count 2",
+     "--max-pods 2",
+     "--max-surge 2",
+     "--node-count 2"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "az aks nodepool [box 1] -> updates | [box 2] (dopo -n pool1 -g RG1 --cluster-name cluster1) -> --max-surge 2",
   "images_question": [
    "q335_pre0.png"
@@ -9961,6 +11128,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The commands will create four new resources. -> Yes | The commands will create storage accounts in the West US Azure region. -> No | The first storage account that is created will have a prefix of 0. -> Yes",
   "images_question": [
    "q336_pre0.png",
@@ -10006,14 +11174,26 @@
   "answer_rows": [
    {
     "prompt": "params.json [box 1]",
-    "selected": "-ResourceGroupName"
+    "selected": "-ResourceGroupName",
+    "options": [
+     "-Name",
+     "-QueryString",
+     "-ResourceGroupName",
+     "-Tag"
+    ]
    },
    {
     "prompt": "RG1 -Mode [box 2]",
-    "selected": "Complete"
+    "selected": "Complete",
+    "options": [
+     "All",
+     "Complete",
+     "Incremental"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "params.json [box 1] -> -ResourceGroupName | RG1 -Mode [box 2] -> Complete",
   "images_question": [
    "q338_pre0.png"
@@ -10034,14 +11214,28 @@
   "answer_rows": [
    {
     "prompt": "After CPU usage has reached 80 percent for 15 minutes, [answer choice] will be running.",
-    "selected": "2 instances"
+    "selected": "2 instances",
+    "options": [
+     "1 instance",
+     "2 instances",
+     "3 instances",
+     "4 instances",
+     "5 instances"
+    ]
    },
    {
     "prompt": "Once the first scale-out instance is created, the minimum time before an additional instance is created will be [answer choice].",
-    "selected": "15 minutes"
+    "selected": "15 minutes",
+    "options": [
+     "1 minute",
+     "5 minutes",
+     "10 minutes",
+     "15 minutes"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "After CPU usage has reached 80 percent for 15 minutes, [answer choice] will be running. -> 2 instances | Once the first scale-out instance is created, the minimum time before an additional instance is created will be [answer choice]. -> 15 minutes",
   "images_question": [
    "q339_pre0.png",
@@ -10095,14 +11289,57 @@
   "answer_rows": [
    {
     "prompt": "Impostazione 1",
-    "selected": "Networking"
+    "selected": "Networking",
+    "options": [
+     "Overview",
+     "Activity log",
+     "Access control (IAM)",
+     "Tags",
+     "Quick start",
+     "Events",
+     "Access keys",
+     "Encryption",
+     "Identity",
+     "Networking",
+     "Microsoft Defender for Cloud",
+     "Properties",
+     "Locks",
+     "Repositories",
+     "Webhooks",
+     "Geo-replications",
+     "Tasks",
+     "Connected registries (Preview)",
+     "Cache"
+    ]
    },
    {
     "prompt": "Impostazione 2",
-    "selected": "Connected registries (Preview)"
+    "selected": "Connected registries (Preview)",
+    "options": [
+     "Overview",
+     "Activity log",
+     "Access control (IAM)",
+     "Tags",
+     "Quick start",
+     "Events",
+     "Access keys",
+     "Encryption",
+     "Identity",
+     "Networking",
+     "Microsoft Defender for Cloud",
+     "Properties",
+     "Locks",
+     "Repositories",
+     "Webhooks",
+     "Geo-replications",
+     "Tasks",
+     "Connected registries (Preview)",
+     "Cache"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Impostazione 1 -> Networking | Impostazione 2 -> Connected registries (Preview)",
   "images_question": [
    "q341_pre0.png",
@@ -10155,14 +11392,26 @@
   "answer_rows": [
    {
     "prompt": "\"dependsOn\"",
-    "selected": "resourceId"
+    "selected": "resourceId",
+    "options": [
+     "reference",
+     "resourceId",
+     "Union"
+    ]
    },
    {
     "prompt": "\"storageProfile\"",
-    "selected": "ImageReference"
+    "selected": "ImageReference",
+    "options": [
+     "Array",
+     "Image",
+     "ImageReference",
+     "Vhd"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "\"dependsOn\" -> resourceId | \"storageProfile\" -> ImageReference",
   "images_question": [
    "q343_pre0.png"
@@ -10183,14 +11432,27 @@
   "answer_rows": [
    {
     "prompt": "Pricing plan",
-    "selected": "Standard"
+    "selected": "Standard",
+    "options": [
+     "Basic",
+     "Free",
+     "Shared",
+     "Standard"
+    ]
    },
    {
     "prompt": "Record type",
-    "selected": "TXT"
+    "selected": "TXT",
+    "options": [
+     "A",
+     "AAAA",
+     "PTR",
+     "TXT"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Pricing plan -> Standard | Record type -> TXT",
   "images_question": [
    "q344_pre0.png"
@@ -10223,6 +11485,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The operating system disk of VM1 can be used as a source for a version of Image1. -> Yes | The operating system disk of VM2 can be used as a source for a version of Image1. -> Yes | The operating system disk of VM3 can be used as a source for a version of Image1. -> Yes",
   "images_question": [
    "q345_pre0.png",
@@ -10289,6 +11552,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The template creates a resource group named RG0 in the East US Azure region. -> Yes | The template creates four new resource groups. -> No | The template creates a resource group named RG3 in the West US Azure region. -> No",
   "images_question": [
    "q347_pre0.png",
@@ -10343,14 +11607,29 @@
   "answer_rows": [
    {
     "prompt": "Image1",
-    "selected": "Azure Container Instances and App Services only"
+    "selected": "Azure Container Instances and App Services only",
+    "options": [
+     "Azure Container Instances only",
+     "Azure Container Apps only",
+     "Azure Container Instances and App Services only",
+     "Azure Container Apps and App Services only",
+     "Azure Container Instances, Azure Container Apps, and App Services"
+    ]
    },
    {
     "prompt": "Image2",
-    "selected": "Azure Container Instances, Azure Container Apps, and App Services"
+    "selected": "Azure Container Instances, Azure Container Apps, and App Services",
+    "options": [
+     "Azure Container Instances only",
+     "Azure Container Apps only",
+     "Azure Container Instances and App Services only",
+     "Azure Container Apps and App Services only",
+     "Azure Container Instances, Azure Container Apps, and App Services"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Image1 -> Azure Container Instances and App Services only | Image2 -> Azure Container Instances, Azure Container Apps, and App Services",
   "images_question": [
    "q349_pre0.png",
@@ -10508,6 +11787,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can deploy a virtual machine to RG1. -> Yes | You can deploy a virtual machine to RG2. -> No | You can manually create a resource group named RG3. -> Yes",
   "images_question": [
    "q354_pre0.png",
@@ -10573,6 +11853,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "WebApp1 can communicate with VM2. -> Yes | NSG1 controls inbound traffic to WebApp1. -> No | WebApp2 can communicate with VM1. -> No",
   "images_question": [
    "q356_pre0.png",
@@ -10693,14 +11974,25 @@
   "answer_rows": [
    {
     "prompt": "ACR Tasks",
-    "selected": "ContReg1, ContReg2, and ContReg3"
+    "selected": "ContReg1, ContReg2, and ContReg3",
+    "options": [
+     "ContReg1 only",
+     "ContReg1 and ContReg2 only",
+     "ContReg1, ContReg2, and ContReg3"
+    ]
    },
    {
     "prompt": "Private endpoints",
-    "selected": "ContReg1 only"
+    "selected": "ContReg1 only",
+    "options": [
+     "ContReg1 only",
+     "ContReg1 and ContReg2 only",
+     "ContReg1, ContReg2, and ContReg3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "ACR Tasks -> ContReg1, ContReg2, and ContReg3 | Private endpoints -> ContReg1 only",
   "images_question": [
    "q360_pre0.png",
@@ -10819,14 +12111,27 @@
   "answer_rows": [
    {
     "prompt": "Provision a new container registry",
-    "selected": "az acr create"
+    "selected": "az acr create",
+    "options": [
+     "az acr build",
+     "az acr create",
+     "az container create",
+     "docker create"
+    ]
    },
    {
     "prompt": "Add image1 to the registry",
-    "selected": "docker push"
+    "selected": "docker push",
+    "options": [
+     "az acr create",
+     "az container create",
+     "docker pull",
+     "docker push"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Provision a new container registry -> az acr create | Add image1 to the registry -> docker push",
   "images_question": [
    "q364_pre0.png"
@@ -11086,14 +12391,29 @@
   "answer_rows": [
    {
     "prompt": "Ensure that communication between the web servers and the business logic tier spreads equally across the virtual machines",
-    "selected": "an internal load balancer"
+    "selected": "an internal load balancer",
+    "options": [
+     "an application gateway that uses the Standard tier",
+     "an application gateway that uses the WAF tier",
+     "an internal load balancer",
+     "a network security group (NSG)",
+     "a public load balancer"
+    ]
    },
    {
     "prompt": "Protect the web servers from SQL injection attacks",
-    "selected": "an application gateway that uses the WAF tier"
+    "selected": "an application gateway that uses the WAF tier",
+    "options": [
+     "an application gateway that uses the Standard tier",
+     "an application gateway that uses the WAF tier",
+     "an internal load balancer",
+     "a network security group (NSG)",
+     "a public load balancer"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Ensure that communication between the web servers and the business logic tier spreads equally across the virtual machines -> an internal load balancer | Protect the web servers from SQL injection attacks -> an application gateway that uses the WAF tier",
   "images_question": [
    "q374_pre0.png",
@@ -11146,14 +12466,27 @@
   "answer_rows": [
    {
     "prompt": "Minimum number of network interfaces",
-    "selected": "5"
+    "selected": "5",
+    "options": [
+     "5",
+     "10",
+     "15",
+     "20"
+    ]
    },
    {
     "prompt": "Minimum number of network security groups",
-    "selected": "1"
+    "selected": "1",
+    "options": [
+     "1",
+     "2",
+     "5",
+     "10"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Minimum number of network interfaces -> 5 | Minimum number of network security groups -> 1",
   "images_question": [
    "q376_pre0.png"
@@ -11205,14 +12538,27 @@
   "answer_rows": [
    {
     "prompt": "A records for VM1",
-    "selected": "Private IP address only"
+    "selected": "Private IP address only",
+    "options": [
+     "None",
+     "Private IP address only",
+     "Public IP address only",
+     "Private IP address and public IP address"
+    ]
    },
    {
     "prompt": "A records for VM2",
-    "selected": "Private IP address only"
+    "selected": "Private IP address only",
+    "options": [
+     "None",
+     "Private IP address only",
+     "Public IP address only",
+     "Private IP address and public IP address"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "A records for VM1 -> Private IP address only | A records for VM2 -> Private IP address only",
   "images_question": [
    "q378_pre0.png",
@@ -11234,14 +12580,25 @@
   "answer_rows": [
    {
     "prompt": "Resource to create",
-    "selected": "An Azure Log Analytics workspace"
+    "selected": "An Azure Log Analytics workspace",
+    "options": [
+     "An Azure Event Grid",
+     "An Azure Log Analytics workspace",
+     "An Azure Storage account"
+    ]
    },
    {
     "prompt": "Resource on which to enable diagnostics",
-    "selected": "NSG1"
+    "selected": "NSG1",
+    "options": [
+     "ILB1",
+     "NSG1",
+     "The Azure virtual machines"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Resource to create -> An Azure Log Analytics workspace | Resource on which to enable diagnostics -> NSG1",
   "images_question": [
    "q379_pre0.png"
@@ -11377,6 +12734,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "When VM1 starts, a record for VM1 is added to the contoso.com DNS zone. -> Yes | When VM2 starts, a record for VM2 is added to the contoso.com DNS zone. -> Yes | When VM3 starts, a record for VM3 is added to the adatum.com DNS zone. -> No",
   "images_question": [
    "q383_pre0.png",
@@ -11437,6 +12795,15 @@
    "Add the 10.33.0.0/16 address space to VNet1.",
    "Recreate peering between VNet1 and VNet2."
   ],
+  "all_actions": [
+   "Remove VNet1.",
+   "Add the 10.33.0.0/16 address space to VNet1.",
+   "Create a new virtual network named VNet1.",
+   "On the peering connection in VNet2, allow gateway transit.",
+   "Recreate peering between VNet1 and VNet2.",
+   "On the peering connection in VNet1, allow gateway transit.",
+   "Remove peering between VNet1 and VNet2."
+  ],
   "answer_text": "1. Remove peering between VNet1 and VNet2. -> 2. Add the 10.33.0.0/16 address space to VNet1. -> 3. Recreate peering between VNet1 and VNet2.",
   "images_question": [
    "q385_pre0.png",
@@ -11470,6 +12837,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can move storage1 to RG2. -> Yes | You can move NIC1 to RG2. -> Yes | If you move IP2 to RG1, the location of IP2 will change. -> No",
   "images_question": [
    "q386_pre0.png",
@@ -11654,14 +13022,29 @@
   "answer_rows": [
    {
     "prompt": "Before a virtual machine on VNet1 can receive an IP address from 192.168.1.0/24, you must first",
-    "selected": "add an address space"
+    "selected": "add an address space",
+    "options": [
+     "add a network interface",
+     "add a subnet",
+     "add an address space",
+     "delete a subnet",
+     "delete an address space"
+    ]
    },
    {
     "prompt": "Before a virtual machine on VNet1 can receive an IP address from 10.2.1.0/24, you must first",
-    "selected": "add a subnet"
+    "selected": "add a subnet",
+    "options": [
+     "add a network interface",
+     "add a subnet",
+     "add an address space",
+     "delete a subnet",
+     "delete an address space"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Before a virtual machine on VNet1 can receive an IP address from 192.168.1.0/24, you must first -> add an address space | Before a virtual machine on VNet1 can receive an IP address from 10.2.1.0/24, you must first -> add a subnet",
   "images_question": [
    "q393_pre0.png",
@@ -11819,6 +13202,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "LB1 can balance the traffic between VM1 and VM2. -> Yes | LB1 can balance the traffic between VM3 and VM4. -> No | LB1 can balance the traffic between VM5 and VM6. -> No",
   "images_question": [
    "q398_pre0.png",
@@ -11841,14 +13225,27 @@
   "answer_rows": [
    {
     "prompt": "DNS zones that you can link to VNET1",
-    "selected": "The private zones only"
+    "selected": "The private zones only",
+    "options": [
+     "Adatum.com only",
+     "Adatum.pri and adatum.com only",
+     "The private zones only",
+     "The public zones only"
+    ]
    },
    {
     "prompt": "DNS zones to which VM1 can automatically register",
-    "selected": "The private zones only"
+    "selected": "The private zones only",
+    "options": [
+     "Adatum.com only",
+     "Adatum.pri and adatum.com only",
+     "The private zones only",
+     "The public zones only"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "DNS zones that you can link to VNET1 -> The private zones only | DNS zones to which VM1 can automatically register -> The private zones only",
   "images_question": [
    "q399_pre0.png",
@@ -11873,6 +13270,14 @@
    "Create a VPN gateway.",
    "Create a local gateway.",
    "Create a VPN connection."
+  ],
+  "all_actions": [
+   "Create a local gateway.",
+   "Create a VPN gateway.",
+   "Create a gateway subnet.",
+   "Create a custom DNS server.",
+   "Create a VPN connection.",
+   "Create an Azure Content Delivery Network (CDN) profile."
   ],
   "answer_text": "1. Create a gateway subnet. -> 2. Create a VPN gateway. -> 3. Create a local gateway. -> 4. Create a VPN connection.",
   "images_question": [
@@ -11992,14 +13397,27 @@
   "answer_rows": [
    {
     "prompt": "Resource group",
-    "selected": "RG1, RG2, or RG3"
+    "selected": "RG1, RG2, or RG3",
+    "options": [
+     "RG1 only",
+     "RG2 only",
+     "RG1 or RG2 only",
+     "RG1, RG2, or RG3"
+    ]
    },
    {
     "prompt": "Location",
-    "selected": "West US only"
+    "selected": "West US only",
+    "options": [
+     "West US only",
+     "Central US only",
+     "Central US or West US only",
+     "East US, Central US, or West US"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Resource group -> RG1, RG2, or RG3 | Location -> West US only",
   "images_question": [
    "q404_pre0.png",
@@ -12021,14 +13439,25 @@
   "answer_rows": [
    {
     "prompt": "Packets from VNET1 can be routed to",
-    "selected": "VNET2 and VNET3"
+    "selected": "VNET2 and VNET3",
+    "options": [
+     "VNET2 only",
+     "VNET3 only",
+     "VNET2 and VNET3"
+    ]
    },
    {
     "prompt": "Packets from VNET2 can be routed to",
-    "selected": "VNET1 only"
+    "selected": "VNET1 only",
+    "options": [
+     "VNET1 only",
+     "VNET3 only",
+     "VNET1 and VNET3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Packets from VNET1 can be routed to -> VNET2 and VNET3 | Packets from VNET2 can be routed to -> VNET1 only",
   "images_question": [
    "q405_pre0.png",
@@ -12195,6 +13624,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "NSG1 limits VM1 traffic -> No | NSG1 applies to VM2 -> Yes | VM1 and VM2 connect to the same virtual network -> Yes",
   "images_question": [
    "q411_pre0.png",
@@ -12314,14 +13744,27 @@
   "answer_rows": [
    {
     "prompt": "Hosts on vNET6 can communicate with hosts on [answer choice].",
-    "selected": "vNET6 only"
+    "selected": "vNET6 only",
+    "options": [
+     "vNET6 only",
+     "vNET6 and vNET1 only",
+     "vNET6, vNET1, and vNET2 only",
+     "all the virtual networks in the subscription"
+    ]
    },
    {
     "prompt": "To change the status of the peering connection to vNET1 to Connected, you must first [answer choice].",
-    "selected": "delete peering1"
+    "selected": "delete peering1",
+    "options": [
+     "add a service endpoint",
+     "add a subnet",
+     "delete peering1",
+     "modify the address space"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Hosts on vNET6 can communicate with hosts on [answer choice]. -> vNET6 only | To change the status of the peering connection to vNET1 to Connected, you must first [answer choice]. -> delete peering1",
   "images_question": [
    "q415_pre0.png",
@@ -12355,6 +13798,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "VM1 is in the same availability set as VM2. -> Yes | If Probe1.htm is present on VM1 and VM2, LB1 will balance TCP port 80 between VM1 and VM2. -> Yes | If you delete Rule1, LB1 will balance all the requests between VM1 and VM2 for all the ports. -> No",
   "images_question": [
    "q416_pre0.png",
@@ -12378,14 +13822,25 @@
   "answer_rows": [
    {
     "prompt": "Before you create a backend pool on slb1, you must",
-    "selected": "Remove the public IP address from VM1"
+    "selected": "Remove the public IP address from VM1",
+    "options": [
+     "Create and assign an NSG to VM1",
+     "Remove the public IP address from VM1",
+     "Change the private IP address of VM1 to static"
+    ]
    },
    {
     "prompt": "Before you can connect to VM1 from slb1, you must",
-    "selected": "Create and configure an NSG"
+    "selected": "Create and configure an NSG",
+    "options": [
+     "Create and configure an NSG",
+     "Remove the public IP address from VM1",
+     "Change the private IP address of VM1 to static"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Before you create a backend pool on slb1, you must -> Remove the public IP address from VM1 | Before you can connect to VM1 from slb1, you must -> Create and configure an NSG",
   "images_question": [
    "q417_pre0.png"
@@ -12468,14 +13923,29 @@
   "answer_rows": [
    {
     "prompt": "Task1",
-    "selected": "IP flow verify"
+    "selected": "IP flow verify",
+    "options": [
+     "IP flow verify",
+     "Next hop",
+     "Packet capture",
+     "Security group view",
+     "Traffic Analytics"
+    ]
    },
    {
     "prompt": "Task2",
-    "selected": "Connection troubleshoot"
+    "selected": "Connection troubleshoot",
+    "options": [
+     "Connection troubleshoot",
+     "IP flow verify",
+     "Next hop",
+     "NSG flow logs",
+     "Traffic Analytics"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Task1 -> IP flow verify | Task2 -> Connection troubleshoot",
   "images_question": [
    "q420_pre0.png"
@@ -12508,6 +13978,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "VM1 connects to 193.77.134.10 for DNS queries. -> Yes | VM2 connects to 193.77.134.10 for DNS queries. -> No | VM3 connects to 192.168.10.15 for DNS queries. -> Yes",
   "images_question": [
    "q421_pre0.png",
@@ -12531,14 +14002,29 @@
   "answer_rows": [
    {
     "prompt": "Resources that you can move from RG1 to RG2",
-    "selected": "IP1, VNET2, and storage1"
+    "selected": "IP1, VNET2, and storage1",
+    "options": [
+     "None",
+     "IP1 only",
+     "IP1 and storage1 only",
+     "IP1 and VNET1 only",
+     "IP1, VNET2, and storage1"
+    ]
    },
    {
     "prompt": "Resources that you can move from RG2 to RG1",
-    "selected": "IP2, VNET2, and storage2"
+    "selected": "IP2, VNET2, and storage2",
+    "options": [
+     "None",
+     "IP2 only",
+     "IP2 and storage2 only",
+     "IP2 and VNET2 only",
+     "IP2, VNET2, and storage2"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Resources that you can move from RG1 to RG2 -> IP1, VNET2, and storage1 | Resources that you can move from RG2 to RG1 -> IP2, VNET2, and storage2",
   "images_question": [
    "q422_pre0.png",
@@ -12719,6 +14205,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "A Site-to-Site connection can be established between VNET1 and VNET2. -> No | VNET1 and VNET2 can be peered. -> Yes | VNET1 and VNETA can be peered. -> Yes",
   "images_question": [
    "q429_pre0.png",
@@ -12942,14 +14429,27 @@
   "answer_rows": [
    {
     "prompt": "The virtual machines that will be load balanced by using LB1 must",
-    "selected": "be created in the same availability set or virtual machine scale set"
+    "selected": "be created in the same availability set or virtual machine scale set",
+    "options": [
+     "be connected to the same virtual network",
+     "be created in the same resource group",
+     "be created in the same availability set or virtual machine scale set",
+     "run the same operating system"
+    ]
    },
    {
     "prompt": "The virtual machines that will be load balanced by using LB2 must",
-    "selected": "be connected to the same virtual network"
+    "selected": "be connected to the same virtual network",
+    "options": [
+     "be connected to the same virtual network",
+     "be created in the same resource group",
+     "be created in the same availability set or virtual machine scale set",
+     "run the same operating system"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The virtual machines that will be load balanced by using LB1 must -> be created in the same availability set or virtual machine scale set | The virtual machines that will be load balanced by using LB2 must -> be connected to the same virtual network",
   "images_question": [
    "q438_pre0.png",
@@ -12971,18 +14471,37 @@
   "answer_rows": [
    {
     "prompt": "Public IP addresses",
-    "selected": "2"
+    "selected": "2",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4"
+    ]
    },
    {
     "prompt": "Virtual network gateways",
-    "selected": "1"
+    "selected": "1",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4"
+    ]
    },
    {
     "prompt": "Local network gateways",
-    "selected": "1"
+    "selected": "1",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Public IP addresses -> 2 | Virtual network gateways -> 1 | Local network gateways -> 1",
   "images_question": [
    "q439_pre0.png"
@@ -13109,6 +14628,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The A record for VM5 will be registered automatically in the adatum.com zone. -> No | VM5 can resolve VM9.adatum.com. -> No | VM6 can resolve VM9.adatum.com. -> Yes",
   "images_question": [
    "q443_pre0.png",
@@ -13143,6 +14663,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "You can enable auto registration for Link2. -> Yes | You can add a virtual network link for VNET1 to Zone3.com. -> Yes | You can add a virtual network link for VNET2 to Zone1.com and enable auto registration. -> Yes",
   "images_question": [
    "q444_pre0.png",
@@ -13166,14 +14687,26 @@
   "answer_rows": [
    {
     "prompt": "\"name\" (subnet)",
-    "selected": "AzureBastionSubnet"
+    "selected": "AzureBastionSubnet",
+    "options": [
+     "AzureBastionSubnet",
+     "AzureFirewallSubnet",
+     "LAN01",
+     "RemoteAccessSubnet"
+    ]
    },
    {
     "prompt": "\"addressPrefix\"",
-    "selected": "10.10.10.0/27"
+    "selected": "10.10.10.0/27",
+    "options": [
+     "10.10.10.0/27",
+     "10.10.10.0/29",
+     "10.10.10.0/30"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "\"name\" (subnet) -> AzureBastionSubnet | \"addressPrefix\" -> 10.10.10.0/27",
   "images_question": [
    "q445_pre0.png"
@@ -13266,6 +14799,13 @@
    "Create a health probe and backend pool on lb1.",
    "Create a load balancing rule on lb1."
   ],
+  "all_actions": [
+   "Remove nsg1.",
+   "Remove the public IP addresses from vm1 and vm2.",
+   "Create a health probe and backend pool on lb1.",
+   "Create an availability set.",
+   "Create a load balancing rule on lb1."
+  ],
   "answer_text": "1. Remove the public IP addresses from vm1 and vm2. -> 2. Create a health probe and backend pool on lb1. -> 3. Create a load balancing rule on lb1.",
   "images_question": [
    "q449_pre0.png",
@@ -13337,6 +14877,13 @@
    "Create VPN sites.",
    "Connect the VPN sites to the hub."
   ],
+  "all_actions": [
+   "Create a virtual hub.",
+   "Create VPN sites.",
+   "Connect the virtual networks to the hub.",
+   "Create a Virtual WAN resource.",
+   "Connect the VPN sites to the hub."
+  ],
   "answer_text": "1. Create a Virtual WAN resource. -> 2. Create a virtual hub. -> 3. Create VPN sites. -> 4. Connect the VPN sites to the hub.",
   "images_question": [
    "q452_pre0.png"
@@ -13369,6 +14916,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Server2 resolves host2.contoso.com to 131.107.50.50. -> No | Server2 resolves host1.contoso.com to 131.107.10.15. -> Yes | Server3 resolves host2.contoso.com to 131.107.50.50. -> No",
   "images_question": [
    "q453_pre0.png",
@@ -13460,22 +15008,46 @@
   "answer_rows": [
    {
     "prompt": "Direction",
-    "selected": "Outbound"
+    "selected": "Outbound",
+    "options": [
+     "Inbound",
+     "Outbound"
+    ]
    },
    {
     "prompt": "Source",
-    "selected": "10.1.0.10"
+    "selected": "10.1.0.10",
+    "options": [
+     "Any",
+     "10.1.0.10",
+     "10.1.0.11",
+     "10.1.0.10; 10.1.0.11",
+     "10.1.0.0/28"
+    ]
    },
    {
     "prompt": "Destination",
-    "selected": "10.1.0.11"
+    "selected": "10.1.0.11",
+    "options": [
+     "Any",
+     "10.1.0.10",
+     "10.1.0.11",
+     "10.1.0.10; 10.1.0.11",
+     "10.1.0.0/28"
+    ]
    },
    {
     "prompt": "Priority",
-    "selected": "110"
+    "selected": "110",
+    "options": [
+     "110",
+     "111",
+     "112"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Direction -> Outbound | Source -> 10.1.0.10 | Destination -> 10.1.0.11 | Priority -> 110",
   "images_question": [
    "q456_pre0.png",
@@ -13614,18 +15186,34 @@
   "answer_rows": [
    {
     "prompt": "Address prefix",
-    "selected": "10.0.0.0/16"
+    "selected": "10.0.0.0/16",
+    "options": [
+     "10.0.0.0/16",
+     "10.0.1.0/24",
+     "10.0.254.0/24"
+    ]
    },
    {
     "prompt": "Next hop type",
-    "selected": "Virtual appliance"
+    "selected": "Virtual appliance",
+    "options": [
+     "Virtual appliance",
+     "Virtual network",
+     "Virtual network gateway"
+    ]
    },
    {
     "prompt": "Assigned to",
-    "selected": "GatewaySubnet"
+    "selected": "GatewaySubnet",
+    "options": [
+     "GatewaySubnet",
+     "Subnet0",
+     "Subnet1 and Subnet2"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Address prefix -> 10.0.0.0/16 | Next hop type -> Virtual appliance | Assigned to -> GatewaySubnet",
   "images_question": [
    "q461_pre0.png",
@@ -13690,6 +15278,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "From the Internet, you can connect to VM1 by using Remote Desktop. -> No | From the Internet, you can connect to VM2 by using Remote Desktop. -> Yes | From VM1, you can connect to VM2 by using Remote Desktop -> Yes",
   "images_question": [
    "q463_pre0.png",
@@ -13786,6 +15375,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "VM1 can connect to contoso2024 by using 131.107.10.10. -> Yes | VM2 can connect to contoso2024 by using 150.120.10.10. -> Yes | VM3 must use its private IP address to connect to contoso2024. -> No",
   "images_question": [
    "q466_pre0.png",
@@ -13820,6 +15410,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The DNS A record for vm1 is added to contoso.com and has the IP address of 131.107.50.20. -> No | The DNS A record for vm1 is added to fabrikam.com and has the IP address of 10.0.1.4. -> Yes | The DNS A record for vm2 is added to fabrikam.com and has the IP address of 10.0.1.5. -> Yes",
   "images_question": [
    "q467_pre0.png",
@@ -13885,6 +15476,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "VM2 can connect to the TCP port 1433 services on VM1. -> No | VM1 can connect to the TCP port 1433 services on VM2. -> Yes | VM2 can connect to the TCP port 1433 services on VM3. -> Yes",
   "images_question": [
    "q469_pre0.png",
@@ -13921,6 +15513,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "VM3 can establish a network connection to VM1. -> Yes | If VM3 is turned off, VM2 can establish a network connection to VM1. -> No | VM1 can establish a network connection to VM2. -> Yes",
   "images_question": [
    "q470_pre0.png",
@@ -14144,6 +15737,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Peering 1-2 is a possible configuration. -> No | Peering 1-3 is a possible configuration. -> No | Peering 3-2 is a possible configuration. -> No",
   "images_question": [
    "q477_pre0.png",
@@ -14228,14 +15822,27 @@
   "answer_rows": [
    {
     "prompt": "IP address",
-    "selected": "Use 10.0.1.3"
+    "selected": "Use 10.0.1.3",
+    "options": [
+     "Obtain an IP address automatically",
+     "Use 10.0.1.3",
+     "Use 10.0.2.1",
+     "Use 192.168.2.1"
+    ]
    },
    {
     "prompt": "Name resolution",
-    "selected": "Create an Azure Private DNS zone named contoso.com"
+    "selected": "Create an Azure Private DNS zone named contoso.com",
+    "options": [
+     "Configure VNET1 to use a custom DNS server",
+     "Configure VNET1 to use the default Azure-provided DNS server",
+     "Create an Azure Private DNS zone named contoso.com",
+     "Create an Azure public DNS zone named contoso.com"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "IP address -> Use 10.0.1.3 | Name resolution -> Create an Azure Private DNS zone named contoso.com",
   "images_question": [
    "q480_pre0.png",
@@ -14366,6 +15973,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "LB1 will be connected to a subnet named VNET1/netname -> No | LB1 can be deployed only to the resource group that contains VNET1 -> No | The value of the sku variable can be provided as a parameter when the template is deployed from a command prompt -> No",
   "images_question": [
    "q484_pre0.png",
@@ -14641,6 +16249,14 @@
    "Upgrade Bastion1 to the Standard SKU.",
    "From Bastion1, select Native Client Support.",
    "From Azure CLI on Device1, run az network bastion rdp."
+  ],
+  "all_actions": [
+   "From Azure CLI on Device1, run az network bastion rdp.",
+   "From Bastion1, enable Kerberos authentication.",
+   "From VM1, enable just-in-time (JIT) VM access.",
+   "From Bastion1, select Native Client Support.",
+   "On Device1, run mstsc.exe.",
+   "Upgrade Bastion1 to the Standard SKU."
   ],
   "answer_text": "1. Upgrade Bastion1 to the Standard SKU. -> 2. From Bastion1, select Native Client Support. -> 3. From Azure CLI on Device1, run az network bastion rdp.",
   "images_question": [
@@ -15101,14 +16717,31 @@
   "answer_rows": [
    {
     "prompt": "Virtual network",
-    "selected": "VNet3 only"
+    "selected": "VNet3 only",
+    "options": [
+     "VNet1 only",
+     "VNet2 only",
+     "VNet3 only",
+     "VNet1 or VNet2 only",
+     "VNet2 or VNet3 only",
+     "VNet1 or VNet3 only",
+     "VNet1, VNet2, or VNet3"
+    ]
    },
    {
     "prompt": "Subnet mask",
-    "selected": "/23"
+    "selected": "/23",
+    "options": [
+     "/16",
+     "/23",
+     "/24",
+     "/26",
+     "/28"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Virtual network -> VNet3 only | Subnet mask -> /23",
   "images_question": [
    "q508_pre0.png",
@@ -15174,6 +16807,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The Remote Desktop Connection client (mstsc.exe) can be used to connect to VM1 through Bastion1. -> No | The Azure portal can use SSH to connect to VM2 through Bastion1. -> Yes | The Azure portal can be used to connect to VM3 through Bastion1. -> No",
   "images_question": [
    "q510_pre0.png",
@@ -15209,6 +16843,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Policy1 can be applied to Subnet3. -> Yes | Only storage1 and storage2 can be accessed from VNet2. -> No | Only storage2 can be accessed from VNet3. -> No",
   "images_question": [
    "q511_pre0.png",
@@ -15310,6 +16945,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "From VM1, server1.contoso.com resolves to 131.107.3.3. -> No | From VM2, server1.contoso.com resolves to 131.107.3.3. -> Yes | From VM3, server2.contoso.com resolves to 131.107.2.4. -> No",
   "images_question": [
    "q514_pre0.png",
@@ -15336,6 +16972,12 @@
    "network interface",
    "virtual machine",
    "Azure Monitor extension"
+  ],
+  "all_actions": [
+   "virtual machine",
+   "Azure Monitor extension",
+   "network interface",
+   "virtual network"
   ],
   "answer_text": "1. virtual network -> 2. network interface -> 3. virtual machine -> 4. Azure Monitor extension",
   "images_question": [
@@ -15485,14 +17127,26 @@
   "answer_rows": [
    {
     "prompt": "Subnet size",
-    "selected": "/26"
+    "selected": "/26",
+    "options": [
+     "/24",
+     "/26",
+     "/28",
+     "/29"
+    ]
    },
    {
     "prompt": "Public IP",
-    "selected": "Standard SKU with a static allocation"
+    "selected": "Standard SKU with a static allocation",
+    "options": [
+     "Basic SKU with a dynamic allocation",
+     "Basic SKU with a static allocation",
+     "Standard SKU with a static allocation"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Subnet size -> /26 | Public IP -> Standard SKU with a static allocation",
   "images_question": [
    "q520_pre0.png",
@@ -15700,14 +17354,27 @@
   "answer_rows": [
    {
     "prompt": "Alert rules",
-    "selected": "4"
+    "selected": "4",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4"
+    ]
    },
    {
     "prompt": "Action groups",
-    "selected": "3"
+    "selected": "3",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Alert rules -> 4 | Action groups -> 3",
   "images_question": [
    "q527_pre0.png",
@@ -15761,14 +17428,27 @@
   "answer_rows": [
    {
     "prompt": "January 8 at 2:00 PM (14:00)",
-    "selected": "6"
+    "selected": "6",
+    "options": [
+     "5",
+     "6",
+     "8",
+     "9"
+    ]
    },
    {
     "prompt": "January 15 at 2:00 PM (14:00)",
-    "selected": "8"
+    "selected": "8",
+    "options": [
+     "5",
+     "8",
+     "17",
+     "19"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "January 8 at 2:00 PM (14:00) -> 6 | January 15 at 2:00 PM (14:00) -> 8",
   "images_question": [
    "q529_pre0.png",
@@ -15790,14 +17470,27 @@
   "answer_rows": [
    {
     "prompt": "App1",
-    "selected": "Install the Application Insights Agent"
+    "selected": "Install the Application Insights Agent",
+    "options": [
+     "Install the Log Analytics agent",
+     "Install the Azure Monitor agent",
+     "Use the Application Insights SDK",
+     "Install the Application Insights Agent"
+    ]
    },
    {
     "prompt": "App2",
-    "selected": "Install the Application Insights Agent"
+    "selected": "Install the Application Insights Agent",
+    "options": [
+     "Install the Log Analytics agent",
+     "Install the Azure Monitor agent",
+     "Use the Application Insights SDK",
+     "Install the Application Insights Agent"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "App1 -> Install the Application Insights Agent | App2 -> Install the Application Insights Agent",
   "images_question": [
    "q530_pre0.png",
@@ -15862,6 +17555,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "After User2 answers three security questions correctly, he can reset his password immediately. -> No | If User1 forgets her password, she can reset the password by using the mobile phone app. -> No | User3 can add security questions to the password reset process -> No",
   "images_question": [
    "q532_pre0.png",
@@ -15928,6 +17622,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "On January 15, 2021, App1 will have only one backup in storage. -> No | On February 6, 2021, you can access the backup of the App2 test slot from January 15, 2021. -> No | On January 15, 2021, you can restore the App2 production slot backup from January 6 to the App2 test slot. -> Yes",
   "images_question": [
    "q534_pre0.png",
@@ -15961,6 +17656,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "SecAdmin1 must answer the following question during the self-service password reset: In what city was your first job? -> No | BillAdmin1 must answer the following question during the self-service password reset: What is your favorite food? -> No | User1 must answer the following question during the self-service password reset: What was the name of your first pet? -> Yes",
   "images_question": [
    "q535_pre0.png",
@@ -16036,14 +17732,26 @@
   "answer_rows": [
    {
     "prompt": "The average CPU percentage is calculated [answer choice] per day",
-    "selected": "four times"
+    "selected": "four times",
+    "options": [
+     "once",
+     "four times",
+     "six times",
+     "24 times"
+    ]
    },
    {
     "prompt": "ASP1 must be [answer choice] to optimize CPU usage",
-    "selected": "scaled up"
+    "selected": "scaled up",
+    "options": [
+     "scaled up",
+     "scaled down",
+     "scaled out"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The average CPU percentage is calculated [answer choice] per day -> four times | ASP1 must be [answer choice] to optimize CPU usage -> scaled up",
   "images_question": [
    "q538_pre0.png",
@@ -16067,9 +17775,18 @@
    "From the Azure portal, click File Recovery from the vault",
    "Select a restore point that contains the deleted files",
    "Download and run the script to mount a drive on the local computer",
-   "Copy the files using File Explorer"
+   "Copy the files by using File Explorer"
   ],
-  "answer_text": "1. From the Azure portal, click File Recovery from the vault -> 2. Select a restore point that contains the deleted files -> 3. Download and run the script to mount a drive on the local computer -> 4. Copy the files using File Explorer",
+  "all_actions": [
+   "Download and run the script to mount a drive on the local computer",
+   "Select a restore point that contains the deleted files",
+   "From the Azure portal, click Restore VM from the vault",
+   "From the Azure portal, click File Recovery from the vault",
+   "Mount a VHD",
+   "Copy the files by using AZCopy",
+   "Copy the files by using File Explorer"
+  ],
+  "answer_text": "1. From the Azure portal, click File Recovery from the vault -> 2. Select a restore point that contains the deleted files -> 3. Download and run the script to mount a drive on the local computer -> 4. Copy the files by using File Explorer",
   "images_question": [
    "q539_pre0.png"
   ],
@@ -16092,14 +17809,27 @@
   "answer_rows": [
    {
     "prompt": "Location in which to store the backups",
-    "selected": "A Recovery Services vault"
+    "selected": "A Recovery Services vault",
+    "options": [
+     "A blob container",
+     "A file share",
+     "A Recovery Services vault",
+     "A storage account"
+    ]
    },
    {
     "prompt": "Object to use to configure the protection for VM1",
-    "selected": "A backup policy"
+    "selected": "A backup policy",
+    "options": [
+     "A backup policy",
+     "A batch job",
+     "A batch schedule",
+     "A recovery plan"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Location in which to store the backups -> A Recovery Services vault | Object to use to configure the protection for VM1 -> A backup policy",
   "images_question": [
    "q540_pre0.png"
@@ -16244,14 +17974,27 @@
   "answer_rows": [
    {
     "prompt": "Box 1 (tabella sorgente)",
-    "selected": "AzureActivity"
+    "selected": "AzureActivity",
+    "options": [
+     "AzureActivity",
+     "Heartbeat",
+     "NetworkMonitoring",
+     "Perf"
+    ]
    },
    {
     "prompt": "Box 2 (operatore)",
-    "selected": "| project"
+    "selected": "| project",
+    "options": [
+     "| extend",
+     "| join",
+     "| print",
+     "| project"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Box 1 (tabella sorgente) -> AzureActivity | Box 2 (operatore) -> | project",
   "images_question": [
    "q545_pre0.png"
@@ -16304,14 +18047,27 @@
   "answer_rows": [
    {
     "prompt": "Data sources",
-    "selected": "VM1 only"
+    "selected": "VM1 only",
+    "options": [
+     "VM1 only",
+     "VM1 and storage1 only",
+     "VM1, storage1, and DB1 only",
+     "VM1, storage1, Workspace1, and DB1"
+    ]
    },
    {
     "prompt": "Destinations",
-    "selected": "Workspace1 only"
+    "selected": "Workspace1 only",
+    "options": [
+     "storage1 only",
+     "Workspace1 only",
+     "Workspace1 and storage1 only",
+     "Workspace1, storage1, and DB1 only1"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Data sources -> VM1 only | Destinations -> Workspace1 only",
   "images_question": [
    "q547_pre0.png",
@@ -16333,14 +18089,29 @@
   "answer_rows": [
    {
     "prompt": "[Answer choice] assigned the Owner role for VM1",
-    "selected": "User1 and User3 are"
+    "selected": "User1 and User3 are",
+    "options": [
+     "User3 is",
+     "User3 and User4 are",
+     "User1 and User3 are",
+     "User1, User3, and User4 are",
+     "User1, User2, User3, and User4"
+    ]
    },
    {
     "prompt": "[Answer choice] can create a virtual machine in RG1",
-    "selected": "User1 and User4"
+    "selected": "User1 and User4",
+    "options": [
+     "User1 and User4",
+     "User1, User2, and User3",
+     "User1, User2, and User4",
+     "User1, User3, and User4",
+     "User1, User2, User3, and User4"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "[Answer choice] assigned the Owner role for VM1 -> User1 and User3 are | [Answer choice] can create a virtual machine in RG1 -> User1 and User4",
   "images_question": [
    "q548_pre0.png",
@@ -16374,6 +18145,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Users that are assigned Role1 can assign Role1 to users. -> No | Users that are assigned Role1 can deploy new virtual machines. -> Yes | Users that are assigned Role1 can set a static IP address on a virtual machine. -> Yes",
   "images_question": [
    "q549_pre0.png",
@@ -16407,6 +18179,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "VM1 can access storage1. -> Yes | VM2 can access VM1 by using the HTTPS protocol. -> Yes | The security rules for NSG1 apply to any virtual machine on VNET1. -> No",
   "images_question": [
    "q550_pre0.png",
@@ -16472,6 +18245,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 can sign in to VM1. -> No | User2 can manage disks and disk snapshots of VM1. -> No | User2 can manage disks and disk snapshots of VM3. -> No",
   "images_question": [
    "q552_pre0.png",
@@ -16528,6 +18302,13 @@
    "Create an Azure Backup vault",
    "Create a backup policy and configure the backup",
    "Configure a managed identity"
+  ],
+  "all_actions": [
+   "Configure a managed identity",
+   "Create an Azure Backup vault",
+   "Create a Recovery Services vault",
+   "Delegate permissions for the vault",
+   "Create a backup policy and configure the backup"
   ],
   "answer_text": "1. Create an Azure Backup vault -> 2. Create a backup policy and configure the backup -> 3. Configure a managed identity",
   "images_question": [
@@ -16673,14 +18454,27 @@
   "answer_rows": [
    {
     "prompt": "User1",
-    "selected": "Alert1 and Alert2 are triggered"
+    "selected": "Alert1 and Alert2 are triggered",
+    "options": [
+     "No alert is triggered",
+     "Only Alert1 is triggered",
+     "Only Alert2 is triggered",
+     "Alert1 and Alert2 are triggered"
+    ]
    },
    {
     "prompt": "User2",
-    "selected": "Alert1 and Alert2 are triggered"
+    "selected": "Alert1 and Alert2 are triggered",
+    "options": [
+     "No alert is triggered",
+     "Only Alert1 is triggered",
+     "Only Alert2 is triggered",
+     "Alert1 and Alert2 are triggered"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 -> Alert1 and Alert2 are triggered | User2 -> Alert1 and Alert2 are triggered",
   "images_question": [
    "q559_pre0.png",
@@ -16844,6 +18638,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "If you create a resource group in Sub1 on August 11, 2022, Alert1 is listed in the Azure portal. -> Yes | If you create a resource group in Sub1 on August 12, 2022, an email message is sent to admin1@contoso.com. -> No | If you add a tag to RG1 on August 15, 2022, an email message is sent to admin1@contoso.com. -> Yes",
   "images_question": [
    "q564_pre0.png",
@@ -17052,14 +18847,27 @@
   "answer_rows": [
    {
     "prompt": "For Alert1, User response [answer choice].",
-    "selected": "can be changed to New or Acknowledged"
+    "selected": "can be changed to New or Acknowledged",
+    "options": [
+     "cannot be changed",
+     "can be changed to New only",
+     "can be changed to Acknowledged only",
+     "can be changed to New or Acknowledged"
+    ]
    },
    {
     "prompt": "For Alert2, User response [answer choice].",
-    "selected": "can be changed to Acknowledged or Closed"
+    "selected": "can be changed to Acknowledged or Closed",
+    "options": [
+     "cannot be changed",
+     "can be changed to Acknowledged only",
+     "can be changed to closed only",
+     "can be changed to Acknowledged or Closed"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "For Alert1, User response [answer choice]. -> can be changed to New or Acknowledged | For Alert2, User response [answer choice]. -> can be changed to Acknowledged or Closed",
   "images_question": [
    "q571_pre0.png",
@@ -17081,14 +18889,27 @@
   "answer_rows": [
    {
     "prompt": "The backup that occurs on Sunday, March 1, will be retained for [answer choice].",
-    "selected": "10 years"
+    "selected": "10 years",
+    "options": [
+     "30 days",
+     "10 weeks",
+     "36 months",
+     "10 years"
+    ]
    },
    {
     "prompt": "The backup that occurs on Sunday, November 1, will be retained for [answer choice].",
-    "selected": "36 months"
+    "selected": "36 months",
+    "options": [
+     "30 days",
+     "10 weeks",
+     "36 months",
+     "10 years"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "The backup that occurs on Sunday, March 1, will be retained for [answer choice]. -> 10 years | The backup that occurs on Sunday, November 1, will be retained for [answer choice]. -> 36 months",
   "images_question": [
    "q572_pre0.png",
@@ -17123,6 +18944,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "VM1 can be backed up by using Policy1. -> Yes | VM2 can be backed up by using Policy3. -> No | VM2 can be backed up by using Policy2. -> Yes",
   "images_question": [
    "q573_pre0.png",
@@ -17177,14 +18999,27 @@
   "answer_rows": [
    {
     "prompt": "cont1",
-    "selected": "Backup1 only"
+    "selected": "Backup1 only",
+    "options": [
+     "Backup1 only",
+     "Recovery1 only",
+     "Backup1 or Recovery1",
+     "Cannot be backed up to Backup1 or Recovery1"
+    ]
    },
    {
     "prompt": "share1",
-    "selected": "Recovery1 only"
+    "selected": "Recovery1 only",
+    "options": [
+     "Backup1 only",
+     "Recovery1 only",
+     "Backup1 or Recovery1",
+     "Cannot be backed up to Backup1 or Recovery1"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "cont1 -> Backup1 only | share1 -> Recovery1 only",
   "images_question": [
    "q575_pre0.png",
@@ -17401,6 +19236,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "VM1 can access contoso102. -> No | VM2 can access contoso101. -> No | VM2 uses a private IP address to access Azure AD. -> Yes",
   "images_question": [
    "q582_pre0.png",
@@ -17424,14 +19260,27 @@
   "answer_rows": [
    {
     "prompt": "Backup1",
-    "selected": "Disk1"
+    "selected": "Disk1",
+    "options": [
+     "App1",
+     "DB1",
+     "Disk1",
+     "VM1"
+    ]
    },
    {
     "prompt": "Recovery1",
-    "selected": "VM1"
+    "selected": "VM1",
+    "options": [
+     "App1",
+     "DB1",
+     "Disk1",
+     "VM1"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Backup1 -> Disk1 | Recovery1 -> VM1",
   "images_question": [
    "q583_pre0.png",
@@ -17453,14 +19302,29 @@
   "answer_rows": [
    {
     "prompt": "cont1",
-    "selected": "Daily"
+    "selected": "Daily",
+    "options": [
+     "Every hour",
+     "Every 4 hours",
+     "Every 6 hours",
+     "Every 12 hours",
+     "Daily"
+    ]
    },
    {
     "prompt": "share1",
-    "selected": "Every 4 hours"
+    "selected": "Every 4 hours",
+    "options": [
+     "Every hour",
+     "Every 4 hours",
+     "Every 6 hours",
+     "Every 12 hours",
+     "Daily"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "cont1 -> Daily | share1 -> Every 4 hours",
   "images_question": [
    "q584_pre0.png",
@@ -17489,14 +19353,24 @@
   "answer_rows": [
    {
     "prompt": "Users may join devices to Azure AD",
-    "selected": "Selected"
+    "selected": "Selected",
+    "options": [
+     "All",
+     "Selected",
+     "None"
+    ]
    },
    {
     "prompt": "Require Multi-Factor Auth to join devices",
-    "selected": "Yes"
+    "selected": "Yes",
+    "options": [
+     "Yes",
+     "No"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Users may join devices to Azure AD -> Selected | Require Multi-Factor Auth to join devices -> Yes",
   "images_question": [
    "q585_pre0.png"
@@ -17506,8 +19380,7 @@
   ],
   "source": "manual_vision",
   "verified": true,
-  "needs_review": false,
-  "note": "Due impostazioni evidenziate nel pannello Device settings"
+  "needs_review": false
  },
  {
   "id": 586,
@@ -17549,14 +19422,30 @@
   "answer_rows": [
    {
     "prompt": "Recovery Services vaults",
-    "selected": "3"
+    "selected": "3",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "7"
+    ]
    },
    {
     "prompt": "Backup policies",
-    "selected": "6"
+    "selected": "6",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Recovery Services vaults -> 3 | Backup policies -> 6",
   "images_question": [
    "q587_pre0.png"
@@ -17582,6 +19471,13 @@
    "Collect Windows performance counters from the Log Analytics agents.",
    "Create an alert rule."
   ],
+  "all_actions": [
+   "Create a Log Analytics workspace.",
+   "Configure the Diagnostic settings.",
+   "Create an alert rule.",
+   "Collect Windows performance counters from the Log Analytics agents.",
+   "Create an Azure SQL database."
+  ],
   "answer_text": "1. Create a Log Analytics workspace. -> 2. Collect Windows performance counters from the Log Analytics agents. -> 3. Create an alert rule.",
   "images_question": [
    "q588_pre0.png"
@@ -17602,14 +19498,27 @@
   "answer_rows": [
    {
     "prompt": "User1",
-    "selected": "Resource Policy Contributor for Sub1"
+    "selected": "Resource Policy Contributor for Sub1",
+    "options": [
+     "Contributor for RG1",
+     "Contributor for Sub1",
+     "Security Admin for RG1",
+     "Resource Policy Contributor for Sub1"
+    ]
    },
    {
     "prompt": "User4",
-    "selected": "Resource Policy Contributor for RG2"
+    "selected": "Resource Policy Contributor for RG2",
+    "options": [
+     "Contributor for RG2",
+     "Contributor for Sub1",
+     "Security Admin for Sub1",
+     "Resource Policy Contributor for RG2"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "User1 -> Resource Policy Contributor for Sub1 | User4 -> Resource Policy Contributor for RG2",
   "images_question": [
    "q589_pre0.png"
@@ -17735,6 +19644,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Contoso requires a storage account that supports Blob storage. -> Yes | Contoso requires a storage account that supports Azure Table storage. -> No | Contoso requires a storage account that supports Azure File Storage. -> No",
   "images_question": [
    "q593_pre0.png"
@@ -17755,14 +19665,29 @@
   "answer_rows": [
    {
     "prompt": "container1",
-    "selected": "storage2 and storage3 only"
+    "selected": "storage2 and storage3 only",
+    "options": [
+     "storage2 only",
+     "storage2 and storage3 only",
+     "storage1, storage2, and storage3 only",
+     "storage2, storage3, and storage4 only",
+     "storage1, storage2, storage3, and storage4"
+    ]
    },
    {
     "prompt": "share1",
-    "selected": "storage2 only"
+    "selected": "storage2 only",
+    "options": [
+     "storage2 only",
+     "storage4 only",
+     "storage2 and storage4 only",
+     "storage1, storage2, and storage4 only",
+     "storage1, storage2, storage3, and storage4"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "container1 -> storage2 and storage3 only | share1 -> storage2 only",
   "images_question": [
    "q594_pre0.png"
@@ -17783,14 +19708,27 @@
   "answer_rows": [
    {
     "prompt": "Account kind",
-    "selected": "StorageV2 (general purpose v2)"
+    "selected": "StorageV2 (general purpose v2)",
+    "options": [
+     "BlobStorage",
+     "BlockBlobStorage",
+     "Storage (general purpose v1)",
+     "StorageV2 (general purpose v2)"
+    ]
    },
    {
     "prompt": "Destination",
-    "selected": "Storage2"
+    "selected": "Storage2",
+    "options": [
+     "Storage1",
+     "Storage2",
+     "Storage3",
+     "Storage4"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Account kind -> StorageV2 (general purpose v2) | Destination -> Storage2",
   "images_question": [
    "q595_pre0.png"
@@ -17908,14 +19846,28 @@
   "answer_rows": [
    {
     "prompt": "From the Azure portal",
-    "selected": "Create a virtual network gateway and a local network gateway."
+    "selected": "Create a virtual network gateway and a local network gateway.",
+    "options": [
+     "Create an ExpressRoute circuit only.",
+     "Create a virtual network gateway only.",
+     "Create a virtual network gateway and a local network gateway.",
+     "Create an ExpressRoute circuit and an on-premises data gateway.",
+     "Create a virtual network gateway and an on-premises data gateway."
+    ]
    },
    {
     "prompt": "In the New York office",
-    "selected": "Configure a site-to-site VPN connection."
+    "selected": "Configure a site-to-site VPN connection.",
+    "options": [
+     "Deploy ExpressRoute.",
+     "Deploy a DirectAccess server.",
+     "Implement a Web Application Proxy.",
+     "Configure a site-to-site VPN connection."
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "From the Azure portal -> Create a virtual network gateway and a local network gateway. | In the New York office -> Configure a site-to-site VPN connection.",
   "images_question": [
    "q599_pre0.png"
@@ -17937,14 +19889,25 @@
   "answer_rows": [
    {
     "prompt": "Number of virtual networks",
-    "selected": "1"
+    "selected": "1",
+    "options": [
+     "1",
+     "2",
+     "3"
+    ]
    },
    {
     "prompt": "Number of subnets per virtual network",
-    "selected": "3"
+    "selected": "3",
+    "options": [
+     "1",
+     "2",
+     "3"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Number of virtual networks -> 1 | Number of subnets per virtual network -> 3",
   "images_question": [
    "q600_pre0.png"
@@ -18009,6 +19972,7 @@
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "From VM1, you can establish a Remote Desktop session to VM2. -> Yes | From VM2, you can ping VM3. -> Yes | From VM2, you can establish a Remote Desktop session to VM3. -> No",
   "images_question": [
    "q602_pre0.png"
@@ -18091,14 +20055,27 @@
   "answer_rows": [
    {
     "prompt": "Cmdlet (box 1)",
-    "selected": "Get-AzRoleDefinition"
+    "selected": "Get-AzRoleDefinition",
+    "options": [
+     "Find-RoleCapability",
+     "Get-AzureADDirectoryRole",
+     "Get-AzRoleDefinition",
+     "Get-AzResourceProvider"
+    ]
    },
    {
     "prompt": "Box 2 (dopo -Name \"Reader\" |)",
-    "selected": "ConvertTo-Json"
+    "selected": "ConvertTo-Json",
+    "options": [
+     "ConvertFrom-Json",
+     "ConvertFrom-String",
+     "ConvertTo-Json",
+     "ConvertTo-Xml"
+    ]
    }
   ],
   "answer_items": [],
+  "all_actions": [],
   "answer_text": "Cmdlet (box 1) -> Get-AzRoleDefinition | Box 2 (dopo -Name \"Reader\" |) -> ConvertTo-Json",
   "images_question": [
    "q605_pre0.png"
