@@ -9,7 +9,7 @@ services:
       - pgdata:/var/lib/postgresql/data
       # Eseguito solo alla prima creazione del volume. Per rigenerare lo schema:
       # docker compose down -v && docker compose up
-      - ./db/init:/docker-entrypoint-initdb.d:ro
+      - ./AZ-104.Examinator.Database/db/init:/docker-entrypoint-initdb.d:ro
     ports:
       - "5432:5432"
     healthcheck:
@@ -27,7 +27,7 @@ services:
   importer:
     build:
       context: .
-      dockerfile: AZ-104-questions-importer/Dockerfile
+      dockerfile: AZ-104.Examinator.Database/database-importer/Dockerfile
     image: az-104-questions-importer
     container_name: az-104-questions-importer
     profiles: ["setup"]
@@ -41,7 +41,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: AZ-104.Examinator.Api/Dockerfile
+      dockerfile: AZ-104.Examinator.BE/AZ-104.Examinator.Api/Dockerfile
     image: az-104-examinator-api
     container_name: az-104-examinator-api
     environment:
