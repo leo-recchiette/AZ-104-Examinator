@@ -1,4 +1,4 @@
-namespace Examinator.Api.Domain;
+namespace Examinator.Api.Models.Domains;
 
 /// <summary>
 /// Una riga della risposta corretta di DragAndDrop, Hotspot e HotspotYesNo.

@@ -1,6 +1,6 @@
-using Examinator.Api.Domain;
+using Examinator.Api.Models.Domains;
 
-namespace Examinator.Api.Services;
+namespace Examinator.Api.Services.Interfaces;
 
 /// <summary>
 /// Punti guadagnati e punti totali di una singola domanda. Nessuna dipendenza

@@ -1,4 +1,5 @@
-using Examinator.Api.Domain;
+using Examinator.Api.Models.Domains;
+using Examinator.Api.Services.Interfaces;
 
 namespace Examinator.Api.Services;
 

@@ -1,7 +1,8 @@
-using Examinator.Api.Contracts;
-using Examinator.Api.Domain;
+using Examinator.Api.Models.Contracts;
+using Examinator.Api.Models.Domains;
 using Examinator.Api.Mapper;
 using Examinator.Api.Repositories;
+using Examinator.Api.Services.Interfaces;
 
 namespace Examinator.Api.Services;
 

@@ -1,5 +1,5 @@
-using Examinator.Api.Contracts;
-using Examinator.Api.Services;
+using Examinator.Api.Models.Contracts;
+using Examinator.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Examinator.Api.Controllers;

@@ -1,6 +1,6 @@
-using Examinator.Api.Contracts;
+using Examinator.Api.Models.Contracts;
 
-namespace Examinator.Api.Services;
+namespace Examinator.Api.Services.Interfaces;
 
 /// <summary>
 /// Logica di correzione: dato cio' che l'utente ha risposto, calcola il

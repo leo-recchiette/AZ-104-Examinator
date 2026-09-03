@@ -1,4 +1,4 @@
-namespace Examinator.Api.Contracts;
+namespace Examinator.Api.Models.Contracts;
 
 /// <summary>
 /// Esito di una singola domanda dopo la correzione in blocco: la risposta data

@@ -1,4 +1,4 @@
-namespace Examinator.Api.Contracts;
+namespace Examinator.Api.Models.Contracts;
 
 /// <summary>
 /// Una domanda cosi' come viene proposta all'utente, prima che risponda: niente

@@ -1,4 +1,4 @@
-namespace Examinator.Api.Domain;
+namespace Examinator.Api.Models.Domains;
 
 /// <summary>
 /// Una domanda con le sue opzioni/righe gia' caricate: evita di rifare le query

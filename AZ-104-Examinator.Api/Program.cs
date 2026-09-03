@@ -1,5 +1,6 @@
 using Examinator.Api.Repositories;
 using Examinator.Api.Services;
+using Examinator.Api.Services.Interfaces;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);

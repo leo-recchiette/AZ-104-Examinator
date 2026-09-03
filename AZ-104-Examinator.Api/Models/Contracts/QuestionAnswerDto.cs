@@ -1,4 +1,4 @@
-namespace Examinator.Api.Contracts;
+namespace Examinator.Api.Models.Contracts;
 
 /// <summary>
 /// La risposta corretta di una domanda: da richiedere solo dopo che l'utente
