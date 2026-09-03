@@ -8,7 +8,3 @@
 **/bin
 **/obj
 README.md
-
-# Il PDF non serve piu' alla build: la sorgente e' az104_606_domande.json.
-# Escluderlo evita di spedire 61 MB al daemon a ogni docker build.
-Questions & Explanations.pdf
