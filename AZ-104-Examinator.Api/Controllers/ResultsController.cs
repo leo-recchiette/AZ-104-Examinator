@@ -17,8 +17,6 @@ public sealed class ResultsController : ControllerBase
         _examResultService = examResultService;
     }
 
-    /// <summary>Percentuale di risposte corrette su una sessione conclusa: il primo dato
-    /// da leggere per sapere se il test e' passato. Da chiamare quando l'utente termina.</summary>
     [HttpPost("getScore")]
     public async Task<ActionResult<ExamScoreDto>> GetScoreAsync(
         [FromBody] List<AnswerSubmissionDto> submissions,
@@ -33,8 +31,6 @@ public sealed class ResultsController : ControllerBase
         return Ok(score);
     }
 
-    /// <summary>Dettaglio domanda per domanda: quale risposta era corretta, per la revisione
-    /// dopo aver letto lo score. Stesso payload di /score, quindi puo' essere la stessa richiesta.</summary>
     [HttpPost("checkAnswers")]
     public async Task<ActionResult<IReadOnlyList<AnswerCheckResultDto>>> CheckAnswersAsync(
         [FromBody] List<AnswerSubmissionDto> submissions,
