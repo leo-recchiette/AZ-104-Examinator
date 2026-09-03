@@ -1,6 +1,6 @@
 namespace Examinator.Api.Models.Domains;
 
-public sealed class Question
+public sealed record Question
 {
     public required int Id { get; init; }
     public required int Number { get; init; }

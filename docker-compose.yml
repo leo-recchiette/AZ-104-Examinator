@@ -41,7 +41,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: AZ-104-Examinator.Api/Dockerfile
+      dockerfile: AZ-104.Examinator.Api/Dockerfile
     image: az-104-examinator-api
     container_name: az-104-examinator-api
     environment:
