@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Examinator.Api.Tests</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest" Version="4.0.2" />
+    <!-- Pinnata alla major 7: dalla 8.0 in poi la licenza non e' piu' Apache 2.0
+         gratuita, richiede un abbonamento commerciale (xceed.com/fluent-assertions-faq).
+         Il range con limite superiore esclusivo permette i bugfix della 7.x ma
+         blocca un salto accidentale alla 8 su un futuro 'dotnet restore'. -->
+    <PackageReference Include="FluentAssertions" Version="[7.0.0,8.0.0)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../AZ-104.Examinator.Api/AZ-104.Examinator.Api.csproj" />
+  </ItemGroup>
+
+</Project>

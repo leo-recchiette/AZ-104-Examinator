@@ -14,4 +14,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Serve al progetto di test per vedere i mapper/tipi internal (QuestionRow, GradedQuestion e i loro mapper). -->
+    <InternalsVisibleTo Include="AZ-104.Examinator.Api.Tests" />
+  </ItemGroup>
+
 </Project>
