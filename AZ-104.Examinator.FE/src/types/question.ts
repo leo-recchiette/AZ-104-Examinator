@@ -23,4 +23,6 @@ export interface QuestionDto {
   options: OptionDto[];
   draggableItems: string[];
   prompts: PromptOptionsDto[];
+  /** Screenshot da mostrare PRIMA di rispondere (nomi file nudi, risolti con utils/images.ts#imageUrl). */
+  images: string[];
 }

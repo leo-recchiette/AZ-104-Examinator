@@ -101,4 +101,22 @@ public sealed class QuestionRepository : IQuestionRepository
         var rows = await connection.QueryAsync<AnswerRowOption>(command);
         return rows.ToList();
     }
+
+    public async Task<IReadOnlyList<QuestionImage>> GetImagesAsync(IReadOnlyCollection<int> questionIds, CancellationToken cancellationToken)
+    {
+        if (questionIds.Count == 0)
+            return [];
+
+        const string sql = """
+            SELECT question_id AS "QuestionId", kind AS "Kind", ord AS "Ord", filename AS "Filename"
+            FROM question_images
+            WHERE question_id = ANY(@questionIds)
+            ORDER BY question_id, kind, ord
+            """;
+        var command = new CommandDefinition(sql, new { questionIds = questionIds.ToArray() }, cancellationToken: cancellationToken);
+
+        await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
+        var rows = await connection.QueryAsync<QuestionImage>(command);
+        return rows.ToList();
+    }
 }

@@ -6,6 +6,7 @@ import { getAnswerShape, questionTypeLabel } from "../../utils/questionShape";
 import { MultipleChoiceAnswer } from "./MultipleChoiceAnswer";
 import { SequenceAnswer } from "./SequenceAnswer";
 import { RowSelectAnswer } from "./RowSelectAnswer";
+import { ImageStack } from "./ImageStack";
 
 interface QuestionCardProps {
   question: QuestionDto;
@@ -61,6 +62,7 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
       </div>
 
       <div style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "32px 30px", boxShadow: `0 1px 3px ${t.sh}` }}>
+        <ImageStack filenames={question.images} />
         <p style={{ margin: "0 0 26px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 20.5, lineHeight: 1.5, letterSpacing: "-.003em" }}>
           {question.text}
         </p>
@@ -92,6 +94,7 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
                 <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.ok, marginBottom: 10 }}>
                   Correct answer
                 </div>
+                <ImageStack filenames={correct.images} />
                 <div style={{ fontSize: 15, lineHeight: 1.55, fontWeight: 500, marginBottom: 16, whiteSpace: "pre-line" }}>
                   {correct.answerText}
                 </div>

@@ -8,6 +8,7 @@ import type { AnswerCheckResultDto } from "../types/answer";
 import { getAnswerShape, questionTypeLabel, formatYourAnswer } from "../utils/questionShape";
 import { pointsEarned } from "../utils/grading";
 import { ThemeIconButton } from "../components/ThemeIconButton";
+import { ImageStack } from "../components/session/ImageStack";
 import { PASS_MARK_PERCENT } from "../constants";
 
 interface WrongEntry {
@@ -18,6 +19,7 @@ interface WrongEntry {
   yours: string;
   correct: string;
   explanation: string;
+  images: string[];
 }
 
 function fmt(totalSeconds: number): string {
@@ -79,6 +81,7 @@ export function ResultsPage() {
         yours: formatYourAnswer(q, submitted),
         correct: correct.answerText,
         explanation: correct.explanation,
+        images: correct.images,
       });
     });
   }
@@ -123,6 +126,7 @@ export function ResultsPage() {
                     <div style={{ fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-line", color: t.tx2 }}>{w.correct}</div>
                   </div>
                 </div>
+                <ImageStack filenames={w.images} />
                 <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.mu, marginBottom: 7 }}>Explanation</div>
                 <div style={{ fontSize: 14.5, lineHeight: 1.6, color: t.tx2 }}>{w.explanation}</div>
               </div>

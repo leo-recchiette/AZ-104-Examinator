@@ -106,10 +106,12 @@ public sealed class ExamResultServiceTests
         string answerText = "C. Opzione corretta",
         string? note = null,
         IReadOnlyList<string>? correctLetters = null,
-        IReadOnlyList<AnswerRowDto>? answerRows = null) => new(
+        IReadOnlyList<AnswerRowDto>? answerRows = null,
+        IReadOnlyList<string>? images = null) => new(
             number, explanation, answerText, note,
             correctLetters ?? ["C"],
-            answerRows ?? []);
+            answerRows ?? [],
+            images ?? []);
 
     private static AnswerCheckResultDto AnswerCheckResultDto(
         int questionNumber = 1,

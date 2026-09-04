@@ -65,12 +65,14 @@ public sealed class ExamResultService : IExamResultService
         var ids = questions.Select(q => q.Id).ToList();
         var options = await _repository.GetOptionsAsync(ids, cancellationToken);
         var answerRows = await _repository.GetAnswerRowsAsync(ids, cancellationToken);
+        var images = await _repository.GetImagesAsync(ids, cancellationToken);
 
         var optionsByQuestion = options.ToLookup(o => o.QuestionId);
         var rowsByQuestion = answerRows.ToLookup(r => r.QuestionId);
+        var imagesByQuestion = images.ToLookup(i => i.QuestionId);
 
         return questions.ToDictionary(
             q => q.Number,
-            q => new GradedQuestion(q, optionsByQuestion[q.Id].ToList(), rowsByQuestion[q.Id].ToList()));
+            q => new GradedQuestion(q, optionsByQuestion[q.Id].ToList(), rowsByQuestion[q.Id].ToList(), imagesByQuestion[q.Id].ToList()));
     }
 }
