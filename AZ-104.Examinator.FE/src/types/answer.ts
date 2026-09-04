@@ -28,3 +28,23 @@ export interface AnswerCheckResultDto {
 export interface ExamScoreDto {
   percentage: number;
 }
+
+export interface SaveExamAttemptDto {
+  mode: "practice" | "exam";
+  questionCount: number;
+  percentage: number;
+  /** ISO 8601. */
+  startTime: string;
+  /** ISO 8601. */
+  endTime: string;
+}
+
+export interface ExamAttemptDto {
+  id: number;
+  mode: "practice" | "exam";
+  questionCount: number;
+  percentage: number;
+  startTime: string;
+  endTime: string;
+  completedAt: string;
+}

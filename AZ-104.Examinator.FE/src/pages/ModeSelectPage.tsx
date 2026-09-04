@@ -1,12 +1,13 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../theme/ThemeContext";
 import { useSession } from "../session/SessionContext";
 import { getExam } from "../api/questions";
+import { getAttempts } from "../api/results";
 import { ApiError } from "../api/client";
+import type { ExamAttemptDto } from "../types/answer";
 import { FloatingThemeToggle } from "../components/FloatingThemeToggle";
 import { EXAM_QUESTION_COUNT, EXAM_TIME_LIMIT_MINUTES, EXAM_TIME_LIMIT_SECONDS, PASS_MARK_PERCENT } from "../constants";
-import { getHistory } from "../utils/history";
 import { MODE_BG_GRADIENT } from "../theme/tokens";
 
 export function ModeSelectPage() {
@@ -15,7 +16,14 @@ export function ModeSelectPage() {
   const { dispatch } = useSession();
   const [startingSimulation, setStartingSimulation] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const history = useMemo(() => getHistory(), []);
+  const [history, setHistory] = useState<ExamAttemptDto[]>([]);
+
+  useEffect(() => {
+    // Pannello "best effort": se lo storico non si carica, la pagina resta comunque utilizzabile.
+    getAttempts()
+      .then(setHistory)
+      .catch((err) => console.error("Impossibile caricare lo storico dei tentativi:", err));
+  }, []);
 
   async function goSimulation() {
     setError(null);
@@ -34,14 +42,14 @@ export function ModeSelectPage() {
 
   const progress = useMemo(() => {
     if (history.length === 0) return null;
-    const scores = history.map((h) => h.pct);
+    const scores = history.map((h) => h.percentage);
     const worst = Math.min(...scores);
     const best = Math.max(...scores);
     const gain = Math.round((scores[scores.length - 1] - scores[0]) * 10) / 10;
     const n = history.length;
     const px = (pct: number) => 40 + (pct / 100) * 580;
     const py = (i: number) => (n === 1 ? 85 : 160 - (i / (n - 1)) * 150);
-    const points = history.map((h, i) => ({ x: px(h.pct), y: py(i) }));
+    const points = history.map((h, i) => ({ x: px(h.percentage), y: py(i) }));
     return {
       worst, best, gain,
       gainColor: gain > 0 ? t.ok : gain < 0 ? t.er : t.mu,

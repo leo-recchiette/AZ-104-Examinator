@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from "../session/SessionContext";
 import { useTheme } from "../theme/ThemeContext";
 import { useElapsedTime } from "../hooks/useElapsedTime";
-import { checkAnswers, getScore } from "../api/results";
+import { checkAnswers, getScore, saveAttempt } from "../api/results";
 import { ApiError } from "../api/client";
 import { isQuestionAnswered } from "../utils/questionShape";
-import { appendHistoryEntry } from "../utils/history";
 import { QuestionCard } from "../components/session/QuestionCard";
 import { ThemeIconButton } from "../components/ThemeIconButton";
 import { HEADER_GRADIENT } from "../theme/tokens";
@@ -48,14 +47,26 @@ export function SessionPage() {
         userAnswers: state.answers[q.number] ?? [],
       }));
       const score = await getScore(submissions);
-      appendHistoryEntry(score.percentage);
       dispatch({ type: "FINISH_SESSION", score, timeUsedSeconds: elapsedSecRef.current });
       navigate("/results");
+
+      // Registrazione dello storico best-effort: un errore qui non deve bloccare la
+      // navigazione ai risultati, il punteggio e' gia' stato calcolato e mostrato.
+      if (state.mode && state.startedAt) {
+        const endTime = new Date();
+        saveAttempt({
+          mode: state.mode,
+          questionCount: state.questions.length,
+          percentage: score.percentage,
+          startTime: new Date(state.startedAt).toISOString(),
+          endTime: endTime.toISOString(),
+        }).catch((err) => console.error("Impossibile salvare il tentativo nello storico:", err));
+      }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Impossibile calcolare il punteggio.");
       setSubmitting(false);
     }
-  }, [dispatch, navigate, state.answers, state.questions]);
+  }, [dispatch, navigate, state.answers, state.questions, state.mode, state.startedAt]);
 
   const elapsedMs = useElapsedTime(state.startedAt);
   const elapsedSec = Math.floor(elapsedMs / 1000);
