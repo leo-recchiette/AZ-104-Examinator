@@ -15,6 +15,8 @@ export interface QuestionAnswerDto {
   note: string | null;
   correctLetters: string[];
   answerRows: AnswerRowDto[];
+  /** Screenshot con la risposta corretta gia' compilata, da mostrare solo dopo aver rivelato/inviato. */
+  images: string[];
 }
 
 export interface AnswerCheckResultDto {
