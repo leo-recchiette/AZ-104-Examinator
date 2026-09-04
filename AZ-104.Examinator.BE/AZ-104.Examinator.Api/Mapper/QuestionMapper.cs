@@ -8,13 +8,15 @@ public static class QuestionMapper
 {
     private const string OrderedAnswer = "ordered_answer";
     private const string YesNo = "yes_no";
+    private const string QuestionImageKind = "question";
     private static readonly string[] YesNoOptions = ["Yes", "No"];
 
     public static QuestionDto ToQuestionDto(
         this Question question,
         IEnumerable<Option> options,
         IEnumerable<AnswerRow> answerRows,
-        ILookup<int, AnswerRowOption> rowOptionsByAnswerRowId)
+        ILookup<int, AnswerRowOption> rowOptionsByAnswerRowId,
+        IEnumerable<QuestionImage> images)
     {
         // La forma da popolare segue AnswerLayout, non Type: DragAndDrop puo'
         // essere sia 'ordered_answer' (sequenza) sia 'selection' (righe con
@@ -34,6 +36,7 @@ public static class QuestionMapper
                 ? []
                 : answerRows.Where(r => r.Prompt is not null).Select(r => new PromptOptionsDto(
                     r.Prompt!,
-                    isYesNo ? YesNoOptions : rowOptionsByAnswerRowId[r.Id].Select(o => o.Text).ToList())).ToList());
+                    isYesNo ? YesNoOptions : rowOptionsByAnswerRowId[r.Id].Select(o => o.Text).ToList())).ToList(),
+            Images: images.Where(i => i.Kind == QuestionImageKind).OrderBy(i => i.Ord).Select(i => i.Filename).ToList());
     }
 }

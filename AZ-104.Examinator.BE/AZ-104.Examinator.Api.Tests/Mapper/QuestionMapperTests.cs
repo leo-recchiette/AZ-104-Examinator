@@ -18,7 +18,7 @@ public sealed class QuestionMapperTests
             Option(ord: 1, letter: "C", text: "Opzione corretta", isCorrect: true),
         };
 
-        var sut = input.ToQuestionDto(options, [], NoRowOptions());
+        var sut = input.ToQuestionDto(options, [], NoRowOptions(), NoImages());
 
         var expected = new QuestionDto(
             Number: 1,
@@ -26,7 +26,8 @@ public sealed class QuestionMapperTests
             Text: "Domanda di prova",
             Options: [new OptionDto("A", "Opzione sbagliata"), new OptionDto("C", "Opzione corretta")],
             DraggableItems: [],
-            Prompts: []);
+            Prompts: [],
+            Images: []);
 
         sut.Should().BeEquivalentTo(expected);
     }
@@ -43,7 +44,7 @@ public sealed class QuestionMapperTests
             Option(ord: 2, letter: null, text: "An access policy", isCorrect: true),
         };
 
-        var sut = input.ToQuestionDto(options, [], NoRowOptions());
+        var sut = input.ToQuestionDto(options, [], NoRowOptions(), NoImages());
 
         var expected = new QuestionDto(
             Number: 1,
@@ -51,7 +52,8 @@ public sealed class QuestionMapperTests
             Text: "Domanda di prova",
             Options: [],
             DraggableItems: ["An Azure Key Vault", "An Azure Storage account", "An access policy"],
-            Prompts: []);
+            Prompts: [],
+            Images: []);
 
         sut.Should().BeEquivalentTo(expected);
     }
@@ -72,7 +74,15 @@ public sealed class QuestionMapperTests
             RowOption(answerRowId: 11, ord: 1, text: "Network Contributor on LB2"),
         };
 
-        var sut = input.ToQuestionDto([], [row1, row2], rowOptions.ToLookup(o => o.AnswerRowId));
+        // 'answer' non deve comparire in Images: solo 'question' e' pre-risposta.
+        var images = new[]
+        {
+            Image(kind: "question", ord: 1, filename: "q001_pre1.png"),
+            Image(kind: "question", ord: 0, filename: "q001_pre0.png"),
+            Image(kind: "answer", ord: 0, filename: "q001_post0.png"),
+        };
+
+        var sut = input.ToQuestionDto([], [row1, row2], rowOptions.ToLookup(o => o.AnswerRowId), images);
 
         var expected = new QuestionDto(
             Number: 1,
@@ -83,7 +93,8 @@ public sealed class QuestionMapperTests
             Prompts: [
                 new PromptOptionsDto("To add a backend pool to LB1", ["Contributor on LB1", "Network Contributor on LB1"]),
                 new PromptOptionsDto("To add a health probe to LB2", ["Contributor on LB2", "Network Contributor on LB2"]),
-            ]);
+            ],
+            Images: ["q001_pre0.png", "q001_pre1.png"]);
 
         sut.Should().BeEquivalentTo(expected);
     }
@@ -95,7 +106,7 @@ public sealed class QuestionMapperTests
         var row = AnswerRow(id: 20, ord: 0, prompt: "Statement 1", answer: "Yes");
 
         // Nessuna opzione salvata per yes_no: il dominio Si'/No e' costante, non nel DB.
-        var sut = input.ToQuestionDto([], [row], NoRowOptions());
+        var sut = input.ToQuestionDto([], [row], NoRowOptions(), NoImages());
 
         var expected = new QuestionDto(
             Number: 1,
@@ -103,7 +114,8 @@ public sealed class QuestionMapperTests
             Text: "Domanda di prova",
             Options: [],
             DraggableItems: [],
-            Prompts: [new PromptOptionsDto("Statement 1", ["Yes", "No"])]);
+            Prompts: [new PromptOptionsDto("Statement 1", ["Yes", "No"])],
+            Images: []);
 
         sut.Should().BeEquivalentTo(expected);
     }
@@ -148,6 +160,16 @@ public sealed class QuestionMapperTests
     };
 
     private static ILookup<int, AnswerRowOption> NoRowOptions() => Array.Empty<AnswerRowOption>().ToLookup(o => o.AnswerRowId);
+
+    private static QuestionImage Image(string kind, int ord, string filename) => new()
+    {
+        QuestionId = 1,
+        Kind = kind,
+        Ord = ord,
+        Filename = filename,
+    };
+
+    private static IReadOnlyList<QuestionImage> NoImages() => [];
 
     #endregion
 }

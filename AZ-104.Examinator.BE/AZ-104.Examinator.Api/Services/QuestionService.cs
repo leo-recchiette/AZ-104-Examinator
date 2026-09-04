@@ -26,13 +26,15 @@ public sealed class QuestionService : IQuestionService
         var answerRows = await _repository.GetAnswerRowsAsync(ids, cancellationToken);
         var rowIds = answerRows.Select(r => r.Id).ToList();
         var rowOptions = await _repository.GetAnswerRowOptionsAsync(rowIds, cancellationToken);
+        var images = await _repository.GetImagesAsync(ids, cancellationToken);
 
         var optionsByQuestion = options.ToLookup(o => o.QuestionId);
         var rowsByQuestion = answerRows.ToLookup(r => r.QuestionId);
         var rowOptionsByAnswerRowId = rowOptions.ToLookup(o => o.AnswerRowId);
+        var imagesByQuestion = images.ToLookup(i => i.QuestionId);
 
         return questions
-            .Select(q => q.ToQuestionDto(optionsByQuestion[q.Id], rowsByQuestion[q.Id], rowOptionsByAnswerRowId))
+            .Select(q => q.ToQuestionDto(optionsByQuestion[q.Id], rowsByQuestion[q.Id], rowOptionsByAnswerRowId, imagesByQuestion[q.Id]))
             .ToList();
     }
 }

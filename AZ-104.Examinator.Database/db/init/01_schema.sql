@@ -89,7 +89,20 @@ CREATE TABLE answer_row_options (
     text          TEXT    NOT NULL
 );
 
+-- Screenshot associati a una domanda: 'question' (mostrato prima di rispondere,
+-- da images_question nel JSON) o 'answer' (mostrato solo dopo, da images_answer
+-- - lo stesso stato con la risposta corretta compilata). Serviti da wwwroot/images
+-- via app.UseStaticFiles(): qui salviamo solo il nome file, mai un URL completo.
+CREATE TABLE question_images (
+    id          SERIAL  PRIMARY KEY,
+    question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
+    kind        TEXT    NOT NULL,
+    ord         INTEGER NOT NULL,
+    filename    TEXT    NOT NULL
+);
+
 CREATE INDEX idx_options_question ON options (question_id);
 CREATE INDEX idx_answer_rows_question ON answer_rows (question_id);
 CREATE INDEX idx_answer_row_options_row ON answer_row_options (answer_row_id);
+CREATE INDEX idx_question_images_question ON question_images (question_id);
 CREATE INDEX idx_questions_type ON questions (type);

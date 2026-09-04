@@ -29,7 +29,8 @@ public sealed class QuestionServiceTests
                 Text: "Domanda di prova",
                 Options: [new OptionDto("C", "Opzione corretta")],
                 DraggableItems: [],
-                Prompts: []),
+                Prompts: [],
+                Images: []),
         };
 
         actual.Should().BeEquivalentTo(expected);

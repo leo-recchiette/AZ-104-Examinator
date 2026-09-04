@@ -10,6 +10,7 @@ internal sealed class FakeQuestionRepository : IQuestionRepository
     public IReadOnlyList<Option> Options { get; init; } = [];
     public IReadOnlyList<AnswerRow> AnswerRows { get; init; } = [];
     public IReadOnlyList<AnswerRowOption> AnswerRowOptions { get; init; } = [];
+    public IReadOnlyList<QuestionImage> Images { get; init; } = [];
 
     public Task<IReadOnlyList<Question>> GetRandomAsync(int count, QuestionType? type, CancellationToken cancellationToken) =>
         Task.FromResult(Questions);
@@ -25,4 +26,7 @@ internal sealed class FakeQuestionRepository : IQuestionRepository
 
     public Task<IReadOnlyList<AnswerRowOption>> GetAnswerRowOptionsAsync(IReadOnlyCollection<int> answerRowIds, CancellationToken cancellationToken) =>
         Task.FromResult(AnswerRowOptions);
+
+    public Task<IReadOnlyList<QuestionImage>> GetImagesAsync(IReadOnlyCollection<int> questionIds, CancellationToken cancellationToken) =>
+        Task.FromResult(Images);
 }
