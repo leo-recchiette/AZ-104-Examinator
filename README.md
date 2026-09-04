@@ -6,6 +6,7 @@ Simulatore d'esame per la certificazione Microsoft AZ-104, con un question bank 
 
 ```
 AZ-104.Examinator.BE/          Backend .NET (API + progetto di test)
+AZ-104.Examinator.FE/          Frontend React + TypeScript
 AZ-104.Examinator.Database/    Schema SQL e importer del question bank
 AZ-104.QuestionsDataset/       Dati sorgente (JSON + versione leggibile in Markdown)
 docker-compose.yml
@@ -20,9 +21,9 @@ docker compose --profile setup run --rm importer
 docker compose up -d
 ```
 
-Il primo comando crea da solo tutto il necessario — volume, database, schema — aspetta che sia pronto e importa le 606 domande: non serve avviare prima nient'altro a mano. Il secondo comando avvia l'API, che a questo punto trova già il database popolato.
+Il primo comando crea da solo tutto il necessario — volume, database, schema — aspetta che sia pronto e importa le 606 domande: non serve avviare prima nient'altro a mano. Il secondo comando avvia API e frontend, che a questo punto trovano già il database popolato.
 
-L'API è raggiungibile su **http://localhost:5080**, con la documentazione interattiva su **http://localhost:5080/swagger**.
+L'API è raggiungibile su **http://localhost:5080**, con la documentazione interattiva su **http://localhost:5080/swagger**. Il frontend è su **http://localhost:5173** (server di sviluppo Vite con hot reload — non serve Node installato in locale, gira tutto nel container `web`; niente build di produzione per ora).
 
 ### Avvii successivi
 
