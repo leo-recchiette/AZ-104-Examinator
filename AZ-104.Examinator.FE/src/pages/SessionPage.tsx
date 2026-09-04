@@ -6,8 +6,10 @@ import { useElapsedTime } from "../hooks/useElapsedTime";
 import { checkAnswers, getScore } from "../api/results";
 import { ApiError } from "../api/client";
 import { isQuestionAnswered } from "../utils/questionShape";
+import { appendHistoryEntry } from "../utils/history";
 import { QuestionCard } from "../components/session/QuestionCard";
 import { ThemeIconButton } from "../components/ThemeIconButton";
+import { HEADER_GRADIENT } from "../theme/tokens";
 
 function fmt(totalSeconds: number): string {
   const m = Math.floor(totalSeconds / 60);
@@ -18,8 +20,9 @@ function fmt(totalSeconds: number): string {
 export function SessionPage() {
   const navigate = useNavigate();
   const { state, dispatch } = useSession();
-  const { tokens: t } = useTheme();
+  const { theme, tokens: t } = useTheme();
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const firedRef = useRef(false);
@@ -45,6 +48,7 @@ export function SessionPage() {
         userAnswers: state.answers[q.number] ?? [],
       }));
       const score = await getScore(submissions);
+      appendHistoryEntry(score.percentage);
       dispatch({ type: "FINISH_SESSION", score, timeUsedSeconds: elapsedSecRef.current });
       navigate("/results");
     } catch (err) {
@@ -90,37 +94,43 @@ export function SessionPage() {
 
   const timerCaption = limit ? "Time remaining" : "Elapsed";
   const timeLabel = fmt(limit ? remaining : elapsedSec);
-  const low = limit ? remaining <= 300 : false;
-  const timeColor = low ? t.er : t.ac;
+  // Verde di default, giallo dopo 30 minuti trascorsi, rosso sotto i 10 minuti rimanenti (solo se a tempo).
+  let clockColor = "#3ddc84";
+  if (limit) {
+    if (remaining <= 600) clockColor = "#ff6b6b";
+    else if (elapsedSec > 1800) clockColor = "#ffd23f";
+  }
+  const timeColor = elapsedSec <= 1800 ? "#ffffff" : clockColor;
   const timePct = limit ? (elapsedSec / limit) * 100 : (answeredCount / total) * 100;
 
-  const modeChipBg = isPractice ? t.acs : t.tx;
-  const modeChipFg = isPractice ? t.ac : t.bg;
+  const modeChipBg = isPractice ? "rgba(255,255,255,.22)" : "rgba(255,255,255,.92)";
+  const modeChipFg = isPractice ? "#fff" : "#0b3fae";
   const modeLabel = isPractice ? "Practice" : "Simulation";
+  const headerGradient = theme === "dark" ? HEADER_GRADIENT.dark : HEADER_GRADIENT.light;
 
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <div style={{ position: "sticky", top: 0, zIndex: 5, background: t.head, backdropFilter: "blur(8px)", borderBottom: `1px solid ${t.bd}` }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 5, background: headerGradient, backdropFilter: "blur(8px)", borderBottom: "1px solid rgba(255,255,255,.18)" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", padding: "14px 24px 12px", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
-            <span style={{ fontSize: 14.5, fontWeight: 600, whiteSpace: "nowrap" }}>AZ-104</span>
+            <span style={{ fontSize: 14.5, fontWeight: 600, whiteSpace: "nowrap", color: "#fff" }}>AZ-104</span>
             <span style={{ fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 600, padding: "4px 8px", borderRadius: 6, background: modeChipBg, color: modeChipFg }}>
               {modeLabel}
             </span>
           </div>
           <div style={{ flex: 1 }} />
           <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-            <span style={{ fontSize: 12.5, color: t.fa }}>{timerCaption}</span>
+            <span style={{ fontSize: 12.5, color: "#e4e7ee" }}>{timerCaption}</span>
             <span style={{ fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums", color: timeColor }}>{timeLabel}</span>
           </div>
-          <div style={{ width: 1, height: 22, background: t.bd }} />
-          <div style={{ fontSize: 13.5, color: t.mu, fontVariantNumeric: "tabular-nums" }}>
-            Question <strong style={{ color: t.tx }}>{state.currentIndex + 1}</strong> of {total}
+          <div style={{ width: 1, height: 22, background: "rgba(255,255,255,.3)" }} />
+          <div style={{ fontSize: 13.5, color: "#e4e7ee", fontVariantNumeric: "tabular-nums" }}>
+            Question <strong style={{ color: "#fff" }}>{state.currentIndex + 1}</strong> of {total}
           </div>
-          <ThemeIconButton />
+          <ThemeIconButton variant="onDark" />
         </div>
-        <div style={{ height: 4, background: t.track }}>
-          <div style={{ height: "100%", width: `${timePct}%`, background: timeColor, transition: "width 1s linear" }} />
+        <div style={{ height: 4, background: "rgba(255,255,255,.25)" }}>
+          <div style={{ height: "100%", width: `${timePct}%`, background: clockColor, transition: "width 1s linear" }} />
         </div>
       </div>
 
@@ -163,9 +173,39 @@ export function SessionPage() {
             isPractice={isPractice}
             checkResult={state.checkResults[question.number]}
             onReveal={handleReveal}
+            onRequestExit={() => setShowExitConfirm(true)}
           />
         )}
       </div>
+
+      {showExitConfirm && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 30, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: "rgba(10,12,16,.5)" }}>
+          <div style={{ width: "100%", maxWidth: 480, background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "30px 28px", boxShadow: "0 10px 30px rgba(0,0,0,.25)" }}>
+            <h2 style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 600, fontSize: 23, margin: "0 0 8px" }}>
+              Uscire ora?
+            </h2>
+            <p style={{ margin: "0 0 24px", color: t.mu, fontSize: 14.5, lineHeight: 1.55 }}>
+              L'esame verrà terminato subito. Tutte le domande senza risposta saranno contrassegnate come tali e
+              contate come errate.
+            </p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <button onClick={() => setShowExitConfirm(false)} style={wideButtonStyle(`1px solid ${t.bd3}`, t.card, t.tx2)}>
+                Annulla
+              </button>
+              <button
+                onClick={() => {
+                  setShowExitConfirm(false);
+                  handleFinish();
+                }}
+                disabled={submitting}
+                style={wideButtonStyle("none", "#e5484d", "#fff")}
+              >
+                Esci e invia
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {!showConfirm && (
         <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: t.head, backdropFilter: "blur(8px)", borderTop: `1px solid ${t.bd}` }}>

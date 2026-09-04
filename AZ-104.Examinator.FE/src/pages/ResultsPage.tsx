@@ -10,6 +10,7 @@ import { pointsEarned } from "../utils/grading";
 import { ThemeIconButton } from "../components/ThemeIconButton";
 import { ImageStack } from "../components/session/ImageStack";
 import { PASS_MARK_PERCENT } from "../constants";
+import { HEADER_GRADIENT } from "../theme/tokens";
 
 interface WrongEntry {
   no: number;
@@ -31,7 +32,8 @@ function fmt(totalSeconds: number): string {
 export function ResultsPage() {
   const navigate = useNavigate();
   const { state, dispatch } = useSession();
-  const { tokens: t } = useTheme();
+  const { theme, tokens: t } = useTheme();
+  const headerGradient = theme === "dark" ? HEADER_GRADIENT.dark : HEADER_GRADIENT.light;
   const [review, setReview] = useState<AnswerCheckResultDto[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showReview, setShowReview] = useState(false);
@@ -89,16 +91,16 @@ export function ResultsPage() {
   if (showReview) {
     return (
       <div style={{ flex: 1 }}>
-        <div style={{ position: "sticky", top: 0, zIndex: 5, background: t.head, backdropFilter: "blur(8px)", borderBottom: `1px solid ${t.bd}` }}>
+        <div style={{ position: "sticky", top: 0, zIndex: 5, background: headerGradient, backdropFilter: "blur(8px)", borderBottom: "1px solid rgba(255,255,255,.18)" }}>
           <div style={{ maxWidth: 1000, margin: "0 auto", padding: "16px 24px", display: "flex", alignItems: "center", gap: 14 }}>
-            <button onClick={() => setShowReview(false)} style={{ background: "none", border: "none", padding: 0, color: t.mu, fontSize: 13.5, font: "inherit" }}>
+            <button onClick={() => setShowReview(false)} style={{ background: "none", border: "none", padding: 0, color: "#e4e7ee", fontSize: 13.5, font: "inherit" }}>
               ← Result
             </button>
             <div style={{ flex: 1 }} />
-            <span style={{ fontSize: 13.5, color: t.mu }}>
+            <span style={{ fontSize: 13.5, color: "#e4e7ee" }}>
               {wrong.length} of {state.questions.length} questions lost points
             </span>
-            <ThemeIconButton />
+            <ThemeIconButton variant="onDark" />
           </div>
         </div>
         <div style={{ maxWidth: 1000, margin: "0 auto", padding: "32px 24px 80px" }}>
