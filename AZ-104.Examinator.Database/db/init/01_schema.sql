@@ -106,3 +106,21 @@ CREATE INDEX idx_answer_rows_question ON answer_rows (question_id);
 CREATE INDEX idx_answer_row_options_row ON answer_row_options (answer_row_id);
 CREATE INDEX idx_question_images_question ON question_images (question_id);
 CREATE INDEX idx_questions_type ON questions (type);
+
+-- Storico delle sessioni (Practice o Simulation) portate a termine e inviate: alimenta il
+-- grafico "Your progress" della mode-select. Tabella indipendente dal question bank sopra:
+-- l'importer tronca solo "questions" (con CASCADE sulle sue FK), quindi un re-import del
+-- dataset non azzera mai questo storico.
+CREATE TABLE exam_attempts (
+    id             SERIAL PRIMARY KEY,
+    mode           TEXT             NOT NULL CHECK (mode IN ('practice', 'exam')),
+    question_count INTEGER          NOT NULL,
+    percentage     DOUBLE PRECISION NOT NULL,
+    start_time     TIMESTAMPTZ      NOT NULL,
+    end_time       TIMESTAMPTZ      NOT NULL,
+    -- Istante di registrazione della riga (valorizzato dal DB, non dal client): "END" e' parola
+    -- riservata in Postgres, quindi non utilizzabile come nome colonna senza quoting.
+    completed_at   TIMESTAMPTZ      NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_exam_attempts_end_time ON exam_attempts (end_time);

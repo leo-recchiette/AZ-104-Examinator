@@ -9,12 +9,15 @@ namespace Examinator.Api.Controllers;
 public sealed class ResultsController : ControllerBase
 {
     private const int MaxCount = 606; // dimensione dell'intero question bank: bound di buon senso, non una regola di business
+    private static readonly string[] ValidModes = ["practice", "exam"];
 
     private readonly IExamResultService _examResultService;
+    private readonly IExamAttemptService _examAttemptService;
 
-    public ResultsController(IExamResultService examResultService)
+    public ResultsController(IExamResultService examResultService, IExamAttemptService examAttemptService)
     {
         _examResultService = examResultService;
+        _examAttemptService = examAttemptService;
     }
 
     [HttpPost("getScore")]
@@ -43,5 +46,32 @@ public sealed class ResultsController : ControllerBase
 
         var results = await _examResultService.CheckAnswersAsync(submissions, cancellationToken);
         return Ok(results);
+    }
+
+    /// <summary>Registra nello storico una sessione appena conclusa, da chiamare subito dopo getScore.</summary>
+    [HttpPost("attempts")]
+    public async Task<ActionResult<ExamAttemptDto>> SaveAttemptAsync(
+        [FromBody] SaveExamAttemptDto request,
+        CancellationToken cancellationToken)
+    {
+        if (!ValidModes.Contains(request.Mode))
+            return BadRequest($"mode deve essere uno tra: {string.Join(", ", ValidModes)}.");
+        if (request.QuestionCount is < 1 or > MaxCount)
+            return BadRequest($"questionCount deve essere fra 1 e {MaxCount}.");
+        if (request.Percentage is < 0 or > 100)
+            return BadRequest("percentage deve essere fra 0 e 100.");
+        if (request.EndTime < request.StartTime)
+            return BadRequest("endTime non puo' precedere startTime.");
+
+        var saved = await _examAttemptService.SaveAsync(request, cancellationToken);
+        return Ok(saved);
+    }
+
+    /// <summary>Storico completo, dal piu' vecchio al piu' recente: alimenta il grafico "Your progress" della mode-select.</summary>
+    [HttpGet("attempts")]
+    public async Task<ActionResult<IReadOnlyList<ExamAttemptDto>>> GetAttemptsAsync(CancellationToken cancellationToken)
+    {
+        var attempts = await _examAttemptService.GetAllAsync(cancellationToken);
+        return Ok(attempts);
     }
 }

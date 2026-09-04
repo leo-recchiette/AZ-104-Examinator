@@ -24,6 +24,8 @@ builder.Services.AddSingleton(NpgsqlDataSource.Create(connectionString));
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IExamResultService, ExamResultService>();
+builder.Services.AddScoped<IExamAttemptRepository, ExamAttemptRepository>();
+builder.Services.AddScoped<IExamAttemptService, ExamAttemptService>();
 // Singleton: nessuno stato, nessuna dipendenza da una richiesta specifica.
 builder.Services.AddSingleton<IScoreService, ScoreService>();
 
