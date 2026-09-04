@@ -36,6 +36,7 @@ if (app.Environment.IsDevelopment())
     app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 }
 
+app.UseStaticFiles();
 app.UseCors();
 app.MapControllers();
 

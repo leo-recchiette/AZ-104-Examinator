@@ -129,6 +129,28 @@ def insert_answer_rows(cur: psycopg.Cursor, question_id: int, rows: list[dict]) 
                 )
 
 
+def insert_images(cur: psycopg.Cursor, question_id: int, q: dict) -> None:
+    """Screenshot associati alla domanda: images_question (kind 'question',
+    mostrato prima di rispondere) e images_answer (kind 'answer', mostrato
+    solo dopo - lo stesso stato con la risposta corretta compilata)."""
+    for ord_, filename in enumerate(q.get("images_question", [])):
+        cur.execute(
+            """
+            INSERT INTO question_images (question_id, kind, ord, filename)
+            VALUES (%s, 'question', %s, %s)
+            """,
+            (question_id, ord_, filename),
+        )
+    for ord_, filename in enumerate(q.get("images_answer", [])):
+        cur.execute(
+            """
+            INSERT INTO question_images (question_id, kind, ord, filename)
+            VALUES (%s, 'answer', %s, %s)
+            """,
+            (question_id, ord_, filename),
+        )
+
+
 def find_selection_mismatches(questions: list[dict]) -> list[tuple[int, str | None, str]]:
     """Righe 'selection' dove la risposta corretta non compare nel proprio
     pool di opzioni: puro controllo sul JSON, nessuna scrittura sul DB."""
@@ -149,6 +171,7 @@ def import_all(conn: psycopg.Connection, questions: list[dict]) -> None:
         cur.execute("TRUNCATE questions RESTART IDENTITY CASCADE")
         for q in questions:
             question_id = insert_question(cur, q)
+            insert_images(cur, question_id, q)
             if q["type"] == MULTIPLE_CHOICE:
                 correct_letters = set(q["correct_answers"])
                 items = [(o["letter"], o["text"], o["letter"] in correct_letters) for o in q["options"]]

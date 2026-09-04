@@ -26,6 +26,8 @@
    "C"
   ],
   "answer_text": "C. Assign tags to the virtual machines.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -49,6 +51,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -72,6 +76,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -95,6 +101,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -126,6 +134,8 @@
    "D"
   ],
   "answer_text": "D. The az vm create command.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -149,6 +159,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -172,6 +184,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -195,6 +209,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -218,6 +234,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -241,6 +259,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -264,6 +284,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -295,6 +317,8 @@
    "B"
   ],
   "answer_text": "B. Read-only geo-redundant storage",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -318,6 +342,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -341,6 +367,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -364,6 +392,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -395,6 +425,8 @@
    "C"
   ],
   "answer_text": "C. You should stop all three VMs.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -426,6 +458,8 @@
    "C"
   ],
   "answer_text": "C. Detach the data disk.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -457,6 +491,8 @@
    "D"
   ],
   "answer_text": "D. Max Value",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -488,6 +524,8 @@
    "B"
   ],
   "answer_text": "B. 20",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -549,6 +587,8 @@
    "C"
   ],
   "answer_text": "C. Configure a Group Policy Object (GPO) to run the scripts as startup scripts.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -580,6 +620,8 @@
    "B"
   ],
   "answer_text": "B. Add-AzVhd",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -634,6 +676,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -657,6 +701,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -680,6 +726,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -715,6 +763,8 @@
    "C"
   ],
   "answer_text": "C. Configure a Point-to-Site (P2S) VPN.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -738,6 +788,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -761,6 +813,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -784,6 +838,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -819,6 +875,8 @@
    "C"
   ],
   "answer_text": "C. Modify the VM properties in the Azure Management Portal.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -850,6 +908,8 @@
    "A"
   ],
   "answer_text": "A. 5",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -881,6 +941,8 @@
    "D"
   ],
   "answer_text": "D. 1",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -912,6 +974,8 @@
    "B"
   ],
   "answer_text": "B. You can recover the files to any VM within the company's subscription.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -943,6 +1007,8 @@
    "C"
   ],
   "answer_text": "C. You should restore the VM to a new Azure VM.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -974,6 +1040,8 @@
    "B"
   ],
   "answer_text": "B. Azure Monitor",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1011,6 +1079,8 @@
    "E"
   ],
   "answer_text": "B. VMs that run Windows Server 2012 or higher. | D. VMs that run Debian 8.2+. | E. VMs that have been shut down.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1034,6 +1104,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1057,6 +1129,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1080,6 +1154,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1152,6 +1228,8 @@
    "A"
   ],
   "answer_text": "A. From contoso.com, modify the Organization relationships settings.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1188,6 +1266,8 @@
    "C"
   ],
   "answer_text": "A. a Microsoft 365 group that uses the Assigned membership type | C. a Microsoft 365 group that uses the Dynamic User membership type",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1290,6 +1370,10 @@
    "A"
   ],
   "answer_text": "A. You are prevented from creating Azure SQL servers anywhere in Subscription 1.",
+  "images_question": [
+   "q046_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1365,6 +1449,10 @@
    "A"
   ],
   "answer_text": "A. VM1, storage1, VNET1, and VM1Managed only",
+  "images_question": [
+   "q048_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1396,6 +1484,8 @@
    "C"
   ],
   "answer_text": "C. From Azure PowerShell, run the Set-AzMarketplaceTerms cmdlet",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1423,6 +1513,8 @@
    "B"
   ],
   "answer_text": "B. From the Directory role blade, modify the directory role",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1454,6 +1546,8 @@
    "A"
   ],
   "answer_text": "A. From the Licenses blade of Azure AD, assign a license",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1485,6 +1579,8 @@
    "C"
   ],
   "answer_text": "C. Deploy the IT Service Management Connector (ITSM)",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1516,6 +1612,8 @@
    "A"
   ],
   "answer_text": "A. Device settings from the Devices blade",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1583,6 +1681,10 @@
    "C"
   ],
   "answer_text": "C. Stop the backup of SQLDB01",
+  "images_question": [
+   "q055_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1614,6 +1716,8 @@
    "B"
   ],
   "answer_text": "B. Assign User1 the User Access Administrator role for VNet1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1645,6 +1749,8 @@
    "A"
   ],
   "answer_text": "A. MX",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1668,6 +1774,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1691,6 +1799,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1714,6 +1824,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1775,6 +1887,8 @@
    "D"
   ],
   "answer_text": "D. search in (Event) * | where EventType -eq \"error\"",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1840,6 +1954,10 @@
    "A"
   ],
   "answer_text": "A. The App Service plan for WebApp1 remains in West Europe. Policy2 applies to WebApp1.",
+  "images_question": [
+   "q064_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1915,6 +2033,8 @@
    "E"
   ],
   "answer_text": "A. an internal load balancer | E. an Azure Application Gateway",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -1946,6 +2066,8 @@
    "B"
   ],
   "answer_text": "B. Advisor",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2025,6 +2147,8 @@
    "A"
   ],
   "answer_text": "A. From the Users settings blade, modify the External collaboration settings.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2056,6 +2180,8 @@
    "C"
   ],
   "answer_text": "C. Assign the Global administrator role to User1, and then instruct User1 to configure access management for Azure resources.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2170,6 +2296,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2193,6 +2321,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2216,6 +2346,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2247,6 +2379,8 @@
    "C"
   ],
   "answer_text": "C. Contributor",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2313,6 +2447,8 @@
    "A"
   ],
   "answer_text": "A. From the Azure portal, modify the Managed Identity settings of VM1",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2344,6 +2480,10 @@
    "B"
   ],
   "answer_text": "B. Remove the resource lock from VNET1 and delete all data in Vault1",
+  "images_question": [
+   "q079_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2375,6 +2515,8 @@
    "A"
   ],
   "answer_text": "A. Create an NS record named research in the adatum.com zone.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2437,6 +2579,8 @@
    "B"
   ],
   "answer_text": "B. Event | search \"error\"",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2468,6 +2612,8 @@
    "D"
   ],
   "answer_text": "D. Modify the NS records in the DNS domain registrar.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2627,6 +2773,8 @@
    "B"
   ],
   "answer_text": "B. The user principal name of each user only",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2685,6 +2833,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2716,6 +2866,8 @@
    "B"
   ],
   "answer_text": "B. administrative units",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2739,6 +2891,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2810,6 +2964,8 @@
    "B"
   ],
   "answer_text": "B. Assign User1 the Owner role for VNet1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2887,6 +3043,8 @@
    "A"
   ],
   "answer_text": "A. Enable Active Directory Domain Service (AD DS) authentication for storage1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2918,6 +3076,8 @@
    "B"
   ],
   "answer_text": "B. Assign Group1 the User Access Administrator role for the root management group.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -2985,6 +3145,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q098_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3008,6 +3172,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q099_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3031,6 +3199,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q100_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3062,6 +3234,8 @@
    "A"
   ],
   "answer_text": "A. Select the custom role and add Sub1 and Sub2 to the assignable scopes. Remove RG1 from the assignable scopes.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3098,6 +3272,10 @@
    "D"
   ],
   "answer_text": "B. Upload blob data to storageacct1234. | D. View blob data in storageacct1234.",
+  "images_question": [
+   "q102_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3129,6 +3307,8 @@
    "C"
   ],
   "answer_text": "C. Event | where EventType is \"error\"",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3160,6 +3340,8 @@
    "C"
   ],
   "answer_text": "C. Assign the Website Contributor role to the developers",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3183,6 +3365,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3300,6 +3484,8 @@
    "B"
   ],
   "answer_text": "B. a service tag",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3331,6 +3517,11 @@
    "B"
   ],
   "answer_text": "B. User1 and User4 only",
+  "images_question": [
+   "q109_pre0.png",
+   "q109_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3397,6 +3588,8 @@
    "C"
   ],
   "answer_text": "C. Assign User1 the Owner role for VNet1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3464,6 +3657,8 @@
    "B"
   ],
   "answer_text": "B. Assign User1 the Owner role for VNet1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3495,6 +3690,10 @@
    "B"
   ],
   "answer_text": "B. private endpoints",
+  "images_question": [
+   "q114_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3561,6 +3760,8 @@
    "B"
   ],
   "answer_text": "B. Assign User1 the Access Administrator role for VNet1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3625,6 +3826,10 @@
    "A"
   ],
   "answer_text": "A. Enable identity-based data access for the file shares in storage1.",
+  "images_question": [
+   "q118_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3656,6 +3861,8 @@
    "B"
   ],
   "answer_text": "B. Assign User1 the User Access Administrator role for VNet1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3757,6 +3964,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3780,6 +3989,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3811,6 +4022,8 @@
    "C"
   ],
   "answer_text": "C. Assign User1 the User Access Administrator role for VNet1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3842,6 +4055,8 @@
    "D"
   ],
   "answer_text": "D. Assign User1 the User Access Administrator role for VNet1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -3983,6 +4198,10 @@
    "C"
   ],
   "answer_text": "C. Storage Blob Data Contributor",
+  "images_question": [
+   "q128_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4014,6 +4233,8 @@
    "C"
   ],
   "answer_text": "C. Assign User1 the Owner role for VNet1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4049,6 +4270,10 @@
    "D"
   ],
   "answer_text": "D. Group1, Group2, and Group3 only",
+  "images_question": [
+   "q130_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4198,6 +4423,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4264,6 +4491,10 @@
    "B"
   ],
   "answer_text": "B. private endpoints",
+  "images_question": [
+   "q136_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4295,6 +4526,10 @@
    "B"
   ],
   "answer_text": "B. service endpoints",
+  "images_question": [
+   "q137_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4326,6 +4561,10 @@
    "B"
   ],
   "answer_text": "B. service endpoints",
+  "images_question": [
+   "q138_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4357,6 +4596,10 @@
    "C"
   ],
   "answer_text": "C. Sub1",
+  "images_question": [
+   "q139_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4431,6 +4674,10 @@
    "B"
   ],
   "answer_text": "B. a private endpoint",
+  "images_question": [
+   "q141_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4498,6 +4745,10 @@
    "B"
   ],
   "answer_text": "B. private endpoints",
+  "images_question": [
+   "q143_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4538,6 +4789,8 @@
    "F"
   ],
   "answer_text": "C. Create groups that use the Dynamic User membership type. | F. Create a CSV file that contains user information and the appropriate attributes.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4573,6 +4826,8 @@
    "D"
   ],
   "answer_text": "D. an Azure key vault",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4608,6 +4863,10 @@
    "D"
   ],
   "answer_text": "D. Group1 and Group2 only",
+  "images_question": [
+   "q146_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4757,6 +5016,8 @@
    "D"
   ],
   "answer_text": "D. From External collaboration settings, configure the Collaboration restrictions settings.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4797,6 +5058,8 @@
    "E"
   ],
   "answer_text": "D. Storage Blob Data Contributor | E. Storage Blob Data Owner",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4869,6 +5132,11 @@
    "A"
   ],
   "answer_text": "A. User1 only 214/951",
+  "images_question": [
+   "q153_pre0.png",
+   "q153_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4900,6 +5168,8 @@
    "D"
   ],
   "answer_text": "D. Set Allow recommended upper limit for shared access signature (SAS) expiry interval to Enabled.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -4931,6 +5201,10 @@
    "D"
   ],
   "answer_text": "D. storage4",
+  "images_question": [
+   "q155_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5005,6 +5279,10 @@
    "B"
   ],
   "answer_text": "B. container1",
+  "images_question": [
+   "q157_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5124,6 +5402,10 @@
    "E"
   ],
   "answer_text": "B. Register Server1 | C. Install the Azure File Sync agent on Server1 | E. Create a sync group",
+  "images_question": [
+   "q160_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5450,6 +5732,10 @@
    "B"
   ],
   "answer_text": "B. storage2",
+  "images_question": [
+   "q169_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5486,6 +5772,8 @@
    "C"
   ],
   "answer_text": "A. From the Networking blade of account1, select Selected networks. | C. From the Networking blade of account1, add the 131.107.1.0/24 IP address range.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5593,6 +5881,8 @@
    "E"
   ],
   "answer_text": "B. a dataset CSV file | E. a driveset CSV file",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5624,6 +5914,8 @@
    "D"
   ],
   "answer_text": "D. From the Recovery Service vault, stop the backup of each backup item.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5699,6 +5991,8 @@
    "C"
   ],
   "answer_text": "C. Azure File Storage",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5776,6 +6070,8 @@
    "B"
   ],
   "answer_text": "B. blob and file only",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5850,6 +6146,8 @@
    "A"
   ],
   "answer_text": "A. Azure Files",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5881,6 +6179,8 @@
    "D"
   ],
   "answer_text": "D. two update domains",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -5912,6 +6212,8 @@
    "B"
   ],
   "answer_text": "B. Azure Blob storage",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6134,6 +6436,8 @@
    "A"
   ],
   "answer_text": "A. From the RSV1 blade, click Backup items and stop the VM2 backup",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6165,6 +6469,8 @@
    "C"
   ],
   "answer_text": "C. Upgrade the account to general-purpose v2.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6200,6 +6506,10 @@
    "D"
   ],
   "answer_text": "D. storage1, storage2, and storage3 only",
+  "images_question": [
+   "q190_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6231,6 +6541,8 @@
    "C"
   ],
   "answer_text": "C. 445",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6262,6 +6574,8 @@
    "A"
   ],
   "answer_text": "A. Azure File Storage",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6327,6 +6641,10 @@
    "B"
   ],
   "answer_text": "B. Device1, Device2 and Device3",
+  "images_question": [
+   "q194_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6358,6 +6676,8 @@
    "B"
   ],
   "answer_text": "B. an access policy",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6429,6 +6749,8 @@
    "D"
   ],
   "answer_text": "B. Storage Blob Data Contributor | D. Contributor",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6501,6 +6823,8 @@
    "C"
   ],
   "answer_text": "C. azcopy copy D:\\folder1 https://contosodata.blob.core.windows.net/public -- recursive",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6532,6 +6856,8 @@
    "A"
   ],
   "answer_text": "A. Performance",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6610,6 +6936,8 @@
    "D"
   ],
   "answer_text": "D. Create an encryption scope.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6710,6 +7038,8 @@
    "C"
   ],
   "answer_text": "C. azcopy copy D:\\folder1 https://contosodata.blob.core.windows.net/public -- recursive",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6810,6 +7140,8 @@
    "B"
   ],
   "answer_text": "B. Azure File Storage",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6845,6 +7177,11 @@
    "D"
   ],
   "answer_text": "D. Task2, Task3, and Task4 only",
+  "images_question": [
+   "q209_pre0.png",
+   "q209_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -6956,6 +7293,8 @@
    "E"
   ],
   "answer_text": "E. an RSA key type with a key size of 2048, 3072, or 4096 only",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7076,6 +7415,8 @@
    "A"
   ],
   "answer_text": "A. Azure Blob Storage",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7107,6 +7448,10 @@
    "D"
   ],
   "answer_text": "D. deleted",
+  "images_question": [
+   "q215_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7182,6 +7527,8 @@
    "C"
   ],
   "answer_text": "C. Azure Blob storage",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7252,6 +7599,8 @@
    "B"
   ],
   "answer_text": "B. Azure Blob Storage",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7283,6 +7632,8 @@
    "A"
   ],
   "answer_text": "A. Premium performance with locally-redundant storage (LRS)",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7314,6 +7665,8 @@
    "B"
   ],
   "answer_text": "B. Azure File Storage",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7353,6 +7706,8 @@
    "E"
   ],
   "answer_text": "E. containers and queues only",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7412,6 +7767,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7527,6 +7884,8 @@
    "A"
   ],
   "answer_text": "A. a role assignment condition",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7566,6 +7925,8 @@
    "F"
   ],
   "answer_text": "F. file shares, containers, tables, and queues",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7636,6 +7997,8 @@
    "C"
   ],
   "answer_text": "C. Azure File Storage",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7712,6 +8075,8 @@
    "E"
   ],
   "answer_text": "B. Create a new key. | E. Select Azure Disk Encryption for volume encryption.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7743,6 +8108,8 @@
    "C"
   ],
   "answer_text": "C. Azure Disk Encryption",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7821,6 +8188,8 @@
    "B"
   ],
   "answer_text": "B. a shared access signature (SAS)",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7858,6 +8227,8 @@
    "E"
   ],
   "answer_text": "B. the Cool access tire | C. geo-redundant storage (GRS) | E. hierarchical namespace",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7923,6 +8294,10 @@
    "B"
   ],
   "answer_text": "B. storage2",
+  "images_question": [
+   "q238_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7958,6 +8333,10 @@
    "D"
   ],
   "answer_text": "D. Device1, Device2, and Device3 only",
+  "images_question": [
+   "q239_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -7981,6 +8360,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8052,7 +8433,10 @@
    },
    {
     "prompt": "Allowed permissions",
-    "selected": "Read, List",
+    "selected": [
+     "Read",
+     "List"
+    ],
     "options": [
      "Read",
      "Write",
@@ -8253,6 +8637,10 @@
    "A"
   ],
   "answer_text": "A. storage1 only",
+  "images_question": [
+   "q247_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8276,6 +8664,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8311,6 +8701,8 @@
    "E"
   ],
   "answer_text": "E. Upgrade the SKU.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8395,6 +8787,17 @@
    "C"
   ],
   "answer_text": "C. VM2 and VM3",
+  "images_question": [
+   "q251_pre0.png",
+   "q251_pre1.png",
+   "q251_pre2.png",
+   "q251_pre3.png",
+   "q251_pre4.png",
+   "q251_pre5.png",
+   "q251_pre6.png",
+   "q251_pre7.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8430,6 +8833,17 @@
    "D"
   ],
   "answer_text": "D. cont1, share1, and share2 only",
+  "images_question": [
+   "q252_pre0.png",
+   "q252_pre1.png",
+   "q252_pre2.png",
+   "q252_pre3.png",
+   "q252_pre4.png",
+   "q252_pre5.png",
+   "q252_pre6.png",
+   "q252_pre7.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8453,6 +8867,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8476,6 +8892,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8499,6 +8917,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8522,6 +8942,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8595,6 +9017,8 @@
    "A"
   ],
   "answer_text": "A. an Azure Key Vault and an access policy",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8720,6 +9144,8 @@
    "D"
   ],
   "answer_text": "A. Upload a configuration script | D. Modify the extensionProfile section of the Azure Resource Manager template",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8819,6 +9245,11 @@
    "A"
   ],
   "answer_text": "A. Modify the location in the resources section to westus",
+  "images_question": [
+   "q264_pre0.png",
+   "q264_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8850,6 +9281,8 @@
    "A"
   ],
   "answer_text": "A. From Plan1, scale up the App Service plan",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8881,6 +9314,8 @@
    "A"
   ],
   "answer_text": "A. one virtual machine scale set that has 10 virtual machines instances",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8904,6 +9339,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8927,6 +9364,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8950,6 +9389,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -8973,6 +9414,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9004,6 +9447,8 @@
    "A"
   ],
   "answer_text": "A. Create a DNS record",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9027,6 +9472,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q272_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9050,6 +9499,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q273_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9073,6 +9526,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q274_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9182,6 +9639,10 @@
    "A"
   ],
   "answer_text": "A. 131.107.2.1",
+  "images_question": [
+   "q277_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9217,6 +9678,8 @@
    "B"
   ],
   "answer_text": "B. one App Service plan",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9288,6 +9751,8 @@
    "C"
   ],
   "answer_text": "C. Change the size to D8s v3",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9324,6 +9789,10 @@
    "D"
   ],
   "answer_text": "A. Swap the slots | D. Deploy the App1 update to webapp1-test, and then test the update",
+  "images_question": [
+   "q281_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9365,6 +9834,8 @@
    "F"
   ],
   "answer_text": "A. Enable Azure Network Watcher in the East US Azure region. | C. Register the MicrosoftLogAnalytics provider. | F. Enable Azure Network Watcher flow logs.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9396,6 +9867,8 @@
    "D"
   ],
   "answer_text": "D. Deploy one virtual machine scale set that is set to ScaleSetVM orchestration mode.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9427,6 +9900,10 @@
    "B"
   ],
   "answer_text": "B. 2",
+  "images_question": [
+   "q284_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9492,6 +9969,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9515,6 +9994,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q287_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9550,6 +10033,10 @@
    "C"
   ],
   "answer_text": "C. User1 and User2 only",
+  "images_question": [
+   "q288_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9705,6 +10192,11 @@
    "D"
   ],
   "answer_text": "D. VM1, VM3, VMA, and VMC only",
+  "images_question": [
+   "q292_pre0.png",
+   "q292_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9741,6 +10233,8 @@
    "D"
   ],
   "answer_text": "B. the az aks command | D. the Azure portal",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9772,6 +10266,8 @@
    "A"
   ],
   "answer_text": "A. Run the docker push command.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9803,6 +10299,10 @@
    "A"
   ],
   "answer_text": "A. Proximity2 only",
+  "images_question": [
+   "q295_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9826,6 +10326,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9849,6 +10351,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9872,6 +10376,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9903,6 +10409,8 @@
    "B"
   ],
   "answer_text": "B. Linux Diagnostic Extension (LAD) 3.0",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -9976,6 +10484,8 @@
    "C"
   ],
   "answer_text": "C. each virtual machine in a separate Availability Zone",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10007,6 +10517,8 @@
    "D"
   ],
   "answer_text": "D. resource group",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10042,6 +10554,8 @@
    "B"
   ],
   "answer_text": "B. Modify the VM size property of VM1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10073,6 +10587,8 @@
    "B"
   ],
   "answer_text": "B. A Desired State Configuration (DSC) extension",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10189,6 +10705,8 @@
    "C"
   ],
   "answer_text": "C. the new files on drive D",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10224,6 +10742,10 @@
    "C"
   ],
   "answer_text": "C. the hard drive",
+  "images_question": [
+   "q308_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10297,6 +10819,10 @@
    "B"
   ],
   "answer_text": "B. RG1",
+  "images_question": [
+   "q310_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10328,6 +10854,10 @@
    "B"
   ],
   "answer_text": "B. Swap the slots",
+  "images_question": [
+   "q311_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10401,6 +10931,8 @@
    "B"
   ],
   "answer_text": "B. VM1 does not have the latest version of the Azure VM Agent (WaAppAgent.exe) installed.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10424,6 +10956,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10491,6 +11025,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10564,6 +11100,10 @@
    "A"
   ],
   "answer_text": "A. West US, Central US, or East US",
+  "images_question": [
+   "q318_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10595,6 +11135,8 @@
    "B"
   ],
   "answer_text": "B. a Desired State Configuration (DSC) extension",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10660,6 +11202,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10683,6 +11227,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10706,6 +11252,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10737,6 +11285,11 @@
    "B"
   ],
   "answer_text": "B. From VM2, install the Microsoft Azure Recovery Services Agent. 497/951",
+  "images_question": [
+   "q324_pre0.png",
+   "q324_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10799,6 +11352,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q326_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10822,6 +11379,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q327_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10845,6 +11406,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q328_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10876,6 +11441,10 @@
    "D"
   ],
   "answer_text": "D. New-AzDeployment",
+  "images_question": [
+   "q329_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -10948,6 +11517,8 @@
    "C"
   ],
   "answer_text": "C. Azure Custom Script Extension",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11018,6 +11589,8 @@
    "B"
   ],
   "answer_text": "B. Deallocate VM1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11161,6 +11734,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11276,6 +11851,10 @@
    "D"
   ],
   "answer_text": "D. Instance3 and Instance4 only",
+  "images_question": [
+   "q340_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11379,6 +11958,10 @@
    "B"
   ],
   "answer_text": "B. IP1 and IP2 only",
+  "images_question": [
+   "q342_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11527,6 +12110,10 @@
    "B"
   ],
   "answer_text": "B. 2",
+  "images_question": [
+   "q346_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11594,6 +12181,10 @@
    "B"
   ],
   "answer_text": "B. 3",
+  "images_question": [
+   "q348_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11669,6 +12260,8 @@
    "B"
   ],
   "answer_text": "B. Assign a managed user identity to App1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11700,6 +12293,10 @@
    "B"
   ],
   "answer_text": "B. NIC1",
+  "images_question": [
+   "q351_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11731,6 +12328,10 @@
    "A"
   ],
   "answer_text": "A. New-AzSubscriptionDeployment",
+  "images_question": [
+   "q352_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11762,6 +12363,8 @@
    "B"
   ],
   "answer_text": "B. scope",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11828,6 +12431,10 @@
    "C"
   ],
   "answer_text": "C. Proximity1 only",
+  "images_question": [
+   "q355_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11899,6 +12506,11 @@
    "D"
   ],
   "answer_text": "D. VM1, VM3, VMA, and VMC only",
+  "images_question": [
+   "q357_pre0.png",
+   "q357_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11930,6 +12542,8 @@
    "D"
   ],
   "answer_text": "D. ContReg1",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -11961,6 +12575,8 @@
    "D"
   ],
   "answer_text": "D. Enable content trust.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12032,6 +12648,10 @@
    "A"
   ],
   "answer_text": "A. Azure Custom Script Extension",
+  "images_question": [
+   "q361_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12063,6 +12683,10 @@
    "C"
   ],
   "answer_text": "C. Remove the resource limit for both containers.",
+  "images_question": [
+   "q362_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12098,6 +12722,8 @@
    "C"
   ],
   "answer_text": "C. Azure Container Apps or Azure App Service only",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12162,6 +12788,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12185,6 +12813,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12208,6 +12838,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12243,6 +12875,8 @@
    "B"
   ],
   "answer_text": "B. Rules Based in the Scale out method settings",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12278,6 +12912,17 @@
    "B"
   ],
   "answer_text": "B. Cert1 or Cert2 only",
+  "images_question": [
+   "q369_pre0.png",
+   "q369_pre1.png",
+   "q369_pre2.png",
+   "q369_pre3.png",
+   "q369_pre4.png",
+   "q369_pre5.png",
+   "q369_pre6.png",
+   "q369_pre7.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12301,6 +12946,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12324,6 +12971,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12347,6 +12996,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12378,6 +13029,17 @@
    "D"
   ],
   "answer_text": "D. Set-AzVMDiskEncryptionExtension and Key1.",
+  "images_question": [
+   "q373_pre0.png",
+   "q373_pre1.png",
+   "q373_pre2.png",
+   "q373_pre3.png",
+   "q373_pre4.png",
+   "q373_pre5.png",
+   "q373_pre6.png",
+   "q373_pre7.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12453,6 +13115,8 @@
    "B"
   ],
   "answer_text": "B. three virtual hubs and one virtual WAN",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12525,6 +13189,11 @@
    "A"
   ],
   "answer_text": "A. a frontend IP address",
+  "images_question": [
+   "q377_pre0.png",
+   "q377_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12637,6 +13306,10 @@
    "C"
   ],
   "answer_text": "C. VNet3 and VNet4 only",
+  "images_question": [
+   "q380_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12678,6 +13351,8 @@
    "F"
   ],
   "answer_text": "B. Deploy a standard load balancer | C. Add two load balancing rules that have HA Ports and Floating IP enabled | F. Add a frontend IP configuration, two backend pools, and a health probe",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12709,6 +13384,8 @@
    "B"
   ],
   "answer_text": "B. Select Allow gateway transit on VNet1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12779,6 +13456,10 @@
    "D"
   ],
   "answer_text": "D. the subnets on VNet3 only",
+  "images_question": [
+   "q384_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12878,6 +13559,8 @@
    "C"
   ],
   "answer_text": "C. Connect webapp1 to VNET1",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12909,6 +13592,10 @@
    "B"
   ],
   "answer_text": "B. Start VM1. 606/951",
+  "images_question": [
+   "q388_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12940,6 +13627,8 @@
    "D"
   ],
   "answer_text": "D. Session persistence to Client IP",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12963,6 +13652,8 @@
    "A"
   ],
   "answer_text": "A. Yes 609/951",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -12986,6 +13677,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q391_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13009,6 +13704,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13084,6 +13781,10 @@
    "A"
   ],
   "answer_text": "A. 1",
+  "images_question": [
+   "q394_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13115,6 +13816,10 @@
    "A"
   ],
   "answer_text": "A. Remove Microsoft.Compute/virtualMachines from the policy.",
+  "images_question": [
+   "q395_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13146,6 +13851,8 @@
    "A"
   ],
   "answer_text": "A. Azure CLI",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13177,6 +13884,8 @@
    "A"
   ],
   "answer_text": "A. an inbound NAT rule",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13317,6 +14026,11 @@
    "C"
   ],
   "answer_text": "C. Associate the NSG to Subnet1.",
+  "images_question": [
+   "q401_pre0.png",
+   "q401_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13348,6 +14062,8 @@
    "D"
   ],
   "answer_text": "D. Provision virtual network gateways.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13384,6 +14100,11 @@
    "C"
   ],
   "answer_text": "A. Use managed disks | C. Availability options",
+  "images_question": [
+   "q403_pre0.png",
+   "q403_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13491,6 +14212,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13514,6 +14237,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13537,6 +14262,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13568,6 +14295,10 @@
    "D"
   ],
   "answer_text": "D. Start VM1",
+  "images_question": [
+   "q409_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13599,6 +14330,11 @@
    "D"
   ],
   "answer_text": "D. Configure peering between VNET1, VNET2, and VNET3",
+  "images_question": [
+   "q410_pre0.png",
+   "q410_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13667,6 +14403,8 @@
    "B"
   ],
   "answer_text": "B. Create a deny rule in a network security group (NSG) that is linked to Subnet1",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13694,6 +14432,10 @@
    "A"
   ],
   "answer_text": "A. Associate NIC1 to ASG1",
+  "images_question": [
+   "q413_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13731,6 +14473,8 @@
    "C"
   ],
   "answer_text": "A. Create a connection | B. Create a local site VPN gateway | C. Create a VPN gateway that uses the VpnGw1 SKU",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13879,6 +14623,10 @@
    "B"
   ],
   "answer_text": "B. East US only",
+  "images_question": [
+   "q418_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -13910,6 +14658,11 @@
    "B"
   ],
   "answer_text": "B. Configure the name servers for adatum.com at the domain registrar",
+  "images_question": [
+   "q419_pre0.png",
+   "q419_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14057,6 +14810,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q423_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14080,6 +14837,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q424_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14103,6 +14864,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q425_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14126,6 +14891,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14157,6 +14924,10 @@
    "D"
   ],
   "answer_text": "D. Create a new inbound rule that allows TCP protocol 443 and configure the rule to have a priority of 501.",
+  "images_question": [
+   "q427_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14180,6 +14951,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14239,6 +15012,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q430_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14262,6 +15039,10 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [
+   "q431_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14285,6 +15066,10 @@
    "B"
   ],
   "answer_text": "B. No 688/951",
+  "images_question": [
+   "q432_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14308,6 +15093,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14339,6 +15126,8 @@
    "B"
   ],
   "answer_text": "B. Azure Container Networking Interface (CNI)",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14362,6 +15151,10 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [
+   "q435_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14385,6 +15178,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14416,6 +15211,8 @@
    "C"
   ],
   "answer_text": "C. Connection monitor",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14540,6 +15337,10 @@
    "D"
   ],
   "answer_text": "D. vm1.internal.cloudapp.net",
+  "images_question": [
+   "q440_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14563,6 +15364,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q441_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14603,6 +15408,8 @@
    "E"
   ],
   "answer_text": "C. Create a route-based virtual network gateway | E. Delete GW1",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14737,6 +15544,8 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14760,6 +15569,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14783,6 +15594,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14837,6 +15650,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14860,6 +15675,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q451_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14960,6 +15779,10 @@
    "A"
   ],
   "answer_text": "A. Modify the address space of VNet1.",
+  "images_question": [
+   "q454_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -14995,6 +15818,11 @@
    "C"
   ],
   "answer_text": "C. comp2.contoso.com only",
+  "images_question": [
+   "q455_pre0.png",
+   "q455_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15080,6 +15908,8 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15111,6 +15941,8 @@
    "A"
   ],
   "answer_text": "A. Session persistence to Client IP and protocol",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15142,6 +15974,10 @@
    "C"
   ],
   "answer_text": "C. IP3 only",
+  "images_question": [
+   "q459_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15173,6 +16009,8 @@
    "B"
   ],
   "answer_text": "B. the Calico network policy",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15253,6 +16091,8 @@
    "D"
   ],
   "answer_text": "D. Session persistence to Client IP and Protocol",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15323,6 +16163,8 @@
    "D"
   ],
   "answer_text": "A. a frontend IP address | D. a backend pool",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15350,6 +16192,8 @@
    "B"
   ],
   "answer_text": "B. a standard SKU and a static IP address assignment",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15451,6 +16295,8 @@
    "D"
   ],
   "answer_text": "D. ErGw3AZ",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15552,6 +16398,8 @@
    "C"
   ],
   "answer_text": "C. an Azure Virtual Network Gateway",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15588,6 +16436,10 @@
    "C"
   ],
   "answer_text": "B. LB1 | C. NIC1",
+  "images_question": [
+   "q472_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15619,6 +16471,8 @@
    "B"
   ],
   "answer_text": "B. Modify the Public network access settings.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15650,6 +16504,8 @@
    "C"
   ],
   "answer_text": "C. IKEv2",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15681,6 +16537,10 @@
    "B"
   ],
   "answer_text": "B. DemoSubnet1",
+  "images_question": [
+   "q475_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15712,6 +16572,8 @@
    "D"
   ],
   "answer_text": "D. Session persistence to Client IP",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15778,6 +16640,8 @@
    "B"
   ],
   "answer_text": "B. Session persistence to Client IP",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15809,6 +16673,8 @@
    "B"
   ],
   "answer_text": "B. 443",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15882,6 +16748,8 @@
    "C"
   ],
   "answer_text": "C. Session persistence to Client IP",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15917,6 +16785,10 @@
    "C"
   ],
   "answer_text": "C. VNET1 only",
+  "images_question": [
+   "q482_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -15948,6 +16820,10 @@
    "B"
   ],
   "answer_text": "B. 2",
+  "images_question": [
+   "q483_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16013,6 +16889,8 @@
    "C"
   ],
   "answer_text": "C. Routing preference",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16044,6 +16922,8 @@
    "A"
   ],
   "answer_text": "A. Create a network security group (NSG) that has an outbound security rule to deny destination port 3389 and apply the NSG to the network interface of VM1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16075,6 +16955,10 @@
    "C"
   ],
   "answer_text": "C. Create a route table.",
+  "images_question": [
+   "q487_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16110,6 +16994,10 @@
    "A"
   ],
   "answer_text": "A. VM1 only",
+  "images_question": [
+   "q488_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16141,6 +17029,8 @@
    "C"
   ],
   "answer_text": "C. Session persistence to Client IP and protocol",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16172,6 +17062,8 @@
    "C"
   ],
   "answer_text": "C. Session persistence to Client IP and protocol",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16203,6 +17095,10 @@
    "D"
   ],
   "answer_text": "D. Upgrade Bastion1 to the Standard SKU",
+  "images_question": [
+   "q491_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16234,6 +17130,8 @@
    "A"
   ],
   "answer_text": "A. Session persistence to Client IP and protocol",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16297,6 +17195,8 @@
    "B"
   ],
   "answer_text": "B. Session persistence to Client IP",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16332,6 +17232,10 @@
    "A"
   ],
   "answer_text": "A. IP1 only",
+  "images_question": [
+   "q495_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16363,6 +17267,8 @@
    "D"
   ],
   "answer_text": "D. Session persistence to Client IP",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16394,6 +17300,8 @@
    "D"
   ],
   "answer_text": "D. Session persistence to Client IP",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16425,6 +17333,10 @@
    "D"
   ],
   "answer_text": "D. VM1, Disk1, NetInt1, and VNet1",
+  "images_question": [
+   "q498_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16456,6 +17368,8 @@
    "A"
   ],
   "answer_text": "A. Session persistence to Client IP and protocol",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16487,6 +17401,8 @@
    "D"
   ],
   "answer_text": "D. Session persistence to Client IP",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16518,6 +17434,8 @@
    "A"
   ],
   "answer_text": "A. Session persistence to Client IP",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16549,6 +17467,8 @@
    "D"
   ],
   "answer_text": "D. Virtual appliance",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16584,6 +17504,10 @@
    "E"
   ],
   "answer_text": "E. VNet2, VNet3, VNet4, and VNet5",
+  "images_question": [
+   "q503_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16615,6 +17539,8 @@
    "C"
   ],
   "answer_text": "C. a resource guard",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16638,6 +17564,10 @@
    "B"
   ],
   "answer_text": "B. No",
+  "images_question": [
+   "q505_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16673,6 +17603,10 @@
    "B"
   ],
   "answer_text": "B. Subnet1 only",
+  "images_question": [
+   "q506_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16704,6 +17638,10 @@
    "B"
   ],
   "answer_text": "B. Start VM1.",
+  "images_question": [
+   "q507_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16782,6 +17720,10 @@
    "A"
   ],
   "answer_text": "A. 1",
+  "images_question": [
+   "q509_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16889,6 +17831,8 @@
    "C"
   ],
   "answer_text": "C. 123",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -16920,6 +17864,8 @@
    "B"
   ],
   "answer_text": "B. the public networking type",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17021,6 +17967,8 @@
    "D"
   ],
   "answer_text": "D. OS type",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17052,6 +18000,11 @@
    "B"
   ],
   "answer_text": "B. VM1 and VM2 only",
+  "images_question": [
+   "q517_pre0.png",
+   "q517_pre1.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17083,6 +18036,10 @@
    "C"
   ],
   "answer_text": "C. VNet3 and VNet4 only",
+  "images_question": [
+   "q518_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17114,6 +18071,8 @@
    "C"
   ],
   "answer_text": "C. Deploy an Open Virtualization Application (OVA) template to vSphere.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17186,6 +18145,10 @@
    "B"
   ],
   "answer_text": "B. peering",
+  "images_question": [
+   "q521_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17217,6 +18180,8 @@
    "B"
   ],
   "answer_text": "B. service chaining and user-defined routes (UDRs)",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17248,6 +18213,8 @@
    "B"
   ],
   "answer_text": "B. a route table that has custom routes",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17279,6 +18246,10 @@
    "B"
   ],
   "answer_text": "B. VM1, VM2, VM3 and VM4",
+  "images_question": [
+   "q524_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17310,6 +18281,8 @@
    "A"
   ],
   "answer_text": "A. an action group",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17341,6 +18314,10 @@
    "A"
   ],
   "answer_text": "A. Create a new Recovery Services vault",
+  "images_question": [
+   "q526_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17415,6 +18392,10 @@
    "D"
   ],
   "answer_text": "D. User1 and User2 only",
+  "images_question": [
+   "q528_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17530,6 +18511,8 @@
    "D"
   ],
   "answer_text": "D. Copy Budget.xls to Data.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17597,6 +18580,8 @@
    "B"
   ],
   "answer_text": "B. From the Device settings blade, modify the Maximum number of devices per user setting.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17688,6 +18673,10 @@
    "A"
   ],
   "answer_text": "A. Yes",
+  "images_question": [
+   "q536_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17719,6 +18708,8 @@
    "C"
   ],
   "answer_text": "C. Network Performance Monitor",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17868,6 +18859,8 @@
    "B"
   ],
   "answer_text": "B. virtual machine",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17899,6 +18892,8 @@
    "D"
   ],
   "answer_text": "D. From Azure Cost Management, view Advisor Recommendations",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17930,6 +18925,8 @@
    "D"
   ],
   "answer_text": "D. From webapp1, turn on Application Logging",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -17961,6 +18958,8 @@
    "B"
   ],
   "answer_text": "B. Azure Application Insights",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18034,6 +19033,8 @@
    "D"
   ],
   "answer_text": "D. Restore VM1 by using the Create new restore configuration option.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18220,6 +19221,8 @@
    "C"
   ],
   "answer_text": "C. Download and re-install the VPN client configuration package on Client1.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18287,6 +19290,8 @@
    "D"
   ],
   "answer_text": "D. a Log Analytics workspace",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18348,6 +19353,8 @@
    "B"
   ],
   "answer_text": "B. IP Addresses",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18379,6 +19386,8 @@
    "A"
   ],
   "answer_text": "A. search in (Event) \"error\"",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18410,6 +19419,8 @@
    "A"
   ],
   "answer_text": "A. Azure Application Insights Profiler",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18441,6 +19452,10 @@
    "B"
   ],
   "answer_text": "B. storage2",
+  "images_question": [
+   "q558_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18520,6 +19535,8 @@
    "C"
   ],
   "answer_text": "A. a Log Analytics workspace | C. a storage account",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18551,6 +19568,10 @@
    "B"
   ],
   "answer_text": "B. 2",
+  "images_question": [
+   "q561_pre0.png"
+  ],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18582,6 +19603,8 @@
    "B"
   ],
   "answer_text": "B. Create a TXT record named asuid that contains the domain verification ID.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18613,6 +19636,8 @@
    "D"
   ],
   "answer_text": "D. Configure NSG flow logs.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18678,6 +19703,8 @@
    "B"
   ],
   "answer_text": "B. object replication",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18705,6 +19732,8 @@
    "A"
   ],
   "answer_text": "A. the Azure Monitor agent",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18736,6 +19765,8 @@
    "C"
   ],
   "answer_text": "C. an action group",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18767,6 +19798,8 @@
    "A"
   ],
   "answer_text": "A. Azure Monitor Network Insights",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18803,6 +19836,8 @@
    "D"
   ],
   "answer_text": "B. IP flow verify | D. Connection troubleshoot",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18834,6 +19869,8 @@
    "A"
   ],
   "answer_text": "A. a resource, a condition, and an action group",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -18986,6 +20023,8 @@
    "C"
   ],
   "answer_text": "C. an Azure Monitor Private Link Scope (AMPLS)",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19060,6 +20099,8 @@
    "D"
   ],
   "answer_text": "D. Backlogged Input Events",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19087,6 +20128,8 @@
    "A"
   ],
   "answer_text": "A. Send to a Log Analytics workspace.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19114,6 +20157,8 @@
    "B"
   ],
   "answer_text": "B. XPath",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19145,6 +20190,8 @@
    "C"
   ],
   "answer_text": "C. the Log Analytics agent",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19176,6 +20223,8 @@
    "B"
   ],
   "answer_text": "B. NSG flow logs for NSG1",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19211,6 +20260,8 @@
    "C"
   ],
   "answer_text": "C. Diagnostic settings",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19409,6 +20460,8 @@
    "C"
   ],
   "answer_text": "C. From the Subscriptions blade, select the subscription, and then modify the Access control (IAM) settings",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19557,6 +20610,8 @@
    "A"
   ],
   "answer_text": "A. On storage2, enable identity-based access for the file shares.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19588,6 +20643,8 @@
    "D"
   ],
   "answer_text": "D. a Recovery Services vault",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19619,6 +20676,8 @@
    "B"
   ],
   "answer_text": "B. Use Azure Storage Explorer to copy the files.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19767,6 +20826,8 @@
    "B"
   ],
   "answer_text": "B. storage2",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19802,6 +20863,8 @@
    "E"
   ],
   "answer_text": "E. IP flow verify in Azure Network Watcher",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19833,6 +20896,8 @@
    "B"
   ],
   "answer_text": "B. Establish peering between VNET1 and VNET3.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -19947,6 +21012,8 @@
    "A"
   ],
   "answer_text": "A. Create an incoming security rule for port 443 from the Internet. Associate the NSG to the subnet that contains the web servers.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -20011,6 +21078,8 @@
    "C"
   ],
   "answer_text": "C. Redeploy VM1 and VM2 to the same availability set.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -20042,6 +21111,8 @@
    "D"
   ],
   "answer_text": "D. Establish peering between VNET1 and VNET3.",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false
@@ -20115,6 +21186,8 @@
    "B"
   ],
   "answer_text": "B. dynamic groups and conditional access policies",
+  "images_question": [],
+  "images_answer": [],
   "source": "text_layer",
   "verified": true,
   "needs_review": false

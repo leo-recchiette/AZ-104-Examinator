@@ -12,6 +12,8 @@ namespace Examinator.Api.Models.Contracts;
 ///   Prompts         - answer_layout 'selection' o 'yes_no': uno per riga,
 ///                      ciascuno con le proprie opzioni cliccabili (per
 ///                      'yes_no' sempre ["Yes","No"]).
+/// Images e' lo screenshot (se presente) da mostrare insieme alla domanda,
+/// PRIMA di rispondere - nomi file nudi, risolti dal client su /images/&lt;file&gt;.
 /// </summary>
 public sealed record QuestionDto(
     int Number,
@@ -19,4 +21,5 @@ public sealed record QuestionDto(
     string Text,
     IReadOnlyList<OptionDto> Options,
     IReadOnlyList<string> DraggableItems,
-    IReadOnlyList<PromptOptionsDto> Prompts);
+    IReadOnlyList<PromptOptionsDto> Prompts,
+    IReadOnlyList<string> Images);

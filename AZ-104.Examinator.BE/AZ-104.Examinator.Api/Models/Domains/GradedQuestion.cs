@@ -7,7 +7,7 @@ namespace Examinator.Api.Models.Domains;
 /// ExamResultService per il solo scopo della correzione. Interna al progetto,
 /// nessun altro layer deve costruirla.
 /// </summary>
-internal sealed record GradedQuestion(Question Source, IReadOnlyList<Option> Options, IReadOnlyList<AnswerRow> AnswerRows)
+internal sealed record GradedQuestion(Question Source, IReadOnlyList<Option> Options, IReadOnlyList<AnswerRow> AnswerRows, IReadOnlyList<QuestionImage> Images)
 {
     public int Number => Source.Number;
     public QuestionType Type => Source.Type;
