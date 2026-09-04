@@ -44,3 +44,17 @@ export const DARK: ThemeTokens = {
   sh: "rgba(0,0,0,.45)", head: "rgba(20,21,23,.94)", track: "#2c2f34", dis: "#5a5f66",
   warn: "#e8c46a", warnbg: "#2a2313", warnbd: "#7a6420",
 };
+
+/** Banner blu del header durante Exam/Review — non e' un token del tema, resta identico in light/dark salvo la tinta. */
+export const HEADER_GRADIENT = {
+  light: "linear-gradient(135deg,#2b7cf6,#0b3fae)",
+  dark: "linear-gradient(135deg,#123a7a,#061638)",
+};
+
+/** Gradiente decorativo dello sfondo della mode-select screen. */
+export const MODE_BG_GRADIENT = {
+  light:
+    "radial-gradient(circle at 10% -10%, rgba(0,120,212,.10), transparent 45%), radial-gradient(circle at 100% 15%, rgba(80,230,255,.10), transparent 40%)",
+  dark:
+    "radial-gradient(circle at 10% -10%, rgba(0,120,212,.16), transparent 45%), radial-gradient(circle at 100% 15%, rgba(80,230,255,.08), transparent 40%)",
+};

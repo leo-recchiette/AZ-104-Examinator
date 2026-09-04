@@ -17,9 +17,10 @@ interface QuestionCardProps {
   isPractice: boolean;
   checkResult?: AnswerCheckResultDto;
   onReveal: () => void | Promise<void>;
+  onRequestExit: () => void;
 }
 
-export function QuestionCard({ question, value, onChange, flagged, onToggleFlag, isPractice, checkResult, onReveal }: QuestionCardProps) {
+export function QuestionCard({ question, value, onChange, flagged, onToggleFlag, isPractice, checkResult, onReveal, onRequestExit }: QuestionCardProps) {
   const { tokens: t } = useTheme();
   const [panelOpen, setPanelOpen] = useState(false);
   const shape = getAnswerShape(question);
@@ -38,7 +39,7 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, marginBottom: 18 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 16, background: t.sub, border: `1px solid ${t.bd2}`, borderRadius: 14, padding: "14px 18px", flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           <span style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 600, color: t.fa }}>
             {questionTypeLabel(question, shape)}
@@ -49,23 +50,34 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
             </span>
           )}
         </div>
-        <button
-          onClick={onToggleFlag}
-          style={{
-            display: "flex", alignItems: "center", gap: 7, padding: "7px 13px", borderRadius: 9, fontSize: 13, fontWeight: 500,
-            border: `1px solid ${flagged ? t.warnbd : t.bd3}`, background: flagged ? t.warnbg : t.card,
-            color: flagged ? t.warn : t.mu, whiteSpace: "nowrap", font: "inherit",
-          }}
-        >
-          {flagged ? "◆" : "◇"} {flagged ? "Flagged for review" : "Flag for review"}
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+          <button
+            onClick={onToggleFlag}
+            style={{
+              display: "flex", alignItems: "center", gap: 7, padding: "7px 13px", borderRadius: 9, fontSize: 13, fontWeight: 500,
+              border: `1px solid ${flagged ? t.warnbd : t.bd3}`, background: flagged ? t.warnbg : t.card,
+              color: flagged ? t.warn : t.mu, whiteSpace: "nowrap", font: "inherit",
+            }}
+          >
+            {flagged ? "◆" : "◇"} {flagged ? "Flagged for review" : "Flag for review"}
+          </button>
+          <button
+            onClick={onRequestExit}
+            style={{
+              background: "#e5484d", border: "1px solid #e5484d", borderRadius: 9, padding: "7px 13px",
+              color: "#fff", fontSize: 13, fontWeight: 600, whiteSpace: "nowrap", font: "inherit",
+            }}
+          >
+            Exit &amp; submit
+          </button>
+        </div>
       </div>
 
       <div style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "32px 30px", boxShadow: `0 1px 3px ${t.sh}` }}>
-        <ImageStack filenames={question.images} />
-        <p style={{ margin: "0 0 26px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 20.5, lineHeight: 1.5, letterSpacing: "-.003em" }}>
+        <p style={{ margin: "0 0 18px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 20.5, lineHeight: 1.5, letterSpacing: "-.003em" }}>
           {question.text}
         </p>
+        <ImageStack filenames={question.images} />
 
         {shape === "options" && (
           <MultipleChoiceAnswer options={question.options} value={value} onChange={onChange} correctLetters={revealed ? correct?.correctLetters : undefined} />
@@ -94,10 +106,10 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
                 <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.ok, marginBottom: 10 }}>
                   Correct answer
                 </div>
-                <ImageStack filenames={correct.images} />
                 <div style={{ fontSize: 15, lineHeight: 1.55, fontWeight: 500, marginBottom: 16, whiteSpace: "pre-line" }}>
                   {correct.answerText}
                 </div>
+                <ImageStack filenames={correct.images} />
                 <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.mu, marginBottom: 8 }}>
                   Explanation
                 </div>

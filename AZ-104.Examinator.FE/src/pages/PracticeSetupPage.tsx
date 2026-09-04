@@ -6,7 +6,7 @@ import { getExam } from "../api/questions";
 import { ApiError } from "../api/client";
 import { FloatingThemeToggle } from "../components/FloatingThemeToggle";
 
-const COUNT_OPTIONS = [5, 10, 20, 30, 55];
+const COUNT_OPTIONS = [10, 20, 30, 40, 50, 60, 70, 80];
 const MINUTE_OPTIONS = [15, 30, 45, 60, 90, 120];
 
 export function PracticeSetupPage() {
