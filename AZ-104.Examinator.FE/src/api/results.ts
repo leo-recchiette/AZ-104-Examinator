@@ -22,12 +22,12 @@ export function getScore(submissions: AnswerSubmissionDto[]): Promise<ExamScoreD
 }
 
 export function saveAttempt(attempt: SaveExamAttemptDto): Promise<ExamAttemptDto> {
-  return request<ExamAttemptDto>("/api/results/attempts", {
+  return request<ExamAttemptDto>("/api/results/saveAttempt", {
     method: "POST",
     body: JSON.stringify(attempt),
   });
 }
 
-export function getAttempts(): Promise<ExamAttemptDto[]> {
-  return request<ExamAttemptDto[]>("/api/results/attempts");
+export function getAllAttempts(): Promise<ExamAttemptDto[]> {
+  return request<ExamAttemptDto[]>("/api/results/getAllAttempts");
 }

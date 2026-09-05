@@ -8,7 +8,7 @@ namespace Examinator.Api.Controllers;
 [Route("api/results")]
 public sealed class ResultsController : ControllerBase
 {
-    private const int MaxCount = 606; // dimensione dell'intero question bank: bound di buon senso, non una regola di business
+    private const int MaxCount = 606; // dimensione dell'intero question bank
     private static readonly string[] ValidModes = ["practice", "exam"];
 
     private readonly IExamResultService _examResultService;
@@ -48,8 +48,7 @@ public sealed class ResultsController : ControllerBase
         return Ok(results);
     }
 
-    /// <summary>Registra nello storico una sessione appena conclusa, da chiamare subito dopo getScore.</summary>
-    [HttpPost("attempts")]
+    [HttpPost("saveAttempt")]
     public async Task<ActionResult<ExamAttemptDto>> SaveAttemptAsync(
         [FromBody] SaveExamAttemptDto request,
         CancellationToken cancellationToken)
@@ -63,15 +62,14 @@ public sealed class ResultsController : ControllerBase
         if (request.EndTime < request.StartTime)
             return BadRequest("endTime non puo' precedere startTime.");
 
-        var saved = await _examAttemptService.SaveAsync(request, cancellationToken);
+        var saved = await _examAttemptService.SaveAttemptAsync(request, cancellationToken);
         return Ok(saved);
     }
 
-    /// <summary>Storico completo, dal piu' vecchio al piu' recente: alimenta il grafico "Your progress" della mode-select.</summary>
-    [HttpGet("attempts")]
-    public async Task<ActionResult<IReadOnlyList<ExamAttemptDto>>> GetAttemptsAsync(CancellationToken cancellationToken)
+    [HttpGet("getAllAttempts")]
+    public async Task<ActionResult<IReadOnlyList<ExamAttemptDto>>> GetAllAttemptsAsync(CancellationToken cancellationToken)
     {
-        var attempts = await _examAttemptService.GetAllAsync(cancellationToken);
+        var attempts = await _examAttemptService.GetAllAttemptsAsync(cancellationToken);
         return Ok(attempts);
     }
 }

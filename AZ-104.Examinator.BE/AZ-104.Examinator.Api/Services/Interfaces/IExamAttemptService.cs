@@ -9,7 +9,7 @@ namespace Examinator.Api.Services.Interfaces;
 /// </summary>
 public interface IExamAttemptService
 {
-    Task<ExamAttemptDto> SaveAsync(SaveExamAttemptDto request, CancellationToken cancellationToken);
+    Task<ExamAttemptDto> SaveAttemptAsync(SaveExamAttemptDto request, CancellationToken cancellationToken);
 
-    Task<IReadOnlyList<ExamAttemptDto>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IReadOnlyList<ExamAttemptDto>> GetAllAttemptsAsync(CancellationToken cancellationToken);
 }

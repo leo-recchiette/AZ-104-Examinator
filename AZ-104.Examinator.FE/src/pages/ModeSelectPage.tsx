@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "../theme/ThemeContext";
 import { useSession } from "../session/SessionContext";
 import { getExam } from "../api/questions";
-import { getAttempts } from "../api/results";
+import { getAllAttempts } from "../api/results";
 import { ApiError } from "../api/client";
 import type { ExamAttemptDto } from "../types/answer";
 import { FloatingThemeToggle } from "../components/FloatingThemeToggle";
@@ -20,7 +20,7 @@ export function ModeSelectPage() {
 
   useEffect(() => {
     // Pannello "best effort": se lo storico non si carica, la pagina resta comunque utilizzabile.
-    getAttempts()
+    getAllAttempts()
       .then(setHistory)
       .catch((err) => console.error("Impossibile caricare lo storico dei tentativi:", err));
   }, []);

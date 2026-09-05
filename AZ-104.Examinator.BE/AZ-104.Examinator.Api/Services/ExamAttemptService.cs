@@ -15,7 +15,7 @@ public sealed class ExamAttemptService : IExamAttemptService
         _repository = repository;
     }
 
-    public async Task<ExamAttemptDto> SaveAsync(SaveExamAttemptDto request, CancellationToken cancellationToken)
+    public async Task<ExamAttemptDto> SaveAttemptAsync(SaveExamAttemptDto request, CancellationToken cancellationToken)
     {
         var attempt = new ExamAttempt
         {
@@ -29,7 +29,7 @@ public sealed class ExamAttemptService : IExamAttemptService
         return saved.ToDto();
     }
 
-    public async Task<IReadOnlyList<ExamAttemptDto>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<ExamAttemptDto>> GetAllAttemptsAsync(CancellationToken cancellationToken)
     {
         var attempts = await _repository.GetAllAsync(cancellationToken);
         return attempts.Select(a => a.ToDto()).ToList();
