@@ -54,8 +54,16 @@ export function GroupNav({ members, currentIndex, answers, onSelect }: GroupNavP
               }}
             >
               <span style={{ flex: 1 }}>Question {position + 1}</span>
-              {/* Il segno di spunta dice "risposta data", non "risposta giusta": la correzione non e' ancora avvenuta. */}
-              <span style={{ flex: "none", fontSize: 12, color: answered ? t.ok : t.fa2 }}>{answered ? "✓" : "—"}</span>
+              {/* Verde significa "risposta data", non "risposta giusta": la correzione non e' ancora avvenuta.
+                  L'etichetta serve perche' il colore da solo non e' leggibile da tutti (screen reader, daltonismo). */}
+              <span
+                role="img"
+                aria-label={answered ? "Answered" : "Not answered"}
+                title={answered ? "Answered" : "Not answered"}
+                style={{ flex: "none", fontSize: 10, lineHeight: 1, color: answered ? t.ok : t.er }}
+              >
+                ●
+              </span>
             </button>
           );
         })}
