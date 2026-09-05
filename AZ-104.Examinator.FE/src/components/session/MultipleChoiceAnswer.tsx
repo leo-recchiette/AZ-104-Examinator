@@ -26,7 +26,9 @@ export function MultipleChoiceAnswer({ options, value, onChange, correctLetters 
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    // Griglia invece di colonna singola: con 4-6 opzioni dimezza l'altezza occupata,
+    // che e' cio' che faceva scrollare la card. auto-fit torna a una colonna sotto i ~700px.
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 10 }}>
       {options.map((option) => {
         const grade = grades?.find((g) => g.letter === option.letter);
         const sel = value.includes(option.letter);
