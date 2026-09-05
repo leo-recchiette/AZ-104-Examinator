@@ -7,7 +7,7 @@ import { checkAnswers, getScore, saveAttempt } from "../api/results";
 import { ApiError } from "../api/client";
 import { isQuestionAnswered } from "../utils/questionShape";
 import { QuestionCard } from "../components/session/QuestionCard";
-import { ThemeIconButton } from "../components/ThemeIconButton";
+import { OptionsMenu } from "../components/OptionsMenu";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
 function fmt(totalSeconds: number): string {
@@ -138,7 +138,7 @@ export function SessionPage() {
           <div style={{ fontSize: 13.5, color: "#e4e7ee", fontVariantNumeric: "tabular-nums" }}>
             Question <strong style={{ color: "#fff" }}>{state.currentIndex + 1}</strong> of {total}
           </div>
-          <ThemeIconButton variant="onDark" />
+          <OptionsMenu variant="onDark" />
         </div>
         <div style={{ height: 4, background: "rgba(255,255,255,.25)" }}>
           <div style={{ height: "100%", width: `${timePct}%`, background: clockColor, transition: "width 1s linear" }} />
