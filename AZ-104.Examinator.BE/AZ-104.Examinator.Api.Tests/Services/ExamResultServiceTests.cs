@@ -1,30 +1,18 @@
 using Examinator.Api.Models.Contracts;
 using Examinator.Api.Models.Domains;
+using Examinator.Api.Repositories;
 using Examinator.Api.Services;
 using FluentAssertions;
+using NSubstitute;
 
 namespace Examinator.Api.Tests.Services;
 
 [TestClass]
 public sealed class ExamResultServiceTests
 {
-    private readonly ExamResultService _sut = new(
-        new FakeQuestionRepository
-        {
-            Questions = [Question()],
-            Options = [Option()],
-            AnswerRows = [],
-        },
-        new ScoreService());
+    private readonly ExamResultService _sut = Sut(questions: [Question()], options: [Option()]);
 
-    private readonly ExamResultService _sutWithTenQuestions = new(
-        new FakeQuestionRepository
-        {
-            Questions = Questions(),
-            Options = Options(),
-            AnswerRows = [],
-        },
-        new ScoreService());
+    private readonly ExamResultService _sutWithTenQuestions = Sut(Questions(), Options());
 
     [TestMethod]
     public async Task Should_Calculate_Percentage_Ignoring_Unknown_Questions()
@@ -79,6 +67,21 @@ public sealed class ExamResultServiceTests
     }
 
     #region Utils
+
+    /// <summary>
+    /// ExamResultService su un substitute di IQuestionRepository che ignora i filtri per numero e
+    /// restituisce sempre le liste passate. answer_rows e immagini restano vuote ma vanno stubbate
+    /// lo stesso: LoadGradedQuestionsAsync le carica in blocco per ogni submission.
+    /// </summary>
+    private static ExamResultService Sut(IReadOnlyList<Question> questions, IReadOnlyList<Option> options)
+    {
+        var repository = Substitute.For<IQuestionRepository>();
+        repository.GetByNumbersAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns(questions);
+        repository.GetOptionsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns(options);
+        repository.GetAnswerRowsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
+        repository.GetImagesAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
+        return new ExamResultService(repository, new ScoreService());
+    }
 
     private static Question Question() => new()
     {
