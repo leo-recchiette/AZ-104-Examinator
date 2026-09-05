@@ -8,6 +8,7 @@ import { ApiError } from "../api/client";
 import type { AnswerCheckResultDto } from "../types/answer";
 import { getAnswerShape, questionTypeLabel, formatYourAnswer } from "../utils/questionShape";
 import { pointsEarned } from "../utils/grading";
+import { splitPreamble } from "../utils/preamble";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { ImageStack } from "../components/session/ImageStack";
 import { PlaceholderText } from "../components/PlaceholderText";
@@ -81,7 +82,9 @@ export function ResultsPage() {
       wrong.push({
         no: i + 1,
         tag: questionTypeLabel(q, shape),
-        text: q.text,
+        // Nella revisione le istruzioni d'esame si scartano del tutto: sono le stesse per 103 domande
+        // e qui interessa solo capire l'errore. Nella sessione restano, dietro il riquadro collassabile.
+        text: splitPreamble(q.text).body,
         pointsLabel: `${earned} / ${pointsTotal} points`,
         yours: formatYourAnswer(q, submitted),
         correct: correct.answerText,

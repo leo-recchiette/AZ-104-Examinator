@@ -9,6 +9,8 @@ import { SequenceAnswer } from "./SequenceAnswer";
 import { RowSelectAnswer } from "./RowSelectAnswer";
 import { ImageStack } from "./ImageStack";
 import { PlaceholderText } from "../PlaceholderText";
+import { ExamNotice } from "./ExamNotice";
+import { splitPreamble } from "../../utils/preamble";
 
 interface QuestionCardProps {
   question: QuestionDto;
@@ -27,6 +29,8 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
   const { questionFontSize } = useDisplaySettings();
   const [panelOpen, setPanelOpen] = useState(false);
   const shape = getAnswerShape(question);
+  // Le istruzioni d'esame degli scenari vanno in un riquadro a parte, fuori dal corpo della domanda.
+  const { preamble, body } = splitPreamble(question.text);
   const revealed = panelOpen && !!checkResult;
   const correct = checkResult?.correctAnswer;
   const multiHint = revealed && correct && correct.correctLetters.length > 1 ? `Select ${correct.correctLetters.length} answers` : "";
@@ -77,8 +81,9 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
       </div>
 
       <div style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "26px 28px", boxShadow: `0 1px 3px ${t.sh}` }}>
+        {preamble && <ExamNotice text={preamble} />}
         <p style={{ margin: "0 0 14px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: questionFontSize, lineHeight: 1.5, letterSpacing: "-.003em" }}>
-          {question.text}
+          {body}
         </p>
         <ImageStack filenames={question.images} />
 
