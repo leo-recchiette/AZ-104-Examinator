@@ -18,9 +18,6 @@ public static class QuestionMapper
         ILookup<int, AnswerRowOption> rowOptionsByAnswerRowId,
         IEnumerable<QuestionImage> images)
     {
-        // La forma da popolare segue AnswerLayout, non Type: DragAndDrop puo'
-        // essere sia 'ordered_answer' (sequenza) sia 'selection' (righe con
-        // pool proprio, indistinguibile da Hotspot lato contratto).
         var isMultipleChoice = question.Type == QuestionType.MultipleChoice;
         var isOrderedAnswer = question.AnswerLayout == OrderedAnswer;
         var isYesNo = question.AnswerLayout == YesNo;
@@ -37,6 +34,8 @@ public static class QuestionMapper
                 : answerRows.Where(r => r.Prompt is not null).Select(r => new PromptOptionsDto(
                     r.Prompt!,
                     isYesNo ? YesNoOptions : rowOptionsByAnswerRowId[r.Id].Select(o => o.Text).ToList())).ToList(),
-            Images: images.Where(i => i.Kind == QuestionImageKind).OrderBy(i => i.Ord).Select(i => i.Filename).ToList());
+            Images: images.Where(i => i.Kind == QuestionImageKind).OrderBy(i => i.Ord).Select(i => i.Filename).ToList(),
+            GroupId: question.GroupId,
+            GroupType: question.GroupType);
     }
 }

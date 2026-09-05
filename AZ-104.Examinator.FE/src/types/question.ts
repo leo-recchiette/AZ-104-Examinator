@@ -25,4 +25,8 @@ export interface QuestionDto {
   prompts: PromptOptionsDto[];
   /** Screenshot da mostrare PRIMA di rispondere (nomi file nudi, risolti con utils/images.ts#imageUrl). */
   images: string[];
+  /** Gruppo di domande che condividono lo stesso scenario ("ss01".."ss24", "cs01"); null se la domanda e' sciolta. */
+  groupId: string | null;
+  /** "scenario_series" | "case_study". Valorizzato se e solo se lo e' groupId. */
+  groupType: string | null;
 }

@@ -30,7 +30,9 @@ public sealed class QuestionRowMapperTests
         Explanation: "Spiegazione",
         AnswerText: "1. An Azure Key Vault -> 2. An access policy",
         Note: null,
-        Source: "manual_vision");
+        Source: "manual_vision",
+        GroupId: "ss01",
+        GroupType: "scenario_series");
 
     private static Question Question() => new()
     {
@@ -43,6 +45,8 @@ public sealed class QuestionRowMapperTests
         AnswerText = "1. An Azure Key Vault -> 2. An access policy",
         Note = null,
         Source = "manual_vision",
+        GroupId = "ss01",
+        GroupType = "scenario_series",
     };
 
     #endregion
