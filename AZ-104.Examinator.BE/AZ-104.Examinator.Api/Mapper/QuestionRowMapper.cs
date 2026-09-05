@@ -2,9 +2,7 @@ using Examinator.Api.Models.Domains;
 
 namespace Examinator.Api.Mapper;
 
-/// <summary>Traduce la riga grezza di Dapper 
-/// (QuestionRow, con Type ancora stringa) 
-/// nell'entita' di dominio Question.</summary>
+/// <summary>Traduce la riga grezza di Dapper </summary>
 internal static class QuestionRowMapper
 {
     internal static Question ToQuestion(this QuestionRow row) => new()
@@ -18,5 +16,7 @@ internal static class QuestionRowMapper
         AnswerText = row.AnswerText,
         Note = row.Note,
         Source = row.Source,
+        GroupId = row.GroupId,
+        GroupType = row.GroupType,
     };
 }

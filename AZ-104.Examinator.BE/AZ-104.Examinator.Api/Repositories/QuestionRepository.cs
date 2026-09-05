@@ -17,7 +17,8 @@ public sealed class QuestionRepository : IQuestionRepository
 
     private const string SelectColumns = """
         id, number, type, answer_layout AS "AnswerLayout", question AS "Text",
-        explanation, answer_text AS "AnswerText", note, source
+        explanation, answer_text AS "AnswerText", note, source,
+        group_id AS "GroupId", group_type AS "GroupType"
         """;
 
     public async Task<IReadOnlyList<Question>> GetRandomAsync(int count, QuestionType? type, CancellationToken cancellationToken)
@@ -29,6 +30,19 @@ public sealed class QuestionRepository : IQuestionRepository
         var command = type is null
             ? new CommandDefinition(sql, new { count }, cancellationToken: cancellationToken)
             : new CommandDefinition(sql, new { count, type = QuestionTypeMapper.ToDb(type.Value) }, cancellationToken: cancellationToken);
+
+        await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
+        var rows = await connection.QueryAsync<QuestionRow>(command);
+        return rows.Select(r => r.ToQuestion()).ToList();
+    }
+
+    public async Task<IReadOnlyList<Question>> GetByGroupIdsAsync(IReadOnlyCollection<string> groupIds, CancellationToken cancellationToken)
+    {
+        if (groupIds.Count == 0)
+            return [];
+
+        var sql = $"SELECT {SelectColumns} FROM questions WHERE group_id = ANY(@groupIds)";
+        var command = new CommandDefinition(sql, new { groupIds = groupIds.ToArray() }, cancellationToken: cancellationToken);
 
         await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
         var rows = await connection.QueryAsync<QuestionRow>(command);

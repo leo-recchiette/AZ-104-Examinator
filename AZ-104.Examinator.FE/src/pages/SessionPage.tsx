@@ -7,6 +7,8 @@ import { checkAnswers, getScore, saveAttempt } from "../api/results";
 import { ApiError } from "../api/client";
 import { isQuestionAnswered } from "../utils/questionShape";
 import { QuestionCard } from "../components/session/QuestionCard";
+import { GroupNav } from "../components/session/GroupNav";
+import { groupMembers } from "../utils/groups";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
@@ -114,6 +116,36 @@ export function SessionPage() {
   const timeColor = elapsedSec <= 1800 ? "#ffffff" : clockColor;
   const timePct = limit ? (elapsedSec / limit) * 100 : (answeredCount / total) * 100;
 
+  // Le domande che condividono uno scenario si affiancano a un elenco per saltare
+  // fra loro; per le domande sciolte la card resta a tutta larghezza come prima.
+  const members = groupMembers(state.questions, state.currentIndex);
+  const card = (
+    <QuestionCard
+      key={question.number}
+      question={question}
+      value={value}
+      onChange={(next) => dispatch({ type: "SET_ANSWER", questionNumber: question.number, answer: next })}
+      flagged={flagged}
+      onToggleFlag={() => dispatch({ type: "TOGGLE_FLAG", index: state.currentIndex })}
+      isPractice={isPractice}
+      checkResult={state.checkResults[question.number]}
+      onReveal={handleReveal}
+      onRequestExit={() => setShowExitConfirm(true)}
+    />
+  );
+  const questionCard = members.length === 0 ? card : (
+    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", gap: 16 }}>
+      <GroupNav
+        members={members}
+        currentIndex={state.currentIndex}
+        answers={state.answers}
+        onSelect={(index) => dispatch({ type: "GO_TO", index })}
+      />
+      {/* minWidth 0: senza, il contenuto largo della card impedirebbe al flex item di restringersi. */}
+      <div style={{ flex: "1 1 320px", minWidth: 0 }}>{card}</div>
+    </div>
+  );
+
   const modeChipBg = isPractice ? "rgba(255,255,255,.22)" : "rgba(255,255,255,.92)";
   const modeChipFg = isPractice ? "#fff" : "#0b3fae";
   const modeLabel = isPractice ? "Practice" : "Simulation";
@@ -177,18 +209,7 @@ export function SessionPage() {
               </div>
             </div>
           ) : (
-            <QuestionCard
-              key={question.number}
-              question={question}
-              value={value}
-              onChange={(next) => dispatch({ type: "SET_ANSWER", questionNumber: question.number, answer: next })}
-              flagged={flagged}
-              onToggleFlag={() => dispatch({ type: "TOGGLE_FLAG", index: state.currentIndex })}
-              isPractice={isPractice}
-              checkResult={state.checkResults[question.number]}
-              onReveal={handleReveal}
-              onRequestExit={() => setShowExitConfirm(true)}
-            />
+            questionCard
           )}
         </div>
       </div>

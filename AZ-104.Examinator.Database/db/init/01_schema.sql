@@ -49,8 +49,23 @@ CREATE TABLE questions (
     note          TEXT,
     -- 'text_layer' (estratto dal PDF), 'manual_vision' (letto a mano
     -- dall'immagine) o 'ocr' (letto automaticamente, da controllare).
-    source        TEXT          NOT NULL
+    source        TEXT          NOT NULL,
+    -- Domande che condividono lo stesso scenario e vanno proposte insieme:
+    -- 'ss01'..'ss24' (scenario_series, le "Solution: ... Does this meet the
+    -- goal?" ripetute) o 'cs01' (case_study). NULL per le 504 domande sciolte.
+    -- Il JSON porta anche "group_members", ma non lo salviamo: e' derivabile
+    -- da group_id, e duplicarlo aprirebbe la porta a due verita' divergenti.
+    -- L'importer lo usa solo per verificare la coerenza di quanto legge.
+    group_id      TEXT,
+    -- 'scenario_series' | 'case_study'. NULL se e solo se group_id e' NULL.
+    group_type    TEXT,
+    CONSTRAINT questions_group_both_or_neither
+        CHECK ((group_id IS NULL) = (group_type IS NULL))
 );
+
+-- I fratelli di un gruppo si cercano per group_id a ogni estrazione casuale
+-- che ne pesca uno: senza indice sarebbe una scansione completa della tabella.
+CREATE INDEX questions_group_id_idx ON questions (group_id) WHERE group_id IS NOT NULL;
 
 -- Il pool di scelte question-scoped: le opzioni A..H di una multiple_choice
 -- (letter valorizzata), oppure gli elementi trascinabili di un drag_and_drop

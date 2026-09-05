@@ -28,6 +28,7 @@ export type SessionAction =
   | { type: "SET_ANSWER"; questionNumber: number; answer: string[] }
   | { type: "GO_NEXT" }
   | { type: "GO_PREVIOUS" }
+  | { type: "GO_TO"; index: number }
   | { type: "SET_CHECK_RESULT"; questionNumber: number; result: AnswerCheckResultDto }
   | { type: "TOGGLE_FLAG"; index: number }
   | { type: "FINISH_SESSION"; score: ExamScoreDto; timeUsedSeconds: number }
@@ -76,6 +77,11 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
 
     case "GO_PREVIOUS":
       return { ...state, currentIndex: Math.max(state.currentIndex - 1, 0) };
+
+    // Salto diretto: lo usa l'elenco delle sotto-domande di uno scenario, che
+    // deve poter raggiungere un fratello senza passare per Next/Previous.
+    case "GO_TO":
+      return { ...state, currentIndex: Math.min(Math.max(action.index, 0), state.questions.length - 1) };
 
     case "SET_CHECK_RESULT":
       return {
