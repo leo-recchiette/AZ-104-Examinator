@@ -17,7 +17,7 @@ function RequireSession({ children }: { children: ReactNode }) {
 export function App() {
   const { tokens: t } = useTheme();
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: t.bg, color: t.tx, transition: "background .2s, color .2s" }}>
+    <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column", background: t.bg, color: t.tx, transition: "background .2s, color .2s" }}>
       <Routes>
         <Route path="/" element={<ModeSelectPage />} />
         <Route path="/practice/setup" element={<PracticeSetupPage />} />

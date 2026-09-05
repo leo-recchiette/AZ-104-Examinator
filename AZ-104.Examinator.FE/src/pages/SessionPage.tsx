@@ -120,8 +120,9 @@ export function SessionPage() {
   const headerGradient = theme === "dark" ? HEADER_GRADIENT.dark : HEADER_GRADIENT.light;
 
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <div style={{ position: "sticky", top: 0, zIndex: 5, background: headerGradient, backdropFilter: "blur(8px)", borderBottom: "1px solid rgba(255,255,255,.18)" }}>
+    <div style={{ height: "100dvh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      {/* position/zIndex non servono piu' per lo sticky, ma per far uscire il popover di Options sopra l'area che scorre. */}
+      <div style={{ flexShrink: 0, position: "relative", zIndex: 5, background: headerGradient, backdropFilter: "blur(8px)", borderBottom: "1px solid rgba(255,255,255,.18)" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", padding: "14px 24px 12px", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
             <span style={{ fontSize: 14.5, fontWeight: 600, whiteSpace: "nowrap", color: "#fff" }}>AZ-104</span>
@@ -145,48 +146,51 @@ export function SessionPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1000, margin: "0 auto", width: "100%", padding: "32px 24px 140px" }}>
-        {error && <p style={{ margin: "0 0 20px", color: t.er, fontSize: 14 }}>{error}</p>}
+      {/* minHeight 0: senza, un flex item non scende sotto l'altezza del proprio contenuto e lo scroll tornerebbe sulla pagina. */}
+      <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", width: "100%", padding: "22px 24px" }}>
+          {error && <p style={{ margin: "0 0 20px", color: t.er, fontSize: 14 }}>{error}</p>}
 
-        {showConfirm ? (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "48px 0" }}>
-            <div style={{ width: "100%", maxWidth: 560, background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "34px 32px", boxShadow: `0 2px 10px ${t.sh}` }}>
-              <h2 style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 600, fontSize: 27, margin: "0 0 8px" }}>
-                Submit your exam?
-              </h2>
-              <p style={{ margin: "0 0 24px", color: t.mu, fontSize: 14.5, lineHeight: 1.55 }}>
-                Once submitted you cannot change your answers. Unanswered questions score zero.
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 1, background: t.bd2, border: `1px solid ${t.bd2}`, borderRadius: 12, overflow: "hidden", marginBottom: 26 }}>
-                <SummaryRow label="Questions answered" value={`${answeredCount} / ${total}`} fg={t.tx} />
-                <SummaryRow label="Unanswered" value={String(total - answeredCount)} fg={total - answeredCount ? t.er : t.tx} />
-                <SummaryRow label="Flagged for review" value={String(flagCount)} fg={flagCount ? t.warn : t.tx} />
-                <SummaryRow label="Time used" value={fmt(elapsedSec)} fg={t.tx} />
-              </div>
-              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                <button onClick={() => setShowConfirm(false)} style={wideButtonStyle(`1px solid ${t.bd3}`, t.card, t.tx2)}>
-                  Keep working
-                </button>
-                <button onClick={handleFinish} disabled={submitting} style={wideButtonStyle("none", t.ac, "#fff")}>
-                  {submitting ? "Submitting..." : "Submit"}
-                </button>
+          {showConfirm ? (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "48px 0" }}>
+              <div style={{ width: "100%", maxWidth: 560, background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "34px 32px", boxShadow: `0 2px 10px ${t.sh}` }}>
+                <h2 style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 600, fontSize: 27, margin: "0 0 8px" }}>
+                  Submit your exam?
+                </h2>
+                <p style={{ margin: "0 0 24px", color: t.mu, fontSize: 14.5, lineHeight: 1.55 }}>
+                  Once submitted you cannot change your answers. Unanswered questions score zero.
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 1, background: t.bd2, border: `1px solid ${t.bd2}`, borderRadius: 12, overflow: "hidden", marginBottom: 26 }}>
+                  <SummaryRow label="Questions answered" value={`${answeredCount} / ${total}`} fg={t.tx} />
+                  <SummaryRow label="Unanswered" value={String(total - answeredCount)} fg={total - answeredCount ? t.er : t.tx} />
+                  <SummaryRow label="Flagged for review" value={String(flagCount)} fg={flagCount ? t.warn : t.tx} />
+                  <SummaryRow label="Time used" value={fmt(elapsedSec)} fg={t.tx} />
+                </div>
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  <button onClick={() => setShowConfirm(false)} style={wideButtonStyle(`1px solid ${t.bd3}`, t.card, t.tx2)}>
+                    Keep working
+                  </button>
+                  <button onClick={handleFinish} disabled={submitting} style={wideButtonStyle("none", t.ac, "#fff")}>
+                    {submitting ? "Submitting..." : "Submit"}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <QuestionCard
-            key={question.number}
-            question={question}
-            value={value}
-            onChange={(next) => dispatch({ type: "SET_ANSWER", questionNumber: question.number, answer: next })}
-            flagged={flagged}
-            onToggleFlag={() => dispatch({ type: "TOGGLE_FLAG", index: state.currentIndex })}
-            isPractice={isPractice}
-            checkResult={state.checkResults[question.number]}
-            onReveal={handleReveal}
-            onRequestExit={() => setShowExitConfirm(true)}
-          />
-        )}
+          ) : (
+            <QuestionCard
+              key={question.number}
+              question={question}
+              value={value}
+              onChange={(next) => dispatch({ type: "SET_ANSWER", questionNumber: question.number, answer: next })}
+              flagged={flagged}
+              onToggleFlag={() => dispatch({ type: "TOGGLE_FLAG", index: state.currentIndex })}
+              isPractice={isPractice}
+              checkResult={state.checkResults[question.number]}
+              onReveal={handleReveal}
+              onRequestExit={() => setShowExitConfirm(true)}
+            />
+          )}
+        </div>
       </div>
 
       {showExitConfirm && (
@@ -219,7 +223,7 @@ export function SessionPage() {
       )}
 
       {!showConfirm && (
-        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: t.head, backdropFilter: "blur(8px)", borderTop: `1px solid ${t.bd}` }}>
+        <div style={{ flexShrink: 0, background: t.head, backdropFilter: "blur(8px)", borderTop: `1px solid ${t.bd}` }}>
           <div style={{ maxWidth: 1000, margin: "0 auto", padding: "14px 24px", display: "flex", alignItems: "center", gap: 12 }}>
             <button
               onClick={() => dispatch({ type: "GO_PREVIOUS" })}
