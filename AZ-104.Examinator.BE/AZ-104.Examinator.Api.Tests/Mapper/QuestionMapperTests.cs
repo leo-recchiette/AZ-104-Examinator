@@ -27,7 +27,9 @@ public sealed class QuestionMapperTests
             Options: [new OptionDto("A", "Opzione sbagliata"), new OptionDto("C", "Opzione corretta")],
             DraggableItems: [],
             Prompts: [],
-            Images: []);
+            Images: [],
+            GroupId: null,
+            GroupType: null);
 
         sut.Should().BeEquivalentTo(expected);
     }
@@ -36,7 +38,6 @@ public sealed class QuestionMapperTests
     public void Should_Map_OrderedAnswer_Into_DraggableItems()
     {
         var input = Question(type: QuestionType.DragAndDrop, answerLayout: "ordered_answer");
-        // Pool question-scoped, senza lettera: distrattori inclusi, is_correct qui e' irrilevante per il DTO.
         var options = new[]
         {
             Option(ord: 0, letter: null, text: "An Azure Key Vault", isCorrect: true),
@@ -53,7 +54,9 @@ public sealed class QuestionMapperTests
             Options: [],
             DraggableItems: ["An Azure Key Vault", "An Azure Storage account", "An access policy"],
             Prompts: [],
-            Images: []);
+            Images: [],
+            GroupId: null,
+            GroupType: null);
 
         sut.Should().BeEquivalentTo(expected);
     }
@@ -61,8 +64,6 @@ public sealed class QuestionMapperTests
     [TestMethod]
     public void Should_Map_Selection_Into_Prompts_With_Their_Own_Options()
     {
-        // 'selection' vale sia per Hotspot sia per la minoranza di DragAndDrop
-        // che sono in realta' selezioni riga per riga, non sequenze.
         var input = Question(type: QuestionType.Hotspot, answerLayout: "selection");
         var row1 = AnswerRow(id: 10, ord: 0, prompt: "To add a backend pool to LB1", answer: "Network Contributor on LB1");
         var row2 = AnswerRow(id: 11, ord: 1, prompt: "To add a health probe to LB2", answer: "Network Contributor on LB2");
@@ -74,7 +75,6 @@ public sealed class QuestionMapperTests
             RowOption(answerRowId: 11, ord: 1, text: "Network Contributor on LB2"),
         };
 
-        // 'answer' non deve comparire in Images: solo 'question' e' pre-risposta.
         var images = new[]
         {
             Image(kind: "question", ord: 1, filename: "q001_pre1.png"),
@@ -94,7 +94,9 @@ public sealed class QuestionMapperTests
                 new PromptOptionsDto("To add a backend pool to LB1", ["Contributor on LB1", "Network Contributor on LB1"]),
                 new PromptOptionsDto("To add a health probe to LB2", ["Contributor on LB2", "Network Contributor on LB2"]),
             ],
-            Images: ["q001_pre0.png", "q001_pre1.png"]);
+            Images: ["q001_pre0.png", "q001_pre1.png"],
+            GroupId: null,
+            GroupType: null);
 
         sut.Should().BeEquivalentTo(expected);
     }
@@ -105,7 +107,6 @@ public sealed class QuestionMapperTests
         var input = Question(type: QuestionType.HotspotYesNo, answerLayout: "yes_no");
         var row = AnswerRow(id: 20, ord: 0, prompt: "Statement 1", answer: "Yes");
 
-        // Nessuna opzione salvata per yes_no: il dominio Si'/No e' costante, non nel DB.
         var sut = input.ToQuestionDto([], [row], NoRowOptions(), NoImages());
 
         var expected = new QuestionDto(
@@ -115,7 +116,9 @@ public sealed class QuestionMapperTests
             Options: [],
             DraggableItems: [],
             Prompts: [new PromptOptionsDto("Statement 1", ["Yes", "No"])],
-            Images: []);
+            Images: [],
+            GroupId: null,
+            GroupType: null);
 
         sut.Should().BeEquivalentTo(expected);
     }

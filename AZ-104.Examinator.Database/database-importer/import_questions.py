@@ -49,8 +49,8 @@ def insert_question(cur: psycopg.Cursor, q: dict) -> int:
     cur.execute(
         """
         INSERT INTO questions (number, type, answer_layout, question, explanation,
-                               answer_text, note, source)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                               answer_text, note, source, group_id, group_type)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         RETURNING id
         """,
         (
@@ -62,6 +62,8 @@ def insert_question(cur: psycopg.Cursor, q: dict) -> int:
             q["answer_text"],
             q.get("note"),
             q["source"],
+            q.get("group_id"),
+            q.get("group_type"),
         ),
     )
     return cur.fetchone()[0]
@@ -166,6 +168,26 @@ def find_selection_mismatches(questions: list[dict]) -> list[tuple[int, str | No
     return mismatches
 
 
+def find_group_mismatches(questions: list[dict]) -> list[tuple[str, list[int], list[int]]]:
+    """Gruppi in cui "group_members" non combacia con i membri reali di quel
+    group_id. Il DB salva solo group_id e ricava i fratelli da li', quindi una
+    divergenza qui significa dataset incoerente, non un problema di import."""
+    by_group: dict[str, list[int]] = {}
+    declared: dict[str, list[int]] = {}
+    for q in questions:
+        group_id = q.get("group_id")
+        if not group_id:
+            continue
+        by_group.setdefault(group_id, []).append(q["id"])
+        declared.setdefault(group_id, sorted(q.get("group_members") or []))
+
+    mismatches = []
+    for group_id, actual in by_group.items():
+        if sorted(actual) != declared[group_id]:
+            mismatches.append((group_id, sorted(actual), declared[group_id]))
+    return mismatches
+
+
 def import_all(conn: psycopg.Connection, questions: list[dict]) -> None:
     with conn, conn.cursor() as cur:
         cur.execute("TRUNCATE questions RESTART IDENTITY CASCADE")
@@ -207,6 +229,14 @@ def main() -> int:
             f"({numbers}...)",
             file=sys.stderr,
         )
+
+    group_mismatches = find_group_mismatches(questions)
+    if group_mismatches:
+        for group_id, actual, declared in group_mismatches[:10]:
+            print(
+                f"  attenzione: gruppo {group_id} incoerente - membri reali {actual}, dichiarati {declared}",
+                file=sys.stderr,
+            )
 
     if args.dry_run:
         print("dry run: database non toccato")

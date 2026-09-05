@@ -6,6 +6,8 @@ public interface IQuestionRepository
 {
     Task<IReadOnlyList<Question>> GetRandomAsync(int count, QuestionType? type, CancellationToken cancellationToken);
 
+    Task<IReadOnlyList<Question>> GetByGroupIdsAsync(IReadOnlyCollection<string> groupIds, CancellationToken cancellationToken);
+
     Task<IReadOnlyList<Question>> GetByNumbersAsync(IReadOnlyCollection<int> numbers, CancellationToken cancellationToken);
 
     Task<IReadOnlyList<Option>> GetOptionsAsync(IReadOnlyCollection<int> questionIds, CancellationToken cancellationToken);
