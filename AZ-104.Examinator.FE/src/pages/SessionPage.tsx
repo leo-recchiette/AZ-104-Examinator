@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "../session/SessionContext";
 import { useTheme } from "../theme/ThemeContext";
@@ -8,7 +8,7 @@ import { ApiError } from "../api/client";
 import { isQuestionAnswered } from "../utils/questionShape";
 import { QuestionCard } from "../components/session/QuestionCard";
 import { GroupNav } from "../components/session/GroupNav";
-import { groupMembers } from "../utils/groups";
+import { groupMembers, sessionUnits } from "../utils/groups";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
@@ -33,6 +33,8 @@ export function SessionPage() {
 
   const question = state.questions[state.currentIndex];
   const value = question ? (state.answers[question.number] ?? []) : [];
+  // Numero di domande vere: serve solo alla navigazione (Next/Previous passano per ogni
+  // sotto-domanda). Cio' che si mostra all'utente e' invece contato per unita', vedi totalUnits.
   const total = state.questions.length;
   const isPractice = state.mode === "practice";
 
@@ -90,6 +92,11 @@ export function SessionPage() {
     if (!question) navigate("/", { replace: true });
   }, [question, navigate]);
 
+  // Sopra l'early return: gli hook devono essere chiamati sempre, nello stesso ordine.
+  // I conteggi mostrati all'utente vanno per unita', non per domanda: chi ha chiesto 80
+  // domande deve vederne 80, e un gruppo di sotto-domande e' una di quelle 80.
+  const units = useMemo(() => sessionUnits(state.questions), [state.questions]);
+
   if (!question) return null;
 
   async function handleReveal() {
@@ -97,8 +104,14 @@ export function SessionPage() {
     dispatch({ type: "SET_CHECK_RESULT", questionNumber: question.number, result });
   }
 
-  const answeredCount = state.questions.reduce(
-    (acc, q) => acc + (isQuestionAnswered(q, state.answers[q.number] ?? []) ? 1 : 0),
+  const totalUnits = units.members.length;
+  const currentUnit = units.unitOf[state.currentIndex] ?? 0;
+  // Un'unita' conta come "risposta" solo quando lo sono tutte le sue sotto-domande.
+  const answeredCount = units.members.reduce(
+    (acc, memberIndexes) => acc + (memberIndexes.every((i) => {
+      const member = state.questions[i];
+      return isQuestionAnswered(member, state.answers[member.number] ?? []);
+    }) ? 1 : 0),
     0,
   );
   const flagCount = Object.values(state.flags).filter(Boolean).length;
@@ -114,7 +127,7 @@ export function SessionPage() {
     else if (elapsedSec > 1800) clockColor = "#ffd23f";
   }
   const timeColor = elapsedSec <= 1800 ? "#ffffff" : clockColor;
-  const timePct = limit ? (elapsedSec / limit) * 100 : (answeredCount / total) * 100;
+  const timePct = limit ? (elapsedSec / limit) * 100 : (answeredCount / totalUnits) * 100;
 
   // Le domande che condividono uno scenario si affiancano a un elenco per saltare
   // fra loro; per le domande sciolte la card resta a tutta larghezza come prima.
@@ -169,7 +182,7 @@ export function SessionPage() {
           </div>
           <div style={{ width: 1, height: 22, background: "rgba(255,255,255,.3)" }} />
           <div style={{ fontSize: 13.5, color: "#e4e7ee", fontVariantNumeric: "tabular-nums" }}>
-            Question <strong style={{ color: "#fff" }}>{state.currentIndex + 1}</strong> of {total}
+            Question <strong style={{ color: "#fff" }}>{currentUnit + 1}</strong> of {totalUnits}
           </div>
           <OptionsMenu variant="onDark" />
         </div>
@@ -193,8 +206,8 @@ export function SessionPage() {
                   Once submitted you cannot change your answers. Unanswered questions score zero.
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 1, background: t.bd2, border: `1px solid ${t.bd2}`, borderRadius: 12, overflow: "hidden", marginBottom: 26 }}>
-                  <SummaryRow label="Questions answered" value={`${answeredCount} / ${total}`} fg={t.tx} />
-                  <SummaryRow label="Unanswered" value={String(total - answeredCount)} fg={total - answeredCount ? t.er : t.tx} />
+                  <SummaryRow label="Questions answered" value={`${answeredCount} / ${totalUnits}`} fg={t.tx} />
+                  <SummaryRow label="Unanswered" value={String(totalUnits - answeredCount)} fg={totalUnits - answeredCount ? t.er : t.tx} />
                   <SummaryRow label="Flagged for review" value={String(flagCount)} fg={flagCount ? t.warn : t.tx} />
                   <SummaryRow label="Time used" value={fmt(elapsedSec)} fg={t.tx} />
                 </div>
@@ -258,7 +271,7 @@ export function SessionPage() {
               ← Previous
             </button>
             <div style={{ flex: 1, textAlign: "center", fontSize: 12.5, color: t.fa }}>
-              {answeredCount} of {total} answered{flagCount ? ` · ${flagCount} flagged` : ""}
+              {answeredCount} of {totalUnits} answered{flagCount ? ` · ${flagCount} flagged` : ""}
             </div>
             <button
               onClick={() => (isLast ? setShowConfirm(true) : dispatch({ type: "GO_NEXT" }))}

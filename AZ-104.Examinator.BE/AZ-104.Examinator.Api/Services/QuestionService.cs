@@ -17,11 +17,11 @@ public sealed class QuestionService : IQuestionService
 
     public async Task<IReadOnlyList<QuestionDto>> GetRandomSetAsync(int count, QuestionType? type, CancellationToken cancellationToken)
     {
-        var drawn = await _repository.GetRandomAsync(count, type, cancellationToken);
-        if (drawn.Count == 0)
+        // Il repository sorteggia per unita' (un gruppo occupa un posto solo) e restituisce i
+        // gruppi gia' completi e contigui: qui non c'e' piu' nulla da ricomporre.
+        var questions = await _repository.GetRandomAsync(count, type, cancellationToken);
+        if (questions.Count == 0)
             return [];
-
-        var questions = await CompleteGroupsAsync(drawn, cancellationToken);
 
         var ids = questions.Select(q => q.Id).ToList();
         var options = await _repository.GetOptionsAsync(ids, cancellationToken);
@@ -38,34 +38,5 @@ public sealed class QuestionService : IQuestionService
         return questions
             .Select(q => q.ToQuestionDto(optionsByQuestion[q.Id], rowsByQuestion[q.Id], rowOptionsByAnswerRowId, imagesByQuestion[q.Id]))
             .ToList();
-    }
-
-    private async Task<IReadOnlyList<Question>> CompleteGroupsAsync(IReadOnlyList<Question> drawn, CancellationToken cancellationToken)
-    {
-        var groupIds = drawn.Where(q => q.GroupId is not null).Select(q => q.GroupId!).Distinct().ToList();
-        if (groupIds.Count == 0)
-            return drawn;
-
-        var siblings = await _repository.GetByGroupIdsAsync(groupIds, cancellationToken);
-
-        var byGroup = drawn.Concat(siblings)
-            .DistinctBy(q => q.Id)
-            .Where(q => q.GroupId is not null)
-            .GroupBy(q => q.GroupId!)
-            .ToDictionary(g => g.Key, g => g.OrderBy(q => q.Number).ToList());
-
-        // Si scorre l'ordine sorteggiato e, alla prima domanda di un gruppo, si inserisce
-        // il gruppo INTERO in quel punto: cosi' i fratelli restano contigui e l'utente non
-        // si ritrova lo stesso scenario spezzato in punti lontani della sessione.
-        var ordered = new List<Question>(drawn.Count);
-        var alreadyPlaced = new HashSet<string>();
-        foreach (var question in drawn)
-        {
-            if (question.GroupId is null)
-                ordered.Add(question);
-            else if (alreadyPlaced.Add(question.GroupId))
-                ordered.AddRange(byGroup[question.GroupId]);
-        }
-        return ordered;
     }
 }
