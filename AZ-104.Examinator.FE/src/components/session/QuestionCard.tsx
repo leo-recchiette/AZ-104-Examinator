@@ -42,7 +42,7 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 16, background: t.sub, border: `1px solid ${t.bd2}`, borderRadius: 14, padding: "14px 18px", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 12, background: t.sub, border: `1px solid ${t.bd2}`, borderRadius: 14, padding: "12px 16px", flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           <span style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 600, color: t.fa }}>
             {questionTypeLabel(question, shape)}
@@ -76,8 +76,8 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
         </div>
       </div>
 
-      <div style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "32px 30px", boxShadow: `0 1px 3px ${t.sh}` }}>
-        <p style={{ margin: "0 0 18px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: questionFontSize, lineHeight: 1.5, letterSpacing: "-.003em" }}>
+      <div style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "26px 28px", boxShadow: `0 1px 3px ${t.sh}` }}>
+        <p style={{ margin: "0 0 14px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: questionFontSize, lineHeight: 1.5, letterSpacing: "-.003em" }}>
           {question.text}
         </p>
         <ImageStack filenames={question.images} />
@@ -93,7 +93,7 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
         )}
 
         {isPractice && (
-          <div style={{ marginTop: 26, paddingTop: 22, borderTop: `1px solid ${t.bd2}` }}>
+          <div style={{ marginTop: 20, paddingTop: 18, borderTop: `1px solid ${t.bd2}` }}>
             <button
               onClick={handleToggleReveal}
               style={{
