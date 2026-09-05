@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "../../theme/ThemeContext";
+import { useDisplaySettings } from "../../settings/DisplaySettingsContext";
 import type { QuestionDto } from "../../types/question";
 import type { AnswerCheckResultDto } from "../../types/answer";
 import { getAnswerShape, questionTypeLabel } from "../../utils/questionShape";
@@ -23,6 +24,7 @@ interface QuestionCardProps {
 
 export function QuestionCard({ question, value, onChange, flagged, onToggleFlag, isPractice, checkResult, onReveal, onRequestExit }: QuestionCardProps) {
   const { tokens: t } = useTheme();
+  const { questionFontSize } = useDisplaySettings();
   const [panelOpen, setPanelOpen] = useState(false);
   const shape = getAnswerShape(question);
   const revealed = panelOpen && !!checkResult;
@@ -75,7 +77,7 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
       </div>
 
       <div style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "32px 30px", boxShadow: `0 1px 3px ${t.sh}` }}>
-        <p style={{ margin: "0 0 18px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 20.5, lineHeight: 1.5, letterSpacing: "-.003em" }}>
+        <p style={{ margin: "0 0 18px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: questionFontSize, lineHeight: 1.5, letterSpacing: "-.003em" }}>
           {question.text}
         </p>
         <ImageStack filenames={question.images} />

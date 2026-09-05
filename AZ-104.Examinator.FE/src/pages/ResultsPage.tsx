@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "../session/SessionContext";
 import { useTheme } from "../theme/ThemeContext";
+import { useDisplaySettings } from "../settings/DisplaySettingsContext";
 import { checkAnswers } from "../api/results";
 import { ApiError } from "../api/client";
 import type { AnswerCheckResultDto } from "../types/answer";
 import { getAnswerShape, questionTypeLabel, formatYourAnswer } from "../utils/questionShape";
 import { pointsEarned } from "../utils/grading";
-import { ThemeIconButton } from "../components/ThemeIconButton";
+import { OptionsMenu } from "../components/OptionsMenu";
 import { ImageStack } from "../components/session/ImageStack";
 import { PlaceholderText } from "../components/PlaceholderText";
 import { PASS_MARK_PERCENT } from "../constants";
@@ -34,6 +35,7 @@ export function ResultsPage() {
   const navigate = useNavigate();
   const { state, dispatch } = useSession();
   const { theme, tokens: t } = useTheme();
+  const { questionFontSize } = useDisplaySettings();
   const headerGradient = theme === "dark" ? HEADER_GRADIENT.dark : HEADER_GRADIENT.light;
   const [review, setReview] = useState<AnswerCheckResultDto[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -101,7 +103,7 @@ export function ResultsPage() {
             <span style={{ fontSize: 13.5, color: "#e4e7ee" }}>
               {wrong.length} of {state.questions.length} questions lost points
             </span>
-            <ThemeIconButton variant="onDark" />
+            <OptionsMenu variant="onDark" />
           </div>
         </div>
         <div style={{ maxWidth: 1000, margin: "0 auto", padding: "32px 24px 80px" }}>
@@ -118,7 +120,7 @@ export function ResultsPage() {
                   </span>
                   <span style={{ fontSize: 12, color: t.fa2, marginLeft: "auto", fontVariantNumeric: "tabular-nums" }}>{w.pointsLabel}</span>
                 </div>
-                <p style={{ margin: "0 0 20px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: 17.5, lineHeight: 1.5 }}>{w.text}</p>
+                <p style={{ margin: "0 0 20px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: questionFontSize, lineHeight: 1.5 }}>{w.text}</p>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12, marginBottom: 18 }}>
                   <div style={{ border: `1px solid ${t.erbd}`, background: t.erbg, borderRadius: 10, padding: "14px 15px" }}>
                     <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.er, marginBottom: 7 }}>Your answer</div>
