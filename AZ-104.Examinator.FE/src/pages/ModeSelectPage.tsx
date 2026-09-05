@@ -9,6 +9,7 @@ import type { ExamAttemptDto } from "../types/answer";
 import { FloatingThemeToggle } from "../components/FloatingThemeToggle";
 import { EXAM_QUESTION_COUNT, EXAM_TIME_LIMIT_MINUTES, EXAM_TIME_LIMIT_SECONDS, PASS_MARK_PERCENT } from "../constants";
 import { MODE_BG_GRADIENT } from "../theme/tokens";
+import badgeUrl from "../assets/microsoft-certified-associate-badge.png";
 
 export function ModeSelectPage() {
   const navigate = useNavigate();
@@ -65,20 +66,32 @@ export function ModeSelectPage() {
         <div style={{ position: "absolute", top: -180, left: -120, width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,120,212,.32), transparent 70%)", filter: "blur(10px)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: -220, right: -160, width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(80,230,255,.18), transparent 70%)", filter: "blur(10px)", pointerEvents: "none" }} />
         <div style={{ width: "100%", maxWidth: 760, position: "relative" }}>
-          <div style={{ fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: t.fa, fontWeight: 600 }}>
-            Microsoft Certified: Azure Administrator Associate
+          {/* Il badge sta a destra dell'intero blocco di testata, non della sola h1: e' quadrato e alto quanto le tre righe insieme. Con flexWrap scende sotto quando non ci sta. */}
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 24, marginBottom: 36 }}>
+            <div style={{ flex: "1 1 340px" }}>
+              <div style={{ fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: t.fa, fontWeight: 600 }}>
+                Microsoft Certified: Azure Administrator Associate
+              </div>
+              <h1 style={{
+                fontFamily: "Roboto, 'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 46, lineHeight: 1.1,
+                margin: "14px 0 10px", letterSpacing: "-.01em", background: "linear-gradient(90deg,#0078d4,#50e6ff)",
+                WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
+              }}>
+                AZ-104 Examinator
+              </h1>
+              <p style={{ margin: 0, color: t.mu, fontSize: 16, lineHeight: 1.55, maxWidth: "52ch" }}>
+                Question bank of 606 items. Choose how you want to work: practise at your own pace with solutions
+                available, or sit a timed simulation under exam conditions.
+              </p>
+            </div>
+            <img
+              src={badgeUrl}
+              alt="Microsoft Certified: Azure Administrator Associate"
+              width={128}
+              height={128}
+              style={{ flexShrink: 0, display: "block" }}
+            />
           </div>
-          <h1 style={{
-            fontFamily: "Roboto, 'IBM Plex Sans', sans-serif", fontWeight: 700, fontSize: 46, lineHeight: 1.1,
-            margin: "14px 0 10px", letterSpacing: "-.01em", background: "linear-gradient(90deg,#0078d4,#50e6ff)",
-            WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
-          }}>
-            AZ-104 Examinator
-          </h1>
-          <p style={{ margin: "0 0 36px", color: t.mu, fontSize: 16, lineHeight: 1.55, maxWidth: "52ch" }}>
-            Question bank of 606 items. Choose how you want to work: practise at your own pace with solutions
-            available, or sit a timed simulation under exam conditions.
-          </p>
 
           {error && (
             <p style={{ margin: "0 0 20px", color: t.er, fontSize: 14 }}>{error}</p>
