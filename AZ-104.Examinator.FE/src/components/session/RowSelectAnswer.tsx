@@ -1,6 +1,7 @@
 import { useTheme } from "../../theme/ThemeContext";
 import type { PromptOptionsDto } from "../../types/question";
 import type { AnswerRowDto } from "../../types/answer";
+import { PlaceholderText } from "../PlaceholderText";
 
 interface RowSelectAnswerProps {
   prompts: PromptOptionsDto[];
@@ -26,7 +27,7 @@ export function RowSelectAnswer({ prompts, value, onChange, answerRows }: RowSel
         return (
           <div key={`${row.prompt}-${ri}`} style={{ border: `1px solid ${t.bd2}`, borderRadius: 12, padding: "16px 17px", background: t.sub }}>
             <div style={{ fontSize: 14.5, lineHeight: 1.5, marginBottom: 12, fontFamily: "'Source Serif 4', Georgia, serif" }}>
-              {row.prompt}
+              <PlaceholderText text={row.prompt} />
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               {row.options.map((label) => {
