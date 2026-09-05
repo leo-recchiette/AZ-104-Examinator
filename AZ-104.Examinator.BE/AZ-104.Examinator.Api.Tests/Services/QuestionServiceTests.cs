@@ -1,7 +1,9 @@
 using Examinator.Api.Models.Contracts;
 using Examinator.Api.Models.Domains;
+using Examinator.Api.Repositories;
 using Examinator.Api.Services;
 using FluentAssertions;
+using NSubstitute;
 
 namespace Examinator.Api.Tests.Services;
 
@@ -11,32 +13,30 @@ public sealed class QuestionServiceTests
     [TestMethod]
     public async Task Should_Map_RandomQuestions_Into_QuestionDtos()
     {
-        var repository = new FakeQuestionRepository
-        {
-            Questions = [Question()],
-            Options = [Option()],
-            AnswerRows = [],
-        };
-        var sut = new QuestionService(repository);
+        var sut = new QuestionService(Repository(questions: [Question()], options: [Option()]));
 
         var actual = await sut.GetRandomSetAsync(count: 1, type: null, CancellationToken.None);
 
         var expected = new[]
         {
-            new QuestionDto(
-                Number: 1,
-                Type: "multiple_choice",
-                Text: "Domanda di prova",
-                Options: [new OptionDto("C", "Opzione corretta")],
-                DraggableItems: [],
-                Prompts: [],
-                Images: []),
+            QuestionDto("C")
         };
 
         actual.Should().BeEquivalentTo(expected);
     }
 
     #region Utils
+
+    private static IQuestionRepository Repository(IReadOnlyList<Question> questions, IReadOnlyList<Option> options)
+    {
+        var repository = Substitute.For<IQuestionRepository>();
+        repository.GetRandomAsync(Arg.Any<int>(), Arg.Any<QuestionType?>(), Arg.Any<CancellationToken>()).Returns(questions);
+        repository.GetOptionsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns(options);
+        repository.GetAnswerRowsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
+        repository.GetAnswerRowOptionsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
+        repository.GetImagesAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
+        return repository;
+    }
 
     private static Question Question() => new()
     {
@@ -57,6 +57,15 @@ public sealed class QuestionServiceTests
         Text = "Opzione corretta",
         IsCorrect = true,
     };
+
+    private static QuestionDto QuestionDto(string CorrectOption) => new(
+        Number: 1,
+        Type: "multiple_choice",
+        Text: "Domanda di prova",
+        Options: [new OptionDto(CorrectOption, "Opzione corretta")],
+        DraggableItems: [],
+        Prompts: [],
+        Images: []);
 
     #endregion
 }
