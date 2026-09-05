@@ -59,7 +59,10 @@ dotnet test
 ## Comandi utili
 
 ```bash
-docker compose down -v          # azzera tutto, incluso il volume del database
-docker compose stop pgweb       # ferma un servizio dietro profilo (va nominato esplicitamente)
-docker compose --profile dev down   # pulizia completa includendo i servizi dietro profilo
+docker compose --profile dev up -d    # avvia tutti i servizi, pgweb compreso (senza --profile resta spento)
+docker compose down -v                # azzera tutto, incluso il volume del database
+docker compose stop pgweb             # ferma un servizio dietro profilo (va nominato esplicitamente)
+docker compose --profile dev down     # pulizia completa includendo i servizi dietro profilo
 ```
+
+L'importer non rientra in nessuno di questi comandi: sta dietro il profilo `setup` ed è un job una tantum, non un servizio da tenere acceso (vedi [Importazione del question bank](#importazione-del-question-bank)).
