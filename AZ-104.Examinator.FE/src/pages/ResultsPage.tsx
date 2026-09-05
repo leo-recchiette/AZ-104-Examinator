@@ -9,6 +9,7 @@ import { getAnswerShape, questionTypeLabel, formatYourAnswer } from "../utils/qu
 import { pointsEarned } from "../utils/grading";
 import { ThemeIconButton } from "../components/ThemeIconButton";
 import { ImageStack } from "../components/session/ImageStack";
+import { PlaceholderText } from "../components/PlaceholderText";
 import { PASS_MARK_PERCENT } from "../constants";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
@@ -125,7 +126,7 @@ export function ResultsPage() {
                   </div>
                   <div style={{ border: `1px solid ${t.okbd}`, background: t.okbg, borderRadius: 10, padding: "14px 15px" }}>
                     <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.ok, marginBottom: 7 }}>Correct answer</div>
-                    <div style={{ fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-line", color: t.tx2 }}>{w.correct}</div>
+                    <div style={{ fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-line", color: t.tx2 }}><PlaceholderText text={w.correct} /></div>
                   </div>
                 </div>
                 <ImageStack filenames={w.images} />

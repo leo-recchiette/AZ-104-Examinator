@@ -7,6 +7,7 @@ import { MultipleChoiceAnswer } from "./MultipleChoiceAnswer";
 import { SequenceAnswer } from "./SequenceAnswer";
 import { RowSelectAnswer } from "./RowSelectAnswer";
 import { ImageStack } from "./ImageStack";
+import { PlaceholderText } from "../PlaceholderText";
 
 interface QuestionCardProps {
   question: QuestionDto;
@@ -107,7 +108,7 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
                   Correct answer
                 </div>
                 <div style={{ fontSize: 15, lineHeight: 1.55, fontWeight: 500, marginBottom: 16, whiteSpace: "pre-line" }}>
-                  {correct.answerText}
+                  <PlaceholderText text={correct.answerText} />
                 </div>
                 <ImageStack filenames={correct.images} />
                 <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.mu, marginBottom: 8 }}>
