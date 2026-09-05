@@ -4,9 +4,12 @@ namespace Examinator.Api.Repositories;
 
 public interface IQuestionRepository
 {
+    /// <summary>
+    /// Sorteggia <paramref name="count"/> UNITA', non domande: una domanda sciolta oppure un
+    /// gruppo intero, che occupa un posto solo. I gruppi tornano completi e con i membri
+    /// contigui, gia' nell'ordine in cui vanno proposti.
+    /// </summary>
     Task<IReadOnlyList<Question>> GetRandomAsync(int count, QuestionType? type, CancellationToken cancellationToken);
-
-    Task<IReadOnlyList<Question>> GetByGroupIdsAsync(IReadOnlyCollection<string> groupIds, CancellationToken cancellationToken);
 
     Task<IReadOnlyList<Question>> GetByNumbersAsync(IReadOnlyCollection<int> numbers, CancellationToken cancellationToken);
 
