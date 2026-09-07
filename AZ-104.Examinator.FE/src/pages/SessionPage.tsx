@@ -12,6 +12,15 @@ import { groupMembers, sessionUnits } from "../utils/groups";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
+/** Colori del cronometro, dal "tutto a posto" all'allarme. Non sono token del tema: vivono sul
+ *  banner blu dell'header, uguale in light e dark. */
+const CLOCK_OK = "#3ddc84";
+const CLOCK_WARN = "#ffd23f";
+const CLOCK_DANGER = "#ff6b6b";
+/** Quanto tempo deve restare perche' scatti l'avviso, in frazione del limite scelto. */
+const WARN_FRACTION = 1 / 3;
+const DANGER_FRACTION = 0.1;
+
 function fmt(totalSeconds: number): string {
   const m = Math.floor(totalSeconds / 60);
   const s = totalSeconds % 60;
@@ -119,13 +128,17 @@ export function SessionPage() {
 
   const timerCaption = limit ? "Time remaining" : "Elapsed";
   const timeLabel = fmt(limit ? remaining : elapsedSec);
-  // Verde di default, giallo dopo 30 minuti trascorsi, rosso sotto i 10 minuti rimanenti (solo se a tempo).
-  let clockColor = "#3ddc84";
+  // Soglie proporzionali al limite scelto, non minuti fissi: con le soglie assolute di prima
+  // (giallo a 30 minuti trascorsi) una Practice da 90 minuti virava al giallo con ancora un'ora
+  // davanti, mentre una da 15 minuti non ci arrivava mai. Cosi' l'avviso cade sempre allo stesso
+  // punto della sessione, qualunque durata si sia scelta.
+  let clockColor = CLOCK_OK;
   if (limit) {
-    if (remaining <= 600) clockColor = "#ff6b6b";
-    else if (elapsedSec > 1800) clockColor = "#ffd23f";
+    if (remaining <= limit * DANGER_FRACTION) clockColor = CLOCK_DANGER;
+    else if (remaining <= limit * WARN_FRACTION) clockColor = CLOCK_WARN;
   }
-  const timeColor = elapsedSec <= 1800 ? "#ffffff" : clockColor;
+  // Bianco finche' non c'e' nulla da segnalare; poi il numero prende il colore dell'avviso.
+  const timeColor = clockColor === CLOCK_OK ? "#ffffff" : clockColor;
   const timePct = limit ? (elapsedSec / limit) * 100 : (answeredCount / totalUnits) * 100;
 
   // Le domande che condividono uno scenario si affiancano a un elenco per saltare
