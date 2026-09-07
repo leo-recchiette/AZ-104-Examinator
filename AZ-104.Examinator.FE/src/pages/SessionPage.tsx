@@ -24,6 +24,7 @@ export function SessionPage() {
   const { theme, tokens: t } = useTheme();
   const [showConfirm, setShowConfirm] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const firedRef = useRef(false);
@@ -33,8 +34,6 @@ export function SessionPage() {
 
   const question = state.questions[state.currentIndex];
   const value = question ? (state.answers[question.number] ?? []) : [];
-  // Numero di domande vere: serve solo alla navigazione (Next/Previous passano per ogni
-  // sotto-domanda). Cio' che si mostra all'utente e' invece contato per unita', vedi totalUnits.
   const total = state.questions.length;
   const isPractice = state.mode === "practice";
 
@@ -72,7 +71,7 @@ export function SessionPage() {
     }
   }, [dispatch, navigate, state.answers, state.questions, state.mode, state.startedAt]);
 
-  const elapsedMs = useElapsedTime(state.startedAt);
+  const elapsedMs = useElapsedTime(state.startedAt, paused);
   const elapsedSec = Math.floor(elapsedMs / 1000);
   elapsedSecRef.current = elapsedSec;
   const limit = state.timeLimitSeconds;
@@ -180,6 +179,25 @@ export function SessionPage() {
             <span style={{ fontSize: 12.5, color: "#e4e7ee" }}>{timerCaption}</span>
             <span style={{ fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums", color: timeColor }}>{timeLabel}</span>
           </div>
+          {/* Solo in Practice a tempo: la Simulation riproduce le condizioni d'esame, dove il
+              cronometro non si ferma, e senza limite non ci sarebbe un orologio da fermare. */}
+          {isPractice && limit !== null && (
+            <button
+              onClick={() => setPaused(true)}
+              aria-label="Pause the session"
+              style={{
+                display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 8,
+                border: "1px solid rgba(255,255,255,.35)", background: "rgba(255,255,255,.12)",
+                color: "#fff", fontSize: 12.5, fontWeight: 600, font: "inherit", whiteSpace: "nowrap",
+              }}
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <rect x="6" y="4" width="4" height="16" rx="1" />
+                <rect x="14" y="4" width="4" height="16" rx="1" />
+              </svg>
+              Pause
+            </button>
+          )}
           <div style={{ width: 1, height: 22, background: "rgba(255,255,255,.3)" }} />
           <div style={{ fontSize: 13.5, color: "#e4e7ee", fontVariantNumeric: "tabular-nums" }}>
             Question <strong style={{ color: "#fff" }}>{currentUnit + 1}</strong> of {totalUnits}
@@ -226,6 +244,39 @@ export function SessionPage() {
           )}
         </div>
       </div>
+
+      {/* zIndex sopra header (5) e modali (30): in pausa la domanda va davvero coperta, altrimenti
+          si continuerebbe a leggerla e a rispondere con l'orologio fermo. */}
+      {paused && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="paused-title"
+          style={{ position: "fixed", inset: 0, zIndex: 40, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: "rgba(10,12,16,.82)", backdropFilter: "blur(6px)" }}
+        >
+          <div style={{ width: "100%", maxWidth: 460, background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "30px 28px", boxShadow: "0 10px 30px rgba(0,0,0,.25)", textAlign: "center" }}>
+            <h2 id="paused-title" style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 600, fontSize: 23, margin: "0 0 8px" }}>
+              Sessione in pausa
+            </h2>
+            <p style={{ margin: "0 0 20px", color: t.mu, fontSize: 14.5, lineHeight: 1.55 }}>
+              Il tempo è fermo e la domanda è nascosta. Riprendi quando vuoi: le risposte già date
+              restano salvate.
+            </p>
+            <div style={{ fontSize: 12.5, color: t.fa, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 600 }}>
+              {timerCaption}
+            </div>
+            <div style={{ fontSize: 34, fontWeight: 600, fontVariantNumeric: "tabular-nums", color: t.tx, margin: "4px 0 24px" }}>
+              {timeLabel}
+            </div>
+            <button
+              onClick={() => setPaused(false)}
+              style={{ width: "100%", padding: 14, borderRadius: 11, border: "none", background: t.ac, fontSize: 14.5, fontWeight: 600, color: "#fff", font: "inherit" }}
+            >
+              Riprendi
+            </button>
+          </div>
+        </div>
+      )}
 
       {showExitConfirm && (
         <div style={{ position: "fixed", inset: 0, zIndex: 30, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: "rgba(10,12,16,.5)" }}>
