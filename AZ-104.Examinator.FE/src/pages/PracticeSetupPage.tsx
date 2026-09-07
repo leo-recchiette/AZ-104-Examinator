@@ -5,6 +5,7 @@ import { useSession } from "../session/SessionContext";
 import { getExam } from "../api/questions";
 import { ApiError } from "../api/client";
 import { FloatingThemeToggle } from "../components/FloatingThemeToggle";
+import { EmptyBankDialog } from "../components/EmptyBankDialog";
 
 const COUNT_OPTIONS = [10, 20, 30, 40, 50, 60, 70, 80];
 const MINUTE_OPTIONS = [15, 30, 45, 60, 90, 120];
@@ -19,12 +20,20 @@ export function PracticeSetupPage() {
   const [minutes, setMinutes] = useState(30);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emptyBank, setEmptyBank] = useState(false);
 
   async function handleStart() {
     setError(null);
     setLoading(true);
     try {
       const questions = await getExam(count);
+      // Vedi ModeSelectPage.goSimulation: un set vuoto e' un 200 con [], non un errore, e va
+      // intercettato qui o la sessione parte a vuoto e RequireSession rimbalza alla home.
+      if (questions.length === 0) {
+        setEmptyBank(true);
+        setLoading(false);
+        return;
+      }
       dispatch({ type: "START_SESSION", mode: "practice", questions, timeLimitSeconds: timed ? minutes * 60 : null });
       navigate("/session");
     } catch (err) {
@@ -40,6 +49,7 @@ export function PracticeSetupPage() {
   return (
     <>
       <FloatingThemeToggle />
+      {emptyBank && <EmptyBankDialog onClose={() => setEmptyBank(false)} />}
       <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "48px 24px" }}>
         <div style={{ width: "100%", maxWidth: 620, background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "34px 32px", boxShadow: `0 2px 10px ${t.sh}` }}>
           <button onClick={() => navigate("/")} style={{ background: "none", border: "none", padding: 0, color: t.mu, fontSize: 13, marginBottom: 18, font: "inherit" }}>
