@@ -7,6 +7,7 @@ import { getAllAttempts } from "../api/results";
 import { ApiError } from "../api/client";
 import type { ExamAttemptDto } from "../types/answer";
 import { FloatingThemeToggle } from "../components/FloatingThemeToggle";
+import { EmptyBankDialog } from "../components/EmptyBankDialog";
 import { EXAM_QUESTION_COUNT, EXAM_TIME_LIMIT_MINUTES, EXAM_TIME_LIMIT_SECONDS, PASS_MARK_PERCENT } from "../constants";
 import { MODE_BG_GRADIENT } from "../theme/tokens";
 import badgeUrl from "../assets/microsoft-certified-associate-badge.png";
@@ -17,6 +18,7 @@ export function ModeSelectPage() {
   const { dispatch } = useSession();
   const [startingSimulation, setStartingSimulation] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emptyBank, setEmptyBank] = useState(false);
   const [history, setHistory] = useState<ExamAttemptDto[]>([]);
 
   useEffect(() => {
@@ -31,6 +33,14 @@ export function ModeSelectPage() {
     setStartingSimulation(true);
     try {
       const questions = await getExam(EXAM_QUESTION_COUNT);
+      // Un set vuoto e' una risposta valida per l'API (200 con []), non un errore: senza questo
+      // controllo la sessione partirebbe con zero domande e RequireSession rimbalzerebbe subito
+      // alla home, facendo sembrare il pulsante rotto.
+      if (questions.length === 0) {
+        setEmptyBank(true);
+        setStartingSimulation(false);
+        return;
+      }
       dispatch({ type: "START_SESSION", mode: "exam", questions, timeLimitSeconds: EXAM_TIME_LIMIT_SECONDS });
       navigate("/session");
     } catch (err) {
@@ -62,6 +72,7 @@ export function ModeSelectPage() {
   return (
     <>
       <FloatingThemeToggle />
+      {emptyBank && <EmptyBankDialog onClose={() => setEmptyBank(false)} />}
       <div style={{ flex: 1, position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "48px 24px", background: `${modeBgGrad}, ${t.bg}` }}>
         <div style={{ position: "absolute", top: -180, left: -120, width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,120,212,.32), transparent 70%)", filter: "blur(10px)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: -220, right: -160, width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(80,230,255,.18), transparent 70%)", filter: "blur(10px)", pointerEvents: "none" }} />
