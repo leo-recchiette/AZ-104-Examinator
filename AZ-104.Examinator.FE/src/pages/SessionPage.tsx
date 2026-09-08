@@ -62,9 +62,18 @@ export function SessionPage() {
       dispatch({ type: "FINISH_SESSION", score, timeUsedSeconds: elapsedSecRef.current });
       navigate("/results");
 
+      // Una sessione senza nemmeno una scelta fatta non viene registrata: e' una sessione
+      // abbandonata, non un tentativo. Il criterio e' "almeno una risposta non vuota", non
+      // isQuestionAnswered: aver risposto a una riga sola di una hotspot conta comunque come
+      // aver giocato la sessione. Anche l'API la rifiuterebbe; qui si evita la chiamata e si
+      // distingue lo scarto voluto da un errore vero.
+      const answeredAnything = submissions.some((s) => s.userAnswers.some((a) => a.trim() !== ""));
+
       // Registrazione dello storico best-effort: un errore qui non deve bloccare la
       // navigazione ai risultati, il punteggio e' gia' stato calcolato e mostrato.
-      if (state.mode && state.startedAt) {
+      if (!answeredAnything) {
+        dispatch({ type: "SET_HISTORY_OUTCOME", outcome: "discarded" });
+      } else if (state.mode && state.startedAt) {
         const endTime = new Date();
         saveAttempt({
           mode: state.mode,
@@ -72,7 +81,13 @@ export function SessionPage() {
           percentage: score.percentage,
           startTime: new Date(state.startedAt).toISOString(),
           endTime: endTime.toISOString(),
-        }).catch((err) => console.error("Impossibile salvare il tentativo nello storico:", err));
+          // Le stesse submission inviate a getScore: lo storico registra l'intera
+          // sessione, non solo il punteggio, cosi' e' riconsultabile domanda per domanda.
+          answers: submissions,
+        }).catch((err) => {
+          console.error("Impossibile salvare il tentativo nello storico:", err);
+          dispatch({ type: "SET_HISTORY_OUTCOME", outcome: "failed" });
+        });
       }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Impossibile calcolare il punteggio.");

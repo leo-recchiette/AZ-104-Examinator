@@ -21,6 +21,14 @@ export interface SessionState {
   score: ExamScoreDto | null;
   /** Tempo trascorso al momento dell'invio, congelato (non ricalcolato da Date.now() sulla pagina risultati). */
   timeUsedSeconds: number | null;
+  /**
+   * Come e' andata la registrazione nello storico, quando c'e' qualcosa da dire: "discarded" per
+   * una sessione senza nemmeno una risposta (scartata di proposito, non registrata), "failed" per
+   * un salvataggio andato storto. null quando e' filato tutto liscio. Il salvataggio e'
+   * best-effort e non blocca i risultati, ma restare senza saperlo e' peggio: la pagina risultati
+   * lo dice.
+   */
+  historyOutcome: "discarded" | "failed" | null;
 }
 
 export type SessionAction =
@@ -32,6 +40,7 @@ export type SessionAction =
   | { type: "SET_CHECK_RESULT"; questionNumber: number; result: AnswerCheckResultDto }
   | { type: "TOGGLE_FLAG"; index: number }
   | { type: "FINISH_SESSION"; score: ExamScoreDto; timeUsedSeconds: number }
+  | { type: "SET_HISTORY_OUTCOME"; outcome: "discarded" | "failed" }
   | { type: "RESET" };
 
 export const initialSessionState: SessionState = {
@@ -46,6 +55,7 @@ export const initialSessionState: SessionState = {
   status: "idle",
   score: null,
   timeUsedSeconds: null,
+  historyOutcome: null,
 };
 
 export function sessionReducer(state: SessionState, action: SessionAction): SessionState {
@@ -97,6 +107,11 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
 
     case "FINISH_SESSION":
       return { ...state, status: "finished", score: action.score, timeUsedSeconds: action.timeUsedSeconds };
+
+    // "failed" arriva dopo che SessionPage e' gia' smontata (la POST e' fire-and-forget): il
+    // dispatch e' valido lo stesso, il context vive sopra le rotte.
+    case "SET_HISTORY_OUTCOME":
+      return { ...state, historyOutcome: action.outcome };
 
     case "RESET":
       return initialSessionState;

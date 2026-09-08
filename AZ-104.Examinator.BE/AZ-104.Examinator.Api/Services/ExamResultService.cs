@@ -55,6 +55,32 @@ public sealed class ExamResultService : IExamResultService
             .ToList();
     }
 
+    public async Task<IReadOnlyList<AttemptAnswerDto>> ReviewAsync(IReadOnlyList<AnswerSubmissionDto> submissions, CancellationToken cancellationToken)
+    {
+        var graded = await LoadGradedQuestionsAsync(submissions.Select(s => s.QuestionNumber), cancellationToken);
+
+        // I pool row-scoped servono solo qui: senza, le domande 'selection' tornerebbero con i
+        // prompt ma senza le scelte fra cui l'utente aveva scelto, rendendo la rilettura monca.
+        var rowIds = graded.Values.SelectMany(g => g.AnswerRows).Select(r => r.Id).ToList();
+        var rowOptions = await _repository.GetAnswerRowOptionsAsync(rowIds, cancellationToken);
+        var rowOptionsByAnswerRowId = rowOptions.ToLookup(o => o.AnswerRowId);
+
+        return submissions
+            .Select(submission =>
+            {
+                var userAnswers = submission.UserAnswers ?? [];
+                // Numero che non esiste piu' nel bank (dataset reimportato dopo il tentativo):
+                // resta leggibile cosa era stato risposto, senza testo ne' soluzione.
+                if (!graded.TryGetValue(submission.QuestionNumber, out var question))
+                    return new AttemptAnswerDto(submission.QuestionNumber, userAnswers, null, null);
+
+                var questionDto = question.Source.ToQuestionDto(
+                    question.Options, question.AnswerRows, rowOptionsByAnswerRowId, question.Images);
+                return new AttemptAnswerDto(submission.QuestionNumber, userAnswers, questionDto, question.ToAnswerDto());
+            })
+            .ToList();
+    }
+
     /// <summary>Carica in blocco domande, opzioni e answer_rows per un insieme di numeri, pronte per essere corrette.</summary>
     private async Task<Dictionary<int, GradedQuestion>> LoadGradedQuestionsAsync(
         IEnumerable<int> numbers, CancellationToken cancellationToken)
