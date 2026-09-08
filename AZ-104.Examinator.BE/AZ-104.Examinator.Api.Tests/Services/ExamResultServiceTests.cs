@@ -66,6 +66,48 @@ public sealed class ExamResultServiceTests
         actual.Should().BeEquivalentTo(expected);
     }
 
+    [TestMethod]
+    public async Task Should_Include_Question_Text_In_Review()
+    {
+        var submissions = new[] { new AnswerSubmissionDto(QuestionNumber: 1, UserAnswers: ["A"]) };
+
+        var actual = await _sut.ReviewAsync(submissions, CancellationToken.None);
+
+        // A differenza di CheckAnswersAsync, qui la domanda va restituita per intero: chi rilegge
+        // un tentativo dello storico non ha piu' il testo da nessuna parte.
+        actual.Should().ContainSingle();
+        actual[0].UserAnswers.Should().BeEquivalentTo(["A"]);
+        actual[0].Question!.Text.Should().Be("Domanda di prova");
+        actual[0].Question!.Options.Should().BeEquivalentTo([new OptionDto("C", "Opzione corretta")]);
+        actual[0].CorrectAnswer.Should().BeEquivalentTo(QuestionAnswerDto());
+    }
+
+    [TestMethod]
+    public async Task Should_Review_Unknown_Question_Without_Text_Nor_Solution()
+    {
+        var submissions = new[] { new AnswerSubmissionDto(QuestionNumber: 999, UserAnswers: ["B"]) };
+
+        var actual = await _sut.ReviewAsync(submissions, CancellationToken.None);
+
+        // Numero sparito dal bank dopo un reimport: la risposta data resta leggibile e il resto
+        // del tentativo non deve saltare per questa.
+        var expected = new[] { new AttemptAnswerDto(QuestionNumber: 999, UserAnswers: ["B"], Question: null, CorrectAnswer: null) };
+
+        actual.Should().BeEquivalentTo(expected);
+    }
+
+    [TestMethod]
+    public async Task Should_Keep_Submission_Order_In_Review()
+    {
+        var submissions = new[] { 3, 1, 2 }.Select(n => new AnswerSubmissionDto(n, ["A"])).ToList();
+
+        var actual = await _sutWithTenQuestions.ReviewAsync(submissions, CancellationToken.None);
+
+        // L'ordine e' quello di presentazione salvato nel tentativo, non quello dei numeri:
+        // riordinare qui rimescolerebbe una sessione con dei gruppi.
+        actual.Select(a => a.QuestionNumber).Should().Equal(3, 1, 2);
+    }
+
     #region Utils
 
     /// <summary>
@@ -80,6 +122,9 @@ public sealed class ExamResultServiceTests
         repository.GetOptionsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns(options);
         repository.GetAnswerRowsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
         repository.GetImagesAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
+        // Solo ReviewAsync li carica, ma stubbarli sempre evita che gli altri test dipendano da
+        // quale metodo del repository il service chiama davvero.
+        repository.GetAnswerRowOptionsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
         return new ExamResultService(repository, new ScoreService());
     }
 

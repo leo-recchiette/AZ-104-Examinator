@@ -6,6 +6,8 @@ import { ModeSelectPage } from "./pages/ModeSelectPage";
 import { PracticeSetupPage } from "./pages/PracticeSetupPage";
 import { SessionPage } from "./pages/SessionPage";
 import { ResultsPage } from "./pages/ResultsPage";
+import { HistoryPage } from "./pages/HistoryPage";
+import { AttemptDetailPage } from "./pages/AttemptDetailPage";
 
 /** Impedisce di arrivare a /session o /results senza una sessione avviata. */
 function RequireSession({ children }: { children: ReactNode }) {
@@ -21,6 +23,9 @@ export function App() {
       <Routes>
         <Route path="/" element={<ModeSelectPage />} />
         <Route path="/practice/setup" element={<PracticeSetupPage />} />
+        {/* Fuori da RequireSession: lo storico si legge dal database, non dalla sessione in corso. */}
+        <Route path="/history" element={<HistoryPage />} />
+        <Route path="/history/:id" element={<AttemptDetailPage />} />
         <Route
           path="/session"
           element={

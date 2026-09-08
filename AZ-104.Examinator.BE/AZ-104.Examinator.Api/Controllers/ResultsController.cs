@@ -1,3 +1,4 @@
+using Examinator.Api.Extensions;
 using Examinator.Api.Models.Contracts;
 using Examinator.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -53,17 +54,31 @@ public sealed class ResultsController : ControllerBase
         [FromBody] SaveExamAttemptDto request,
         CancellationToken cancellationToken)
     {
-        if (!ValidModes.Contains(request.Mode))
-            return BadRequest($"mode deve essere uno tra: {string.Join(", ", ValidModes)}.");
-        if (request.QuestionCount is < 1 or > MaxCount)
-            return BadRequest($"questionCount deve essere fra 1 e {MaxCount}.");
-        if (request.Percentage is < 0 or > 100)
-            return BadRequest("percentage deve essere fra 0 e 100.");
-        if (request.EndTime < request.StartTime)
-            return BadRequest("endTime non puo' precedere startTime.");
+        var error = request switch
+        {
+            { Mode: var mode } when !ValidModes.Contains(mode) => $"mode deve essere uno tra: {string.Join(", ", ValidModes)}.",
+            { QuestionCount: < 1 or > MaxCount } => $"questionCount deve essere fra 1 e {MaxCount}.",
+            { Percentage: < 0 or > 100 } => "percentage deve essere fra 0 e 100.",
+            { StartTime: var start, EndTime: var end } when end < start => "endTime non puo' precedere startTime.",
+            { Answers.Count: > MaxCount } => $"non piu' di {MaxCount} risposte per tentativo.",
+            { Answers: { Count: > 0 } answers } when answers.All(a => a.IsBlank()) => "un tentativo senza nemmeno una risposta non viene registrato.",
+            _ => null,
+        };
+        if (error is not null)
+            return BadRequest(error);
 
         var saved = await _examAttemptService.SaveAttemptAsync(request, cancellationToken);
         return Ok(saved);
+    }
+
+    [HttpGet("getAttempt/{id:int}")]
+    public async Task<ActionResult<ExamAttemptDetailDto>> GetAttemptAsync(int id, CancellationToken cancellationToken)
+    {
+        var detail = await _examAttemptService.GetAttemptDetailAsync(id, cancellationToken);
+        if (detail is null)
+            return NotFound($"nessun tentativo con id {id}.");
+
+        return Ok(detail);
     }
 
     [HttpGet("getAllAttempts")]
