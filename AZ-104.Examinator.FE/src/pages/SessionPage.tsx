@@ -75,11 +75,14 @@ export function SessionPage() {
         dispatch({ type: "SET_HISTORY_OUTCOME", outcome: "discarded" });
       } else if (state.mode && state.startedAt) {
         const endTime = new Date();
+        // Inizio ricavato dal tempo effettivamente giocato invece che da state.startedAt: lo
+        // storico mostra la durata come endTime - startTime, e le pause non devono gonfiarla.
+        const startTime = new Date(endTime.getTime() - elapsedSecRef.current * 1000);
         saveAttempt({
           mode: state.mode,
           questionCount: state.questions.length,
           percentage: score.percentage,
-          startTime: new Date(state.startedAt).toISOString(),
+          startTime: startTime.toISOString(),
           endTime: endTime.toISOString(),
           // Le stesse submission inviate a getScore: lo storico registra l'intera
           // sessione, non solo il punteggio, cosi' e' riconsultabile domanda per domanda.
@@ -207,9 +210,9 @@ export function SessionPage() {
             <span style={{ fontSize: 12.5, color: "#e4e7ee" }}>{timerCaption}</span>
             <span style={{ fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums", color: timeColor }}>{timeLabel}</span>
           </div>
-          {/* Solo in Practice a tempo: la Simulation riproduce le condizioni d'esame, dove il
-              cronometro non si ferma, e senza limite non ci sarebbe un orologio da fermare. */}
-          {isPractice && limit !== null && (
+          {/* In entrambe le modalita', purche' a tempo: senza limite non ci sarebbe un orologio
+              da fermare. */}
+          {limit !== null && (
             <button
               onClick={() => setPaused(true)}
               aria-label="Pause the session"
