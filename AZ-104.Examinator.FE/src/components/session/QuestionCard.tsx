@@ -29,7 +29,6 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
   const { questionFontSize } = useDisplaySettings();
   const [panelOpen, setPanelOpen] = useState(false);
   const shape = getAnswerShape(question);
-  // Le istruzioni d'esame degli scenari vanno in un riquadro a parte, fuori dal corpo della domanda.
   const { preamble, body } = splitPreamble(question.text);
   const revealed = panelOpen && !!checkResult;
   const correct = checkResult?.correctAnswer;
@@ -118,10 +117,14 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
                   <PlaceholderText text={correct.answerText} />
                 </div>
                 <ImageStack filenames={correct.images} />
-                <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.mu, marginBottom: 8 }}>
-                  Explanation
-                </div>
-                <div style={{ fontSize: 14.5, lineHeight: 1.6, color: t.tx2 }}>{correct.explanation}</div>
+                {correct.explanation.trim() !== "" && (
+                  <>
+                    <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.mu, marginBottom: 8 }}>
+                      Explanation
+                    </div>
+                    <div style={{ fontSize: 14.5, lineHeight: 1.6, color: t.tx2 }}>{correct.explanation}</div>
+                  </>
+                )}
               </div>
             )}
           </div>

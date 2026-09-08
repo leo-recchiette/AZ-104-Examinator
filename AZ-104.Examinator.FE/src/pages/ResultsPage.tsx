@@ -135,8 +135,12 @@ export function ResultsPage() {
                   </div>
                 </div>
                 <ImageStack filenames={w.images} />
-                <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.mu, marginBottom: 7 }}>Explanation</div>
-                <div style={{ fontSize: 14.5, lineHeight: 1.6, color: t.tx2 }}>{w.explanation}</div>
+                {w.explanation.trim() !== "" && (
+                  <>
+                    <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.mu, marginBottom: 7 }}>Explanation</div>
+                    <div style={{ fontSize: 14.5, lineHeight: 1.6, color: t.tx2 }}>{w.explanation}</div>
+                  </>
+                )}
               </div>
             ))}
             {review && wrong.length === 0 && (
