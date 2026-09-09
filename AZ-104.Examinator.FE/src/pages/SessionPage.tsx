@@ -5,10 +5,10 @@ import { useTheme } from "../theme/ThemeContext";
 import { useElapsedTime } from "../hooks/useElapsedTime";
 import { checkAnswers, getScore, saveAttempt } from "../api/results";
 import { ApiError } from "../api/client";
-import { isQuestionAnswered } from "../utils/questionShape";
 import { QuestionCard } from "../components/session/QuestionCard";
 import { GroupNav } from "../components/session/GroupNav";
-import { groupMembers, sessionUnits } from "../utils/groups";
+import { QuestionNavigator } from "../components/session/QuestionNavigator";
+import { groupMembers, sessionUnits, unitsAnswered } from "../utils/groups";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
@@ -34,6 +34,8 @@ export function SessionPage() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [paused, setPaused] = useState(false);
+  // null = chiuso. Aperto "unanswered" quando si arriva dal riepilogo cercando i buchi.
+  const [navFilter, setNavFilter] = useState<null | "all" | "unanswered">(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const firedRef = useRef(false);
@@ -122,6 +124,10 @@ export function SessionPage() {
   // I conteggi mostrati all'utente vanno per unita', non per domanda: chi ha chiesto 80
   // domande deve vederne 80, e un gruppo di sotto-domande e' una di quelle 80.
   const units = useMemo(() => sessionUnits(state.questions), [state.questions]);
+  const unitAnswered = useMemo(
+    () => unitsAnswered(state.questions, units, state.answers),
+    [state.questions, units, state.answers],
+  );
 
   if (!question) return null;
 
@@ -133,13 +139,15 @@ export function SessionPage() {
   const totalUnits = units.members.length;
   const currentUnit = units.unitOf[state.currentIndex] ?? 0;
   // Un'unita' conta come "risposta" solo quando lo sono tutte le sue sotto-domande.
-  const answeredCount = units.members.reduce(
-    (acc, memberIndexes) => acc + (memberIndexes.every((i) => {
-      const member = state.questions[i];
-      return isQuestionAnswered(member, state.answers[member.number] ?? []);
-    }) ? 1 : 0),
-    0,
-  );
+  const answeredCount = unitAnswered.filter(Boolean).length;
+  // Il salto arriva anche dal riepilogo, che va chiuso: altrimenti si cambia domanda
+  // restando davanti alla schermata di conferma, senza vedere nulla succedere.
+  function goToQuestion(index: number) {
+    dispatch({ type: "GO_TO", index });
+    setShowConfirm(false);
+    setNavFilter(null);
+  }
+
   const flagCount = Object.values(state.flags).filter(Boolean).length;
   const flagged = !!state.flags[state.currentIndex];
   const isLast = state.currentIndex === total - 1;
@@ -216,11 +224,7 @@ export function SessionPage() {
             <button
               onClick={() => setPaused(true)}
               aria-label="Pause the session"
-              style={{
-                display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 8,
-                border: "1px solid rgba(255,255,255,.35)", background: "rgba(255,255,255,.12)",
-                color: "#fff", fontSize: 12.5, fontWeight: 600, font: "inherit", whiteSpace: "nowrap",
-              }}
+              style={headerButtonStyle}
             >
               <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <rect x="6" y="4" width="4" height="16" rx="1" />
@@ -260,6 +264,20 @@ export function SessionPage() {
                   <SummaryRow label="Flagged for review" value={String(flagCount)} fg={flagCount ? t.warn : t.tx} />
                   <SummaryRow label="Time used" value={fmt(elapsedSec)} fg={t.tx} />
                 </div>
+                {/* La riga "Unanswered" da sola non dice *quali*: senza questa scorciatoia
+                    l'unico modo di trovarle e' scorrere la sessione con Next/Previous. */}
+                {totalUnits - answeredCount > 0 && (
+                  <button
+                    onClick={() => setNavFilter("unanswered")}
+                    style={{
+                      display: "block", width: "100%", padding: 13, borderRadius: 11, marginBottom: 12,
+                      border: `1.5px solid ${t.erbd}`, background: t.erbg, color: t.er,
+                      fontSize: 14, fontWeight: 600,
+                    }}
+                  >
+                    Find the unanswered questions
+                  </button>
+                )}
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                   <button onClick={() => setShowConfirm(false)} style={wideButtonStyle(`1px solid ${t.bd3}`, t.card, t.tx2)}>
                     Keep working
@@ -275,6 +293,20 @@ export function SessionPage() {
           )}
         </div>
       </div>
+
+      <QuestionNavigator
+        open={navFilter !== null}
+        focusUnanswered={navFilter === "unanswered"}
+        questions={state.questions}
+        units={units}
+        unitAnswered={unitAnswered}
+        answers={state.answers}
+        flags={state.flags}
+        currentIndex={state.currentIndex}
+        onOpen={() => setNavFilter("all")}
+        onClose={() => setNavFilter(null)}
+        onSelect={goToQuestion}
+      />
 
       {/* zIndex sopra header (5) e modali (30): in pausa la domanda va davvero coperta, altrimenti
           si continuerebbe a leggerla e a rispondere con l'orologio fermo. */}
@@ -377,6 +409,13 @@ function SummaryRow({ label, value, fg }: { label: string; value: string; fg: st
     </div>
   );
 }
+
+/** I bottoni sul banner blu dell'header: vetro chiaro su gradiente, uguale in light e dark. */
+const headerButtonStyle = {
+  display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 8,
+  border: "1px solid rgba(255,255,255,.35)", background: "rgba(255,255,255,.12)",
+  color: "#fff", fontSize: 12.5, fontWeight: 600, font: "inherit", whiteSpace: "nowrap",
+} as const;
 
 function primaryButtonStyle(ac: string) {
   return {

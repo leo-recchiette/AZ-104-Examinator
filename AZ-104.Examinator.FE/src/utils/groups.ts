@@ -1,4 +1,5 @@
 import type { QuestionDto } from "../types/question";
+import { isQuestionAnswered } from "./questionShape";
 
 export interface GroupMember {
   /** Posizione nell'array delle domande della sessione: e' l'indice con cui si naviga. */
@@ -60,4 +61,19 @@ export function sessionUnits(questions: QuestionDto[]): SessionUnits {
   });
 
   return { unitOf, members };
+}
+
+/**
+ * Per ogni unita', se e' da considerarsi "risposta": un gruppo lo diventa solo quando lo sono
+ * tutte le sue sotto-domande, una domanda sciolta quando lo e' lei. Vive qui e non nelle pagine
+ * perche' il conteggio del footer e i semafori del navigatore devono dire sempre la stessa cosa.
+ */
+export function unitsAnswered(
+  questions: QuestionDto[],
+  units: SessionUnits,
+  answers: Record<number, string[]>,
+): boolean[] {
+  return units.members.map((memberIndexes) =>
+    memberIndexes.every((i) => isQuestionAnswered(questions[i], answers[questions[i].number] ?? [])),
+  );
 }
