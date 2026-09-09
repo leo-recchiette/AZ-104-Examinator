@@ -1,4 +1,4 @@
-import type { QuestionDto } from "../types/question";
+import type { OptionDto, QuestionDto } from "../types/question";
 
 export type AnswerShape = "options" | "draggable" | "prompts";
 
@@ -24,6 +24,19 @@ export function isQuestionAnswered(question: QuestionDto, value: string[]): bool
   if (shape === "options") return value.length > 0;
   if (shape === "draggable") return value.length === question.draggableItems.length;
   return value.filter(Boolean).length === question.prompts.length;
+}
+
+/**
+ * Le "Does the solution meet the goal?" (96 nel banco, tutte con una sola risposta giusta)
+ * offrono esattamente Yes e No: sono a scelta singola per costruzione, e poterle segnare
+ * entrambe produce una risposta che nell'esame non esiste. E' l'unico caso in cui la forma
+ * della domanda basta a saperlo senza rivelare nulla — per tutte le altre il DTO pre-risposta
+ * tace su quante risposte servano, ed e' giusto cosi' (vedi MultipleChoiceAnswer).
+ */
+export function isYesNoChoice(options: OptionDto[]): boolean {
+  if (options.length !== 2) return false;
+  const texts = options.map((o) => o.text.trim().toLowerCase());
+  return texts.includes("yes") && texts.includes("no");
 }
 
 /** Etichetta del tipo per l'header della card domanda e i tag della revisione: segue la forma, non "type" grezzo. */
