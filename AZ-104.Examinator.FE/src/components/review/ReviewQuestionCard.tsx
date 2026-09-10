@@ -2,7 +2,7 @@ import { useTheme } from "../../theme/ThemeContext";
 import { useDisplaySettings } from "../../settings/DisplaySettingsContext";
 import type { QuestionDto } from "../../types/question";
 import type { QuestionAnswerDto } from "../../types/answer";
-import { getAnswerShape, questionTypeLabel, formatYourAnswer } from "../../utils/questionShape";
+import { getAnswerShape, questionTypeLabel, formatYourAnswer, formatCorrectAnswer } from "../../utils/questionShape";
 import { pointsEarned } from "../../utils/grading";
 import { splitPreamble } from "../../utils/preamble";
 import { ImageStack } from "../session/ImageStack";
@@ -102,7 +102,7 @@ export function ReviewQuestionCard({ position, question, submitted, correct, asP
             Correct answer
           </div>
           <div style={{ fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-line", color: t.tx2 }}>
-            <PlaceholderText text={correct.answerText} />
+            <PlaceholderText text={formatCorrectAnswer(correct.answerText)} />
           </div>
         </div>
       </div>
