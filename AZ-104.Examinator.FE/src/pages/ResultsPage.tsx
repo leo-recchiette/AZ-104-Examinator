@@ -2,28 +2,24 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "../session/SessionContext";
 import { useTheme } from "../theme/ThemeContext";
-import { useDisplaySettings } from "../settings/DisplaySettingsContext";
 import { checkAnswers } from "../api/results";
 import { ApiError } from "../api/client";
-import type { AnswerCheckResultDto } from "../types/answer";
-import { getAnswerShape, questionTypeLabel, formatYourAnswer } from "../utils/questionShape";
+import type { AnswerCheckResultDto, QuestionAnswerDto } from "../types/answer";
+import type { QuestionDto } from "../types/question";
+import { getAnswerShape } from "../utils/questionShape";
 import { pointsEarned } from "../utils/grading";
-import { splitPreamble } from "../utils/preamble";
 import { OptionsMenu } from "../components/OptionsMenu";
-import { ImageStack } from "../components/session/ImageStack";
-import { PlaceholderText } from "../components/PlaceholderText";
+import { ReviewQuestionCard } from "../components/review/ReviewQuestionCard";
+import { ReviewGroupCard } from "../components/review/ReviewGroupCard";
+import { reviewUnits } from "../utils/reviewUnits";
 import { PASS_MARK_PERCENT } from "../constants";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
 interface WrongEntry {
   no: number;
-  tag: string;
-  text: string;
-  pointsLabel: string;
-  yours: string;
-  correct: string;
-  explanation: string;
-  images: string[];
+  question: QuestionDto;
+  submitted: string[];
+  correct: QuestionAnswerDto;
 }
 
 function fmt(totalSeconds: number): string {
@@ -36,7 +32,6 @@ export function ResultsPage() {
   const navigate = useNavigate();
   const { state, dispatch } = useSession();
   const { theme, tokens: t } = useTheme();
-  const { questionFontSize } = useDisplaySettings();
   const headerGradient = theme === "dark" ? HEADER_GRADIENT.dark : HEADER_GRADIENT.light;
   const [review, setReview] = useState<AnswerCheckResultDto[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -79,18 +74,7 @@ export function ResultsPage() {
         fullyCorrectCount++;
         return;
       }
-      wrong.push({
-        no: i + 1,
-        tag: questionTypeLabel(q, shape),
-        // Nella revisione le istruzioni d'esame si scartano del tutto: sono le stesse per 103 domande
-        // e qui interessa solo capire l'errore. Nella sessione restano, dietro il riquadro collassabile.
-        text: splitPreamble(q.text).body,
-        pointsLabel: `${earned} / ${pointsTotal} points`,
-        yours: formatYourAnswer(q, submitted),
-        correct: correct.answerText,
-        explanation: correct.explanation,
-        images: correct.images,
-      });
+      wrong.push({ no: i + 1, question: q, submitted, correct });
     });
   }
 
@@ -114,35 +98,25 @@ export function ResultsPage() {
             What you got wrong
           </h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {wrong.map((w) => (
-              <div key={w.no} style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 14, padding: "26px 26px 24px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: t.fa }}>Question {w.no}</span>
-                  <span style={{ fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 600, padding: "3px 8px", borderRadius: 6, background: t.bg, color: t.mu }}>
-                    {w.tag}
-                  </span>
-                  <span style={{ fontSize: 12, color: t.fa2, marginLeft: "auto", fontVariantNumeric: "tabular-nums" }}>{w.pointsLabel}</span>
-                </div>
-                <p style={{ margin: "0 0 20px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: questionFontSize, lineHeight: 1.5 }}>{w.text}</p>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12, marginBottom: 18 }}>
-                  <div style={{ border: `1px solid ${t.erbd}`, background: t.erbg, borderRadius: 10, padding: "14px 15px" }}>
-                    <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.er, marginBottom: 7 }}>Your answer</div>
-                    <div style={{ fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-line", color: t.tx2 }}>{w.yours}</div>
-                  </div>
-                  <div style={{ border: `1px solid ${t.okbd}`, background: t.okbg, borderRadius: 10, padding: "14px 15px" }}>
-                    <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.ok, marginBottom: 7 }}>Correct answer</div>
-                    <div style={{ fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-line", color: t.tx2 }}><PlaceholderText text={w.correct} /></div>
-                  </div>
-                </div>
-                <ImageStack filenames={w.images} />
-                {w.explanation.trim() !== "" && (
-                  <>
-                    <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.mu, marginBottom: 7 }}>Explanation</div>
-                    <div style={{ fontSize: 14.5, lineHeight: 1.6, color: t.tx2 }}>{w.explanation}</div>
-                  </>
-                )}
-              </div>
-            ))}
+            {/* Qui si mostrano solo le domande che hanno perso punti: di una scenario series
+                possono quindi comparire alcune parti soltanto, ma restano dentro la card del
+                gruppo, con lo scenario condiviso in cima e il conteggio "2 of 3 parts". */}
+            {reviewUnits(
+              wrong.map((w) => ({ position: w.no, question: w.question, submitted: w.submitted, correct: w.correct })),
+              state.questions,
+            ).map((unit) =>
+              unit.kind === "group" ? (
+                <ReviewGroupCard key={`g${unit.groupId}`} unit={unit} />
+              ) : (
+                <ReviewQuestionCard
+                  key={unit.entry.position}
+                  position={unit.entry.position}
+                  question={unit.entry.question}
+                  submitted={unit.entry.submitted}
+                  correct={unit.entry.correct}
+                />
+              ),
+            )}
             {review && wrong.length === 0 && (
               <div style={{ background: t.card, border: `1px solid ${t.okbd}`, borderRadius: 14, padding: 40, textAlign: "center" }}>
                 <div style={{ fontSize: 17, fontWeight: 600, marginBottom: 6 }}>Nothing to review</div>
@@ -174,6 +148,16 @@ export function ResultsPage() {
             <div style={{ height: "100%", width: `${percentage}%`, background: passed ? t.ok : t.er }} />
           </div>
           {error && <p style={{ margin: "0 0 12px", color: t.er, fontSize: 14 }}>{error}</p>}
+          {state.historyOutcome === "discarded" && (
+            <p style={{ margin: "0 0 12px", color: t.mu, fontSize: 13.5, lineHeight: 1.5 }}>
+              Not added to your history: no question was answered.
+            </p>
+          )}
+          {state.historyOutcome === "failed" && (
+            <p style={{ margin: "0 0 12px", color: t.er, fontSize: 13.5, lineHeight: 1.5 }}>
+              This session could not be added to your history — your score above is still correct.
+            </p>
+          )}
           <p style={{ margin: "0 0 26px", color: t.mu, fontSize: 14 }}>
             Pass mark {PASS_MARK_PERCENT}% · Time used {fmt(state.timeUsedSeconds ?? 0)}
           </p>
