@@ -165,8 +165,19 @@ export function ModeSelectPage() {
 
           {progress && (
             <div style={{ marginTop: 32, background: t.card, border: `1px solid ${t.bd}`, borderRadius: 14, padding: "24px 26px", boxShadow: `0 1px 2px ${t.sh}` }}>
-              <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 600, color: t.fa, marginBottom: 16 }}>
-                Your progress
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+                <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 600, color: t.fa }}>
+                  Your progress
+                </div>
+                <button
+                  onClick={() => navigate("/history")}
+                  style={{
+                    marginLeft: "auto", padding: "7px 13px", borderRadius: 999, border: `1px solid ${t.bd3}`,
+                    background: t.card, color: t.tx2, font: "inherit", fontSize: 13, fontWeight: 600,
+                  }}
+                >
+                  View history ({history.length})
+                </button>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 22 }}>
                 <div>

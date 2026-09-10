@@ -29,19 +29,39 @@ export function gradeMultipleChoice(submitted: string[], correctLetters: string[
 }
 
 /**
+ * Una riga 'selection' con piu' di una risposta corretta (es. domanda 242, "Allowed
+ * permissions" -> Read + List) e' salvata come "{valore1,valore2}": un artefatto di come
+ * l'importer scrive una lista Python in una colonna TEXT, riusato qui come marcatore -
+ * verificato univoco su tutto il dataset. Torna null se la riga ha un solo valore corretto.
+ * Deve restare sincronizzato con ScoreService.RowMatches.
+ */
+export function parseMultiValueAnswer(raw: string): string[] | null {
+  if (raw.length >= 2 && raw.startsWith("{") && raw.endsWith("}")) {
+    return raw.slice(1, -1).split(",").map((s) => s.trim());
+  }
+  return null;
+}
+
+/**
  * Confronto posizionale e case-insensitive: rispecchia ScoreService.Score per
  * drag&drop/hotspot/hotspot_yes_no (un passo/riga sbagliata non invalida gli
- * altri gia' giusti).
+ * altri gia' giusti). Per una riga a piu' valori il punto richiede l'insieme
+ * esatto scelto dall'utente (ne' di piu' ne' di meno) — l'utente separa le
+ * scelte multiple con "\n" (vedi RowSelectAnswer.tsx).
  */
 export function gradeRows(submitted: string[], answerRows: AnswerRowDto[]): RowGrade[] {
   return answerRows.map((row, index) => {
     const given = submitted[index] ?? null;
-    return {
-      index,
-      submitted: given,
-      correctAnswer: row.answer,
-      isCorrect: given !== null && given.toLowerCase() === row.answer.toLowerCase(),
-    };
+    const multiCorrect = parseMultiValueAnswer(row.answer);
+    let isCorrect: boolean;
+    if (multiCorrect) {
+      const correctSet = new Set(multiCorrect.map((s) => s.toLowerCase()));
+      const givenSet = new Set((given ?? "").split("\n").map((s) => s.trim().toLowerCase()).filter(Boolean));
+      isCorrect = given !== null && givenSet.size === correctSet.size && [...correctSet].every((c) => givenSet.has(c));
+    } else {
+      isCorrect = given !== null && given.toLowerCase() === row.answer.toLowerCase();
+    }
+    return { index, submitted: given, correctAnswer: row.answer, isCorrect };
   });
 }
 

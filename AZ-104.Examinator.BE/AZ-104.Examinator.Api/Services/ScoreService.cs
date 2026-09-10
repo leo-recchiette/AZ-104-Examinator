@@ -1,3 +1,4 @@
+using Examinator.Api.Extensions;
 using Examinator.Api.Models.Domains;
 using Examinator.Api.Services.Interfaces;
 
@@ -23,9 +24,6 @@ public sealed class ScoreService : IScoreService
     {
         if (type is QuestionType.MultipleChoice)
         {
-            // Letter e' nullable a livello di dominio (il pool di un DragAndDrop
-            // 'ordered_answer' non ne ha), ma in questo ramo 'options' e' sempre
-            // il pool lettered di una MultipleChoice: mai null qui.
             var correctLetters = options.Where(o => o.IsCorrect).Select(o => o.Letter!);
             var correctSet = new HashSet<string>(correctLetters, StringComparer.OrdinalIgnoreCase);
             var givenSet = new HashSet<string>(userAnswers.Select(a => a.Trim()), StringComparer.OrdinalIgnoreCase);
@@ -35,8 +33,8 @@ public sealed class ScoreService : IScoreService
         var earned = 0;
         for (var i = 0; i < answerRows.Count; i++)
         {
-            var given = i < userAnswers.Count ? userAnswers[i].Trim() : null;
-            if (given is not null && string.Equals(given, answerRows[i].Answer, StringComparison.OrdinalIgnoreCase))
+            var given = i < userAnswers.Count ? userAnswers[i]?.Trim() : null;
+            if (given is not null && given.HasRowMatches(answerRows[i].Answer))
                 earned++;
         }
         return (earned, answerRows.Count);

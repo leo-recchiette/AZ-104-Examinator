@@ -1,6 +1,7 @@
 import { useTheme } from "../../theme/ThemeContext";
 import type { OptionDto } from "../../types/question";
 import { gradeMultipleChoice } from "../../utils/grading";
+import { isYesNoChoice } from "../../utils/questionShape";
 
 interface MultipleChoiceAnswerProps {
   options: OptionDto[];
@@ -11,24 +12,36 @@ interface MultipleChoiceAnswerProps {
 }
 
 /**
- * Sempre multi-selezione, badge quadrato: il DTO pre-risposta non rivela se
- * la domanda vuole una sola risposta o piu' (altrimenti la domanda non
- * avrebbe senso), quindi a differenza del mockup (che lo sapeva in anticipo
- * dai dati finti) qui non si puo' distinguere mono/multi prima di rivelare.
+ * Multi-selezione con badge quadrato per impostazione predefinita: il DTO pre-risposta non
+ * rivela se la domanda vuole una sola risposta o piu' (altrimenti la domanda non avrebbe
+ * senso), quindi a differenza del mockup (che lo sapeva in anticipo dai dati finti) qui non
+ * si puo' distinguere mono/multi prima di rivelare.
+ *
+ * L'unica eccezione sono le Yes/No (isYesNoChoice): li' la scelta singola non e' un'ipotesi
+ * ma la forma stessa della domanda, e sceglierle entrambe darebbe una risposta inesistente
+ * — per giunta sempre premiata, visto che il punteggio a credito parziale conta le lettere
+ * giuste senza togliere nulla per le altre. Badge tondo e semantica radio per dirlo a vista.
  */
 export function MultipleChoiceAnswer({ options, value, onChange, correctLetters }: MultipleChoiceAnswerProps) {
   const { tokens: t } = useTheme();
   const revealed = correctLetters !== undefined;
   const grades = revealed ? gradeMultipleChoice(value, correctLetters, options.map((o) => o.letter)) : null;
+  const single = isYesNoChoice(options);
 
-  function toggle(letter: string) {
+  function choose(letter: string) {
+    // Da radio: la scelta sostituisce la precedente e un secondo click non la annulla,
+    // cosi' non si torna "senza risposta" per un click di troppo.
+    if (single) {
+      onChange([letter]);
+      return;
+    }
     onChange(value.includes(letter) ? value.filter((l) => l !== letter) : [...value, letter]);
   }
 
   return (
     // Griglia invece di colonna singola: con 4-6 opzioni dimezza l'altezza occupata,
     // che e' cio' che faceva scrollare la card. auto-fit torna a una colonna sotto i ~700px.
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 10 }}>
+    <div role={single ? "radiogroup" : "group"} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 10 }}>
       {options.map((option) => {
         const grade = grades?.find((g) => g.letter === option.letter);
         const sel = value.includes(option.letter);
@@ -51,7 +64,9 @@ export function MultipleChoiceAnswer({ options, value, onChange, correctLetters 
         return (
           <button
             key={option.letter}
-            onClick={() => toggle(option.letter)}
+            onClick={() => choose(option.letter)}
+            role={single ? "radio" : "checkbox"}
+            aria-checked={sel}
             style={{
               display: "flex", alignItems: "flex-start", gap: 14, textAlign: "left",
               padding: "15px 17px", borderRadius: 11, border: `1.5px solid ${bd}`, background: bg,
@@ -60,7 +75,7 @@ export function MultipleChoiceAnswer({ options, value, onChange, correctLetters 
           >
             <span
               style={{
-                flex: "none", width: 26, height: 26, borderRadius: 7, display: "grid", placeItems: "center",
+                flex: "none", width: 26, height: 26, borderRadius: single ? 999 : 7, display: "grid", placeItems: "center",
                 fontSize: 12.5, fontWeight: 700, background: sel ? t.ac : t.card, color: sel ? "#fff" : t.mu,
                 border: `1.5px solid ${sel ? t.ac : t.bd3}`,
               }}
