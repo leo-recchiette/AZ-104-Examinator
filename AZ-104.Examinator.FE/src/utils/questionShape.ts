@@ -65,17 +65,30 @@ export function questionTypeLabel(question: QuestionDto, shape: AnswerShape = ge
  *
  * Verificato sul dataset: 190 answerText a righe, tutti spezzati nel numero esatto di righe.
  * Trasformazione di sola presentazione, il dataset resta ground truth.
+ *
+ * Torna le righe separate invece del testo gia' unito perche' chi rende le impagina come
+ * elenco puntato, con il pallino in colonna propria (vedi ReviewQuestionCard).
  */
-export function formatCorrectAnswer(answerText: string): string {
+export function correctAnswerLines(answerText: string): string[] {
   const chunks = answerText.split(" | ");
-  if (chunks.length < 2 || !answerText.includes(" ->")) return chunks.join("\n");
+  if (chunks.length < 2 || !answerText.includes(" ->")) return chunks.map(prettyArrow);
 
   const lines: string[] = [];
   for (const chunk of chunks) {
     if (lines.length === 0 || chunk.includes(" ->")) lines.push(chunk);
     else lines[lines.length - 1] += ` | ${chunk}`;
   }
-  return lines.join("\n");
+  return lines.map(prettyArrow);
+}
+
+/**
+ * La "->" del dataset diventa una freccia vera a schermo. L'ancora agli spazi evita di
+ * toccare un "->" attaccato al testo, che sarebbe codice e non un separatore: verificato
+ * sul dataset, tutte e 210 le risposte con freccia la usano spaziata e ne hanno esattamente
+ * una per riga. Come sopra, si riscrive solo cio' che si mostra.
+ */
+function prettyArrow(line: string): string {
+  return line.replace(/ ->(?= |$)/g, " →");
 }
 
 /** Testo "la tua risposta", formattato come farebbe l'utente leggendolo — usato solo nella revisione (le righe non hanno un "answerText" pronto lato client come le domande). */
