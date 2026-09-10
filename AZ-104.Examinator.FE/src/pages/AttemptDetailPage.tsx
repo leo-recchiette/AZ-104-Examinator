@@ -83,7 +83,7 @@ export function AttemptDetailPage() {
                   {passed ? "Pass" : "Fail"}
                 </span>
                 <span style={{ fontSize: 13.5, color: t.mu, marginBottom: 8, marginLeft: "auto" }}>
-                  {attempt.questionCount} questions · {formatDuration(attempt.startTime, attempt.endTime)} · {lostCount} lost points
+                  {attempt.questionCount} questions · {formatDuration(attempt.startTime, attempt.endTime)} · {lostCount} incorrectly answered
                 </span>
               </div>
             </div>
@@ -97,8 +97,8 @@ export function AttemptDetailPage() {
             ) : (
               <>
                 <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
-                  <FilterPill active={!onlyWrong} onClick={() => setOnlyWrong(false)} label={`All ${graded.length} questions`} />
-                  <FilterPill active={onlyWrong} onClick={() => setOnlyWrong(true)} label={`Lost points (${lostCount})`} />
+                  <FilterPill active={!onlyWrong} onClick={() => setOnlyWrong(false)} label="All questions" />
+                  <FilterPill active={onlyWrong} onClick={() => setOnlyWrong(true)} label={`Incorrectly answered (${lostCount})`} />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                   {shown.map((g) => (

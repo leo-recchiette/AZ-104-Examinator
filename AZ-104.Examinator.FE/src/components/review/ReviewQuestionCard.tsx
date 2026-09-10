@@ -45,6 +45,13 @@ export function ReviewQuestionCard({ position, question, submitted, correct }: R
   const shape = getAnswerShape(question);
   const [earned, pointsTotal] = pointsEarned(shape, submitted, correct, question.options.map((o) => o.letter));
   const allCorrect = earned >= pointsTotal;
+  // Punteggio pieno non vuol dire risposta identica: le scelte in piu' non tolgono punti
+  // (regola Microsoft, vedi ScoreService), quindi una multiple choice con una lettera in piu'
+  // - o una sequenza con passi in coda - vale comunque tutto pur restando diversa dalla
+  // soluzione, e va mostrata. Solo quando coincidono davvero i due riquadri direbbero la
+  // stessa cosa e se ne mostra uno.
+  const sameAsCorrect =
+    allCorrect && submitted.length === (shape === "options" ? correct.correctLetters.length : correct.answerRows.length);
 
   return (
     <div style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 14, padding: "26px 26px 24px" }}>
@@ -62,15 +69,20 @@ export function ReviewQuestionCard({ position, question, submitted, correct }: R
             e qui interessa solo capire la risposta. Nella sessione restano, dietro il riquadro collassabile. */}
         {splitPreamble(question.text).body}
       </p>
+      {/* L'exhibit sta sopra le colonne: e' il contesto della domanda, va guardato prima
+          di leggere il confronto fra risposta data e soluzione. */}
+      <ImageStack filenames={correct.images} />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12, marginBottom: 18 }}>
-        <div style={{ border: `1px solid ${allCorrect ? t.okbd : t.erbd}`, background: allCorrect ? t.okbg : t.erbg, borderRadius: 10, padding: "14px 15px" }}>
-          <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: allCorrect ? t.ok : t.er, marginBottom: 7 }}>
-            Your answer
+        {!sameAsCorrect && (
+          <div style={{ border: `1px solid ${allCorrect ? t.okbd : t.erbd}`, background: allCorrect ? t.okbg : t.erbg, borderRadius: 10, padding: "14px 15px" }}>
+            <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: allCorrect ? t.ok : t.er, marginBottom: 7 }}>
+              Your answer
+            </div>
+            <div style={{ fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-line", color: t.tx2 }}>
+              {formatYourAnswer(question, submitted)}
+            </div>
           </div>
-          <div style={{ fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-line", color: t.tx2 }}>
-            {formatYourAnswer(question, submitted)}
-          </div>
-        </div>
+        )}
         <div style={{ border: `1px solid ${t.okbd}`, background: t.okbg, borderRadius: 10, padding: "14px 15px" }}>
           <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.ok, marginBottom: 7 }}>
             Correct answer
@@ -80,7 +92,6 @@ export function ReviewQuestionCard({ position, question, submitted, correct }: R
           </div>
         </div>
       </div>
-      <ImageStack filenames={correct.images} />
       {correct.explanation.trim() !== "" && (
         <>
           <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.mu, marginBottom: 7 }}>
