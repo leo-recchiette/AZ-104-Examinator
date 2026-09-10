@@ -66,5 +66,5 @@ export function formatYourAnswer(question: QuestionDto, submitted: string[]): st
   if (shape === "draggable") {
     return submitted.map((v, i) => `${i + 1}. ${v}`).join("\n");
   }
-  return question.prompts.map((_, i) => submitted[i] || "—").join(" · ");
+  return question.prompts.map((_, i) => (submitted[i] ? submitted[i].split("\n").join(", ") : "—")).join(" · ");
 }
