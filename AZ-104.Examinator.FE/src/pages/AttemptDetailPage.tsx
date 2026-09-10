@@ -6,8 +6,10 @@ import { ApiError } from "../api/client";
 import type { ExamAttemptDetailDto } from "../types/answer";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { ReviewQuestionCard } from "../components/review/ReviewQuestionCard";
+import { ReviewGroupCard } from "../components/review/ReviewGroupCard";
 import { getAnswerShape } from "../utils/questionShape";
 import { pointsEarned } from "../utils/grading";
+import { reviewUnits } from "../utils/reviewUnits";
 import { formatDateTime, formatDuration } from "../utils/format";
 import { PASS_MARK_PERCENT } from "../constants";
 import { HEADER_GRADIENT } from "../theme/tokens";
@@ -49,6 +51,12 @@ export function AttemptDetailPage() {
 
   const lostCount = graded.filter((g) => g.lostPoints).length;
   const shown = onlyWrong ? graded.filter((g) => g.lostPoints) : graded;
+  // Le domande di una scenario series si rivedono insieme, in una card sola: lo scenario che
+  // si ripetono identico va letto una volta, non una per parte.
+  const units = reviewUnits(
+    shown.map((g) => ({ position: g.position, question: g.answer.question, submitted: g.answer.userAnswers, correct: g.answer.correctAnswer })),
+    graded.flatMap((g) => (g.answer.question ? [g.answer.question] : [])),
+  );
   const attempt = detail?.attempt;
   const passed = (attempt?.percentage ?? 0) >= PASS_MARK_PERCENT;
 
@@ -101,15 +109,19 @@ export function AttemptDetailPage() {
                   <FilterPill active={onlyWrong} onClick={() => setOnlyWrong(true)} label={`Incorrectly answered (${lostCount})`} />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                  {shown.map((g) => (
-                    <ReviewQuestionCard
-                      key={g.position}
-                      position={g.position}
-                      question={g.answer.question}
-                      submitted={g.answer.userAnswers}
-                      correct={g.answer.correctAnswer}
-                    />
-                  ))}
+                  {units.map((unit) =>
+                    unit.kind === "group" ? (
+                      <ReviewGroupCard key={`g${unit.groupId}`} unit={unit} />
+                    ) : (
+                      <ReviewQuestionCard
+                        key={unit.entry.position}
+                        position={unit.entry.position}
+                        question={unit.entry.question}
+                        submitted={unit.entry.submitted}
+                        correct={unit.entry.correct}
+                      />
+                    ),
+                  )}
                   {shown.length === 0 && (
                     <div style={{ background: t.card, border: `1px solid ${t.okbd}`, borderRadius: 14, padding: 40, textAlign: "center" }}>
                       <div style={{ fontSize: 17, fontWeight: 600, marginBottom: 6 }}>Nothing to review</div>

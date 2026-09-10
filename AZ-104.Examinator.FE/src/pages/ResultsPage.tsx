@@ -10,6 +10,8 @@ import { getAnswerShape } from "../utils/questionShape";
 import { pointsEarned } from "../utils/grading";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { ReviewQuestionCard } from "../components/review/ReviewQuestionCard";
+import { ReviewGroupCard } from "../components/review/ReviewGroupCard";
+import { reviewUnits } from "../utils/reviewUnits";
 import { PASS_MARK_PERCENT } from "../constants";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
@@ -96,9 +98,25 @@ export function ResultsPage() {
             What you got wrong
           </h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {wrong.map((w) => (
-              <ReviewQuestionCard key={w.no} position={w.no} question={w.question} submitted={w.submitted} correct={w.correct} />
-            ))}
+            {/* Qui si mostrano solo le domande che hanno perso punti: di una scenario series
+                possono quindi comparire alcune parti soltanto, ma restano dentro la card del
+                gruppo, con lo scenario condiviso in cima e il conteggio "2 of 3 parts". */}
+            {reviewUnits(
+              wrong.map((w) => ({ position: w.no, question: w.question, submitted: w.submitted, correct: w.correct })),
+              state.questions,
+            ).map((unit) =>
+              unit.kind === "group" ? (
+                <ReviewGroupCard key={`g${unit.groupId}`} unit={unit} />
+              ) : (
+                <ReviewQuestionCard
+                  key={unit.entry.position}
+                  position={unit.entry.position}
+                  question={unit.entry.question}
+                  submitted={unit.entry.submitted}
+                  correct={unit.entry.correct}
+                />
+              ),
+            )}
             {review && wrong.length === 0 && (
               <div style={{ background: t.card, border: `1px solid ${t.okbd}`, borderRadius: 14, padding: 40, textAlign: "center" }}>
                 <div style={{ fontSize: 17, fontWeight: 600, marginBottom: 6 }}>Nothing to review</div>
