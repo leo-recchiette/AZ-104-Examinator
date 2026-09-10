@@ -15,6 +15,12 @@ interface ReviewQuestionCardProps {
   question: QuestionDto | null;
   submitted: string[];
   correct: QuestionAnswerDto | null;
+  /**
+   * Valorizzato solo dentro una card di gruppo (ReviewGroupCard): la cornice la mette il
+   * contenitore, l'intestazione diventa "Part N" e il corpo arriva gia' senza lo scenario
+   * condiviso, che il gruppo mostra una volta sola in cima.
+   */
+  asPart?: { number: number; body: string };
 }
 
 /**
@@ -24,14 +30,21 @@ interface ReviewQuestionCardProps {
  * mostrano tutte): la colorazione del riquadro "Your answer" segue il punteggio,
  * non il contesto in cui la card e' usata.
  */
-export function ReviewQuestionCard({ position, question, submitted, correct }: ReviewQuestionCardProps) {
+export function ReviewQuestionCard({ position, question, submitted, correct, asPart }: ReviewQuestionCardProps) {
   const { tokens: t } = useTheme();
   const { questionFontSize } = useDisplaySettings();
 
+  // Dentro un gruppo la card non ha cornice propria: si separa dalla parte precedente
+  // (o dallo scenario condiviso) con un filetto.
+  const frame = asPart
+    ? { borderTop: `1px solid ${t.bd2}`, paddingTop: 20, marginTop: 20 }
+    : { background: t.card, border: `1px solid ${t.bd}`, borderRadius: 14 };
+  const label = asPart ? `Part ${asPart.number}` : `Question ${position}`;
+
   if (!question || !correct) {
     return (
-      <div style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 14, padding: "22px 26px" }}>
-        <div style={{ fontSize: 12, fontWeight: 600, color: t.fa, marginBottom: 8 }}>Question {position}</div>
+      <div style={{ ...frame, padding: asPart ? "20px 0 0" : "22px 26px" }}>
+        <div style={{ fontSize: 12, fontWeight: 600, color: t.fa, marginBottom: 8 }}>{label}</div>
         <div style={{ fontSize: 14, color: t.mu, lineHeight: 1.5 }}>
           This question is no longer in the question bank, so its text and solution cannot be shown.
         </div>
@@ -54,9 +67,9 @@ export function ReviewQuestionCard({ position, question, submitted, correct }: R
     allCorrect && submitted.length === (shape === "options" ? correct.correctLetters.length : correct.answerRows.length);
 
   return (
-    <div style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 14, padding: "26px 26px 24px" }}>
+    <div style={{ ...frame, padding: asPart ? "20px 0 0" : "26px 26px 24px" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 12, fontWeight: 600, color: t.fa }}>Question {position}</span>
+        <span style={{ fontSize: 12, fontWeight: 600, color: t.fa }}>{label}</span>
         <span style={{ fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 600, padding: "3px 8px", borderRadius: 6, background: t.bg, color: t.mu }}>
           {questionTypeLabel(question, shape)}
         </span>
@@ -66,8 +79,9 @@ export function ReviewQuestionCard({ position, question, submitted, correct }: R
       </div>
       <p style={{ margin: "0 0 20px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: questionFontSize, lineHeight: 1.5 }}>
         {/* Nella revisione le istruzioni d'esame si scartano del tutto: sono le stesse per 103 domande
-            e qui interessa solo capire la risposta. Nella sessione restano, dietro il riquadro collassabile. */}
-        {splitPreamble(question.text).body}
+            e qui interessa solo capire la risposta. Nella sessione restano, dietro il riquadro collassabile.
+            Dentro un gruppo il corpo arriva gia' tagliato dello scenario condiviso. */}
+        {asPart ? asPart.body : splitPreamble(question.text).body}
       </p>
       {/* L'exhibit sta sopra le colonne: e' il contesto della domanda, va guardato prima
           di leggere il confronto fra risposta data e soluzione. */}
