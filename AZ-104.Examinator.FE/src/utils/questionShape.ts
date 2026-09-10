@@ -15,14 +15,20 @@ export function getAnswerShape(question: QuestionDto): AnswerShape {
 }
 
 /**
- * "Risposta data" richiede il completamento pieno per sequenza/righe (ogni
- * riga valorizzata, sequenza completa), non solo l'aver iniziato — altrimenti
- * il conteggio "N answered" del footer sarebbe fuorviante.
+ * "Risposta data" richiede il completamento pieno per le righe (ogni riga
+ * valorizzata), non solo l'aver iniziato — altrimenti il conteggio "N answered"
+ * del footer sarebbe fuorviante. Per "draggable" invece basta un elemento
+ * posizionato: draggableItems e' l'intero pool CON i distrattori (vedi
+ * QuestionDto), non la lunghezza della sequenza corretta, che il DTO pre-risposta
+ * tace deliberatamente (stesso principio delle multiple choice, dove non si
+ * rivela quante risposte servano) — pretendere value.length === draggableItems.length
+ * renderebbe "answered" irraggiungibile in tutti i casi (la maggioranza) in cui
+ * il pool e' piu' grande della sequenza da comporre.
  */
 export function isQuestionAnswered(question: QuestionDto, value: string[]): boolean {
   const shape = getAnswerShape(question);
   if (shape === "options") return value.length > 0;
-  if (shape === "draggable") return value.length === question.draggableItems.length;
+  if (shape === "draggable") return value.length > 0;
   return value.filter(Boolean).length === question.prompts.length;
 }
 
