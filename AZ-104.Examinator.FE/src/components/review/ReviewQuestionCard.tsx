@@ -2,7 +2,7 @@ import { useTheme } from "../../theme/ThemeContext";
 import { useDisplaySettings } from "../../settings/DisplaySettingsContext";
 import type { QuestionDto } from "../../types/question";
 import type { QuestionAnswerDto } from "../../types/answer";
-import { getAnswerShape, questionTypeLabel, formatYourAnswer, formatCorrectAnswer } from "../../utils/questionShape";
+import { getAnswerShape, questionTypeLabel, formatYourAnswer, correctAnswerLines } from "../../utils/questionShape";
 import { pointsEarned } from "../../utils/grading";
 import { splitPreamble } from "../../utils/preamble";
 import { ImageStack } from "../session/ImageStack";
@@ -65,6 +65,7 @@ export function ReviewQuestionCard({ position, question, submitted, correct, asP
   // stessa cosa e se ne mostra uno.
   const sameAsCorrect =
     allCorrect && submitted.length === (shape === "options" ? correct.correctLetters.length : correct.answerRows.length);
+  const correctLines = correctAnswerLines(correct.answerText);
 
   return (
     <div style={{ ...frame, padding: asPart ? "20px 0 0" : "26px 26px 24px" }}>
@@ -84,8 +85,12 @@ export function ReviewQuestionCard({ position, question, submitted, correct, asP
         {asPart ? asPart.body : splitPreamble(question.text).body}
       </p>
       {/* L'exhibit sta sopra le colonne: e' il contesto della domanda, va guardato prima
-          di leggere il confronto fra risposta data e soluzione. */}
-      <ImageStack filenames={correct.images} />
+          di leggere il confronto fra risposta data e soluzione. Servono ENTRAMBI i tipi di
+          immagine, prima quelle della domanda e poi quella con la soluzione compilata: la
+          sola "answer" lascerebbe fuori 638 screenshot (le tabelle e i template di cui il
+          testo parla), e in 118 domande che hanno solo immagini "question" la revisione
+          resterebbe senza alcun exhibit pur riferendosi a un grafico. */}
+      <ImageStack filenames={[...question.images, ...correct.images]} />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12, marginBottom: 18 }}>
         {!sameAsCorrect && (
           <div style={{ border: `1px solid ${allCorrect ? t.okbd : t.erbd}`, background: allCorrect ? t.okbg : t.erbg, borderRadius: 10, padding: "14px 15px" }}>
@@ -101,8 +106,18 @@ export function ReviewQuestionCard({ position, question, submitted, correct, asP
           <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.ok, marginBottom: 7 }}>
             Correct answer
           </div>
-          <div style={{ fontSize: 14, lineHeight: 1.5, whiteSpace: "pre-line", color: t.tx2 }}>
-            <PlaceholderText text={formatCorrectAnswer(correct.answerText)} />
+          {/* Elenco puntato con il pallino in colonna propria: una riga lunga che va a capo
+              resta allineata sotto il testo, non sotto il pallino. Su una riga sola il
+              pallino sarebbe solo rumore. */}
+          <div style={{ display: "grid", gap: 5, fontSize: 14, lineHeight: 1.5, color: t.tx2 }}>
+            {correctLines.map((line, i) => (
+              <div key={i} style={{ display: "flex", gap: 8, alignItems: "baseline" }}>
+                {correctLines.length > 1 && <span style={{ flex: "none", color: t.ok }}>•</span>}
+                <span style={{ whiteSpace: "pre-line" }}>
+                  <PlaceholderText text={line} />
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
