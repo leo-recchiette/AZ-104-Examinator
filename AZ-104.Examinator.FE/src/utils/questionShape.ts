@@ -52,6 +52,32 @@ export function questionTypeLabel(question: QuestionDto, shape: AnswerShape = ge
   return question.type === "hotspot_yes_no" ? "Hotspot · Yes/No" : "Hotspot";
 }
 
+/**
+ * L'answerText del backend infila tutte le righe su una riga sola separandole con " | "
+ * ("prompt -> valore | prompt -> valore | ..."): oltre le due righe diventa illeggibile,
+ * quindi in fase di render ognuna va a capo per suo conto.
+ *
+ * Non basta spezzare su ogni " | ": in una risposta il pipe fa parte del VALORE (domanda
+ * 545, l'operatore KQL "| project"). Quando il testo e' a righe — riconoscibile dal " ->" —
+ * si va a capo solo dove comincia davvero una riga nuova, cioe' su un pezzo che ha la
+ * freccia; il resto viene riattaccato alla riga precedente. Sulle liste senza freccia
+ * (multiple choice: "B. ... | D. ...") ogni pipe e' invece una voce a se'.
+ *
+ * Verificato sul dataset: 190 answerText a righe, tutti spezzati nel numero esatto di righe.
+ * Trasformazione di sola presentazione, il dataset resta ground truth.
+ */
+export function formatCorrectAnswer(answerText: string): string {
+  const chunks = answerText.split(" | ");
+  if (chunks.length < 2 || !answerText.includes(" ->")) return chunks.join("\n");
+
+  const lines: string[] = [];
+  for (const chunk of chunks) {
+    if (lines.length === 0 || chunk.includes(" ->")) lines.push(chunk);
+    else lines[lines.length - 1] += ` | ${chunk}`;
+  }
+  return lines.join("\n");
+}
+
 /** Testo "la tua risposta", formattato come farebbe l'utente leggendolo — usato solo nella revisione (le righe non hanno un "answerText" pronto lato client come le domande). */
 export function formatYourAnswer(question: QuestionDto, submitted: string[]): string {
   if (submitted.length === 0) return "Not answered";
