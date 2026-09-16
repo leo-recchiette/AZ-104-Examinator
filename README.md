@@ -2,6 +2,21 @@
 
 Simulatore d'esame per la certificazione Microsoft AZ-104, con un question bank di 606 domande.
 
+## Screenshot
+
+Schermata iniziale: scelta della modalità e andamento dei punteggi delle sessioni già svolte.
+
+![Schermata iniziale](docs/screenshots/home.png)
+
+Una domanda durante una sessione di pratica, con lo screenshot allegato (*exhibit*) aperto e la
+soluzione disponibile su richiesta.
+
+![Una domanda durante la sessione](docs/screenshots/question.png)
+
+Storico delle sessioni inviate: da qui si riapre un tentativo passato con domande, risposte date e soluzioni.
+
+![Storico delle sessioni](docs/screenshots/history.png)
+
 ## Struttura del progetto
 
 ```
