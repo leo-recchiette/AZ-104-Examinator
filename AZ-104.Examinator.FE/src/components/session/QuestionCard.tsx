@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "../../theme/ThemeContext";
 import { useDisplaySettings } from "../../settings/DisplaySettingsContext";
 import type { QuestionDto } from "../../types/question";
@@ -19,12 +19,14 @@ interface QuestionCardProps {
   flagged: boolean;
   onToggleFlag: () => void;
   isPractice: boolean;
+  /** Impostazione di sessione: apre il pannello da sola appena la soluzione e' disponibile. */
+  autoReveal: boolean;
   checkResult?: AnswerCheckResultDto;
   onReveal: () => void | Promise<void>;
   onRequestExit: () => void;
 }
 
-export function QuestionCard({ question, value, onChange, flagged, onToggleFlag, isPractice, checkResult, onReveal, onRequestExit }: QuestionCardProps) {
+export function QuestionCard({ question, value, onChange, flagged, onToggleFlag, isPractice, autoReveal, checkResult, onReveal, onRequestExit }: QuestionCardProps) {
   const { tokens: t } = useTheme();
   const { questionFontSize } = useDisplaySettings();
   const [panelOpen, setPanelOpen] = useState(false);
@@ -33,6 +35,13 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
   const revealed = panelOpen && !!checkResult;
   const correct = checkResult?.correctAnswer;
   const multiHint = revealed && correct && correct.correctLetters.length > 1 ? `Select ${correct.correctLetters.length} answers` : "";
+
+  // Con l'auto-reveal chi chiede la soluzione e' SessionPage, non il pulsante: qui resta solo da
+  // aprire il pannello quando il risultato arriva. Non forza la riapertura finche' quel risultato
+  // non cambia, cosi' "Hide solution" continua a poter chiudere il pannello.
+  useEffect(() => {
+    if (autoReveal && checkResult) setPanelOpen(true);
+  }, [autoReveal, checkResult]);
 
   async function handleToggleReveal() {
     if (!checkResult) {

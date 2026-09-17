@@ -9,6 +9,7 @@ import { QuestionCard } from "../components/session/QuestionCard";
 import { GroupNav } from "../components/session/GroupNav";
 import { QuestionNavigator } from "../components/session/QuestionNavigator";
 import { groupMembers, sessionUnits, unitsAnswered } from "../utils/groups";
+import { isQuestionAnswered } from "../utils/questionShape";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
@@ -20,6 +21,12 @@ const CLOCK_DANGER = "#ff6b6b";
 /** Quanto tempo deve restare perche' scatti l'avviso, in frazione del limite scelto. */
 const WARN_FRACTION = 1 / 3;
 const DANGER_FRACTION = 0.1;
+/** Attesa prima dell'auto-reveal: le hotspot si compilano una riga alla volta e senza questa
+ *  pausa ogni riga farebbe partire una checkAnswers, l'ultima delle quali e' l'unica utile. */
+const AUTO_REVEAL_DELAY_MS = 400;
+/** Riferimento stabile per "nessuna risposta": un [] nuovo a ogni render rifarebbe partire
+ *  l'effetto dell'auto-reveal di continuo. */
+const NO_ANSWER: string[] = [];
 
 function fmt(totalSeconds: number): string {
   const m = Math.floor(totalSeconds / 60);
@@ -44,7 +51,10 @@ export function SessionPage() {
   const elapsedSecRef = useRef(0);
 
   const question = state.questions[state.currentIndex];
-  const value = question ? (state.answers[question.number] ?? []) : [];
+  const value = useMemo(
+    () => (question ? (state.answers[question.number] ?? NO_ANSWER) : NO_ANSWER),
+    [question, state.answers],
+  );
   const total = state.questions.length;
   const isPractice = state.mode === "practice";
 
@@ -120,6 +130,25 @@ export function SessionPage() {
     if (!question) navigate("/", { replace: true });
   }, [question, navigate]);
 
+  // Auto-reveal, se scelto al setup della Practice: la soluzione si chiede da sola non appena la
+  // domanda risulta completamente risposta. SET_ANSWER cancella il checkResult della domanda, quindi
+  // cambiare risposta fa ripartire questo effetto e la soluzione si riallinea da se'.
+  useEffect(() => {
+    if (!isPractice || !state.autoReveal || !question) return;
+    if (state.checkResults[question.number]) return;
+    if (!isQuestionAnswered(question, value)) return;
+
+    const questionNumber = question.number;
+    const timer = setTimeout(() => {
+      checkAnswers([{ questionNumber, userAnswers: value }])
+        .then(([result]) => {
+          if (result) dispatch({ type: "SET_CHECK_RESULT", questionNumber, result });
+        })
+        .catch((err) => console.error("Auto-reveal non riuscito:", err));
+    }, AUTO_REVEAL_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [isPractice, state.autoReveal, state.checkResults, question, value, dispatch]);
+
   // Sopra l'early return: gli hook devono essere chiamati sempre, nello stesso ordine.
   // I conteggi mostrati all'utente vanno per unita', non per domanda: chi ha chiesto 80
   // domande deve vederne 80, e un gruppo di sotto-domande e' una di quelle 80.
@@ -179,6 +208,7 @@ export function SessionPage() {
       flagged={flagged}
       onToggleFlag={() => dispatch({ type: "TOGGLE_FLAG", index: state.currentIndex })}
       isPractice={isPractice}
+      autoReveal={state.autoReveal}
       checkResult={state.checkResults[question.number]}
       onReveal={handleReveal}
       onRequestExit={() => setShowExitConfirm(true)}

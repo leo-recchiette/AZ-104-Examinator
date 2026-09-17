@@ -15,6 +15,12 @@ export interface SessionState {
   flags: Record<number, boolean>;
   /** null = nessun limite, quindi nessuna barra di progresso. */
   timeLimitSeconds: number | null;
+  /**
+   * Scelto al setup della Practice: quando e' attivo la soluzione si apre da sola appena la
+   * domanda risulta risposta, senza passare dal pulsante "Show solution" (che resta comunque
+   * disponibile per richiuderla e riaprirla). Sempre false in Simulation, dove non si rivela nulla.
+   */
+  autoReveal: boolean;
   /** Timestamp fisso (Date.now()), scritto una sola volta all'avvio. */
   startedAt: number | null;
   status: "idle" | "in-progress" | "finished";
@@ -32,7 +38,7 @@ export interface SessionState {
 }
 
 export type SessionAction =
-  | { type: "START_SESSION"; mode: SessionMode; questions: QuestionDto[]; timeLimitSeconds: number | null }
+  | { type: "START_SESSION"; mode: SessionMode; questions: QuestionDto[]; timeLimitSeconds: number | null; autoReveal?: boolean }
   | { type: "SET_ANSWER"; questionNumber: number; answer: string[] }
   | { type: "GO_NEXT" }
   | { type: "GO_PREVIOUS" }
@@ -51,6 +57,7 @@ export const initialSessionState: SessionState = {
   checkResults: {},
   flags: {},
   timeLimitSeconds: null,
+  autoReveal: false,
   startedAt: null,
   status: "idle",
   score: null,
@@ -66,6 +73,7 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
         mode: action.mode,
         questions: action.questions,
         timeLimitSeconds: action.timeLimitSeconds,
+        autoReveal: action.mode === "practice" && !!action.autoReveal,
         startedAt: Date.now(),
         status: "in-progress",
       };
