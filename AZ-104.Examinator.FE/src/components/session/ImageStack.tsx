@@ -12,9 +12,10 @@ const ZOOM_STEP = 0.25;
 
 /**
  * Pila di screenshot (spesso 1, a volte 2-3 per domanda), usata sia per le immagini pre-risposta
- * che per quelle della spiegazione. Nascosta dietro uno spoiler stile "Exhibit" (etichetta minuscola
- * con freccia sopra una linea sottile blu) e con altezza limitata: alcuni screenshot del dataset sono
- * enormi. Il cap e' relativo alla viewport, non un valore fisso: a 420px fissi gli screenshot verticali
+ * che per quelle della spiegazione. Aperta di default — gli screenshot sono parte integrante del
+ * testo della domanda, non un extra da andare a cercare — ma richiudibile dall'etichetta "Exhibit"
+ * (minuscola, con freccia, sopra una linea sottile blu), e con altezza limitata: alcuni screenshot
+ * del dataset sono enormi. Il cap e' relativo alla viewport, non un valore fisso: a 420px fissi gli screenshot verticali
  * (il dataset ne ha 76 piu' alti di cosi', fino a 308x1100) venivano ridotti a ~118px di larghezza, illeggibili.
  *
  * Problema opposto: molti screenshot sono nativamente piccoli e a dimensione naturale restano illeggibili.
@@ -27,7 +28,7 @@ const ZOOM_STEP = 0.25;
  */
 export function ImageStack({ filenames }: ImageStackProps) {
   const { tokens: t } = useTheme();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [zoom, setZoom] = useState(1);
   const [baseWidths, setBaseWidths] = useState<Record<string, number>>({});
   const imgRefs = useRef<Record<string, HTMLImageElement | null>>({});
