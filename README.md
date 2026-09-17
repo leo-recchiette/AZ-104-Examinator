@@ -1,114 +1,173 @@
 # AZ-104 Examinator
 
-Simulatore d'esame per la certificazione Microsoft AZ-104, con un question bank di 606 domande.
+An exam simulator for the Microsoft AZ-104 (Azure Administrator Associate) certification, built around a question
+bank of 606 items. .NET 10 Web API, PostgreSQL, React + TypeScript — the whole stack runs in Docker, so nothing
+has to be installed locally except Docker itself.
 
-## Screenshot
+## Screenshots
 
-Schermata iniziale: scelta della modalità e andamento dei punteggi delle sessioni già svolte.
+Home screen: pick a mode and see how your scores are trending across the sessions you have already sat.
 
-![Schermata iniziale](docs/screenshots/home.png)
+![Home screen](docs/screenshots/home.png)
 
-Una domanda durante una sessione di pratica, con lo screenshot allegato (*exhibit*) aperto e la
-soluzione disponibile su richiesta.
+A question during a practice session, with its attached screenshot (*exhibit*) open and the solution available on
+demand.
 
-![Una domanda durante la sessione](docs/screenshots/question.png)
+![A question during a session](docs/screenshots/question.png)
 
-Storico delle sessioni inviate: da qui si riapre un tentativo passato con domande, risposte date e soluzioni.
+History of submitted sessions: open any past attempt to go through its questions, your answers and the solutions.
 
-![Storico delle sessioni](docs/screenshots/history.png)
+![Session history](docs/screenshots/history.png)
 
-## Struttura del progetto
+## What it does
+
+- **Two modes.** *Practice* lets you choose how many questions you want, whether to run a clock, and whether the
+  solution should appear on its own as soon as you answer. *Simulation* is a fixed timed set under exam conditions.
+- **Every question type is clickable and scored** — multiple choice, drag & drop sequences, hotspot rows and
+  yes/no statements — rather than self-assessed.
+- **Microsoft's own partial credit rule**: one point per correctly answered component, nothing deducted for wrong
+  ones, so a single mistake never zeroes out a multi-part question.
+- **Exhibits**: the screenshots that come with a question are shown inline and can be zoomed in and out, since many
+  of them are small and dense.
+- **History and progress**: every submitted session is kept with its questions and answers, and the home screen
+  charts your scores over time.
+- **Sessions survive an interruption.** The session in progress is saved as you go, so a reload, a closed tab or a
+  laptop lid coming down doesn't cost you your answers — and the clock stops while the app is away.
+
+## Project layout
 
 ```
-AZ-104.Examinator.BE/          Backend .NET (API + progetto di test)
-AZ-104.Examinator.FE/          Frontend React + TypeScript
-AZ-104.Examinator.Database/    Schema SQL e importer del question bank
-AZ-104.QuestionsDataset/       Dati sorgente (JSON + versione leggibile in Markdown)
+AZ-104.Examinator.BE/          .NET backend (API + test project)
+AZ-104.Examinator.FE/          React + TypeScript frontend
+AZ-104.Examinator.Database/    SQL schema and question bank importer
+AZ-104.QuestionsDataset/       Source data (JSON + a human-readable Markdown version)
 docker-compose.yml
 ```
 
-## Avvio
+## Getting started
 
-### Primo avvio
+### First run
 
 ```bash
 docker compose --profile setup run --rm importer
 docker compose up -d
 ```
 
-Il primo comando crea da solo tutto il necessario — volume, database, schema — aspetta che sia pronto e importa le 606 domande: non serve avviare prima nient'altro a mano. Il secondo comando avvia API e frontend, che a questo punto trovano già il database popolato.
+The first command creates everything it needs on its own — volume, database, schema — waits until it is ready and
+imports the 606 questions: nothing else has to be started by hand beforehand. The second one brings up the API and
+the frontend, which by then find a populated database.
 
-L'API è raggiungibile su **http://localhost:5080**, con la documentazione interattiva su **http://localhost:5080/swagger**. Il frontend è su **http://localhost:5173** (server di sviluppo Vite con hot reload — non serve Node installato in locale, gira tutto nel container `web`; niente build di produzione per ora).
+The API is served at **http://localhost:5080**, with interactive documentation at **http://localhost:5080/swagger**.
+The frontend is at **http://localhost:5173** (Vite dev server with hot reload — no local Node needed, it all runs
+inside the `web` container; no production build for now).
 
-### Avvii successivi
+### Subsequent runs
 
 ```bash
 docker compose up -d
 ```
 
-Il database e le domande restano nel volume Docker: basta questo comando, senza rieseguire l'importer. Va rilanciato solo dopo un `docker compose down -v` (che azzera il volume) o se si vuole ricaricare il question bank da un JSON aggiornato.
+The database and the questions live in a Docker volume, so this command is all it takes — no need to run the
+importer again. That is only necessary after a `docker compose down -v` (which wipes the volume), or when you want
+to reload the question bank from an updated JSON file.
 
-### Importazione del question bank
+### Importing the question bank
 
 ```bash
 docker compose --profile setup run --rm importer
 ```
 
-Legge `AZ-104.QuestionsDataset/az104_606_domande.json` e popola il database con le 606 domande, sostituendo quelle già presenti. A differenza di `db` e `api`, l'importer non fa parte dei servizi avviati automaticamente da `docker compose up` e non riparte da solo a ogni riavvio: va lanciato esplicitamente ogni volta che serve.
+Reads `AZ-104.QuestionsDataset/az104_606_domande.json` and fills the database with the 606 questions, replacing
+whatever was there. Unlike `db` and `api`, the importer is not among the services started automatically by
+`docker compose up` and does not come back by itself on a restart: run it explicitly whenever you need it.
 
-### Servizi opzionali
+Note that the JSON is **copied into the importer image** at build time rather than mounted, so after editing the
+dataset rerun it with `--build`, otherwise the stale copy gets imported again:
+
+```bash
+docker compose --profile setup run --rm --build importer
+```
+
+### Database migrations
+
+`db/init/01_schema.sql` only runs when the `pgdata` volume is first created, so a database that already exists
+needs schema changes applied by hand, from `AZ-104.Examinator.Database/db/migrations/`:
+
+```bash
+docker compose exec -T db psql -U examinator -d examinator < AZ-104.Examinator.Database/db/migrations/<file>.sql
+```
+
+A fresh volume needs none of them: the same DDL is already part of `01_schema.sql`.
+
+### Optional services
 
 ```bash
 docker compose --profile dev up -d pgweb
 ```
 
-Client SQL via browser su http://localhost:8081, utile per ispezionare il database senza installare nulla.
+A browser-based SQL client at http://localhost:8081, handy for inspecting the database without installing anything.
 
-### Ripartire da zero (in caso di problemi)
+### Starting over (when something gets stuck)
 
-Quando qualcosa si incastra — un'immagine che non si aggiorna, il frontend che continua a servire codice vecchio,
-un `node_modules` corrotto nel volume — la via più rapida è buttare giù tutto e ricostruire:
+When things jam — an image that won't update, a frontend still serving old code, a corrupted `node_modules` in the
+volume — the quickest way out is to tear everything down and rebuild:
 
 ```bash
 docker compose --profile dev --profile setup down -v --rmi local --remove-orphans
 ```
 
-Rimuove in un colpo solo container, volumi (`pgdata` e `web_node_modules`) e le immagini costruite in locale
-(`api`, `web`, `importer`). I profili vanno nominati entrambi, altrimenti `importer` e `pgweb` restano fuori dalla
-pulizia. Le immagini scaricate da registri esterni (`postgres`, `pgweb`, le base image .NET e Node) non vengono
-toccate: per togliere anche quelle si usa `--rmi all`, ma il primo avvio successivo dovrà riscaricarle.
+That removes containers, volumes (`pgdata` and `web_node_modules`) and locally built images (`api`, `web`,
+`importer`) in one go. Both profiles have to be named, or `importer` and `pgweb` are left out of the cleanup.
+Images pulled from external registries (`postgres`, `pgweb`, the .NET and Node base images) are left alone; to drop
+those as well use `--rmi all`, at the cost of downloading them again on the next start.
 
-Se un `docker rmi` si rifiuta di procedere con un errore tipo `image is being used by stopped container`, significa
-che esiste ancora un container fermo che la usa — spesso avviato a mano con `docker run`, quindi invisibile a
-`docker compose down`, che gestisce solo i propri servizi:
+If a `docker rmi` refuses with something like `image is being used by stopped container`, a stopped container is
+still holding it — often one started by hand with `docker run`, and therefore invisible to `docker compose down`,
+which only manages its own services:
 
 ```bash
-docker ps -a                  # elenca ANCHE i container fermi, con il nome dell'immagine che occupano
-docker rm <container>         # rimuove il container che la trattiene
-docker rmi <immagine>         # ora l'immagine si elimina
+docker ps -a                  # lists stopped containers too, with the image each one occupies
+docker rm <container>         # remove the container holding it
+docker rmi <image>            # now the image can go
 ```
 
-Per ricominciare dopo la pulizia servono entrambi i passaggi del primo avvio, non solo `up`: le immagini vanno
-ricostruite e il question bank reimportato, dato che `-v` ha azzerato il volume del database.
+Coming back from a cleanup takes both steps of the first run, not just `up`: the images have to be rebuilt and the
+question bank re-imported, since `-v` wiped the database volume.
 
 ```bash
-docker compose build --no-cache                    # opzionale: forza una ricostruzione senza cache
-docker compose --profile setup run --rm importer   # ricrea schema e ricarica le 606 domande
+docker compose build --no-cache                    # optional: force a rebuild with no cache
+docker compose --profile setup run --rm importer   # recreate the schema and reload the 606 questions
 docker compose up -d
 ```
 
-## Test
+## Tests
 
 ```bash
 cd AZ-104.Examinator.BE/AZ-104.Examinator.Api.Tests
 dotnet test
 ```
 
-## Comandi utili
+No local Postgres is required: the repositories are substituted, never hit against a real database.
+
+Without a local .NET SDK, the same suite runs in a container:
 
 ```bash
-docker compose --profile dev up -d    # avvia tutti i servizi, pgweb compreso (senza --profile resta spento)
-docker compose down -v                # azzera tutto, incluso il volume del database
-docker compose stop pgweb             # ferma un servizio dietro profilo (va nominato esplicitamente)
-docker compose --profile dev down     # pulizia completa includendo i servizi dietro profilo
+docker run --rm -v "$PWD/AZ-104.Examinator.BE:/src" -w /src/AZ-104.Examinator.Api.Tests \
+  mcr.microsoft.com/dotnet/sdk:10.0 dotnet test
+```
+
+For the frontend, once `web` is up:
+
+```bash
+docker compose exec web npx tsc -b --noEmit   # type check only
+docker compose exec web npm run lint
+```
+
+## Handy commands
+
+```bash
+docker compose --profile dev up -d    # start every service, pgweb included (without --profile it stays down)
+docker compose down -v                # wipe everything, database volume included
+docker compose stop pgweb             # stop a service behind a profile (it has to be named explicitly)
+docker compose --profile dev down     # full cleanup, services behind profiles included
 ```
