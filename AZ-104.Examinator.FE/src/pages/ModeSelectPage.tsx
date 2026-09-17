@@ -8,6 +8,7 @@ import { ApiError } from "../api/client";
 import type { ExamAttemptDto } from "../types/answer";
 import { FloatingThemeToggle } from "../components/FloatingThemeToggle";
 import { EmptyBankDialog } from "../components/EmptyBankDialog";
+import { ProgressChart } from "../components/ProgressChart";
 import { EXAM_QUESTION_COUNT, EXAM_TIME_LIMIT_MINUTES, EXAM_TIME_LIMIT_SECONDS, PASS_MARK_PERCENT } from "../constants";
 import { MODE_BG_GRADIENT } from "../theme/tokens";
 import badgeUrl from "../assets/microsoft-certified-associate-badge.png";
@@ -57,16 +58,7 @@ export function ModeSelectPage() {
     const worst = Math.min(...scores);
     const best = Math.max(...scores);
     const gain = Math.round((scores[scores.length - 1] - scores[0]) * 10) / 10;
-    const n = history.length;
-    const px = (pct: number) => 40 + (pct / 100) * 580;
-    const py = (i: number) => (n === 1 ? 85 : 160 - (i / (n - 1)) * 150);
-    const points = history.map((h, i) => ({ x: px(h.percentage), y: py(i) }));
-    return {
-      worst, best, gain,
-      gainColor: gain > 0 ? t.ok : gain < 0 ? t.er : t.mu,
-      points,
-      polyline: points.map((p) => `${p.x},${p.y}`).join(" "),
-    };
+    return { worst, best, gain, gainColor: gain > 0 ? t.ok : gain < 0 ? t.er : t.mu };
   }, [history, t.ok, t.er, t.mu]);
 
   return (
@@ -195,16 +187,7 @@ export function ModeSelectPage() {
                   </div>
                 </div>
               </div>
-              <svg width="100%" height="180" viewBox="0 0 640 180" preserveAspectRatio="none" style={{ display: "block", overflow: "visible" }}>
-                <line x1={40} y1={10} x2={40} y2={160} stroke={t.bd2} strokeWidth={1} />
-                <line x1={40} y1={160} x2={620} y2={160} stroke={t.bd2} strokeWidth={1} />
-                <text x={0} y={164} fontSize={10} fill={t.fa}>Time</text>
-                <text x={600} y={176} fontSize={10} fill={t.fa}>Score</text>
-                <polyline points={progress.polyline} fill="none" stroke={t.ac} strokeWidth={2} />
-                {progress.points.map((p, i) => (
-                  <circle key={i} cx={p.x} cy={p.y} r={4} fill={t.ac} />
-                ))}
-              </svg>
+              <ProgressChart attempts={history} />
             </div>
           )}
         </div>
