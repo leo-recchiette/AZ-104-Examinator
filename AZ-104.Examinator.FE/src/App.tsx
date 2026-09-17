@@ -9,11 +9,25 @@ import { ResultsPage } from "./pages/ResultsPage";
 import { HistoryPage } from "./pages/HistoryPage";
 import { AttemptDetailPage } from "./pages/AttemptDetailPage";
 
-/** Impedisce di arrivare a /session o /results senza una sessione avviata. */
+/**
+ * Impedisce di arrivare a /session o /results senza una sessione avviata. Finche' il recupero di
+ * quella salvata sul server e' in corso non decide nulla: rimbalzare subito sulla home vorrebbe
+ * dire buttare fuori chi ha appena ricaricato la pagina proprio mentre la sua sessione sta tornando.
+ */
 function RequireSession({ children }: { children: ReactNode }) {
-  const { state } = useSession();
+  const { state, restoring } = useSession();
+  if (restoring) return <RestoringScreen />;
   if (state.questions.length === 0) return <Navigate to="/" replace />;
   return <>{children}</>;
+}
+
+function RestoringScreen() {
+  const { tokens: t } = useTheme();
+  return (
+    <div style={{ flex: 1, display: "grid", placeItems: "center", padding: 48, color: t.mu, fontSize: 14 }}>
+      Restoring your session...
+    </div>
+  );
 }
 
 export function App() {

@@ -26,7 +26,8 @@ builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IExamResultService, ExamResultService>();
 builder.Services.AddScoped<IExamAttemptRepository, ExamAttemptRepository>();
 builder.Services.AddScoped<IExamAttemptService, ExamAttemptService>();
-// Singleton: nessuno stato, nessuna dipendenza da una richiesta specifica.
+builder.Services.AddScoped<IActiveSessionRepository, ActiveSessionRepository>();
+builder.Services.AddScoped<IActiveSessionService, ActiveSessionService>();
 builder.Services.AddSingleton<IScoreService, ScoreService>();
 
 var app = builder.Build();
