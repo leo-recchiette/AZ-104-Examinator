@@ -39,6 +39,7 @@ export interface SessionState {
 
 export type SessionAction =
   | { type: "START_SESSION"; mode: SessionMode; questions: QuestionDto[]; timeLimitSeconds: number | null; autoReveal?: boolean }
+  | { type: "RESTORE_SESSION"; state: SessionState }
   | { type: "SET_ANSWER"; questionNumber: number; answer: string[] }
   | { type: "GO_NEXT" }
   | { type: "GO_PREVIOUS" }
@@ -77,6 +78,12 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
         startedAt: Date.now(),
         status: "in-progress",
       };
+
+    // Sessione ripresa dal database: lo stato arriva gia' completo da SessionContext, che lo
+    // ricostruisce dal DTO (comprese le correzioni sul tempo). Qui non c'e' nulla da fondere con
+    // lo stato corrente: una sessione ripristinata sostituisce tutto.
+    case "RESTORE_SESSION":
+      return action.state;
 
     case "SET_ANSWER": {
       // Cambiare risposta invalida un'eventuale rivelazione gia' mostrata: la

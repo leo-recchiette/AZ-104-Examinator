@@ -8,6 +8,7 @@ import { ApiError } from "../api/client";
 import type { ExamAttemptDto } from "../types/answer";
 import { FloatingThemeToggle } from "../components/FloatingThemeToggle";
 import { EmptyBankDialog } from "../components/EmptyBankDialog";
+import { sessionUnits, unitsAnswered } from "../utils/groups";
 import { ProgressChart } from "../components/ProgressChart";
 import { EXAM_QUESTION_COUNT, EXAM_TIME_LIMIT_MINUTES, EXAM_TIME_LIMIT_SECONDS, PASS_MARK_PERCENT } from "../constants";
 import { MODE_BG_GRADIENT } from "../theme/tokens";
@@ -16,7 +17,7 @@ import badgeUrl from "../assets/microsoft-certified-associate-badge.png";
 export function ModeSelectPage() {
   const navigate = useNavigate();
   const { theme, tokens: t } = useTheme();
-  const { dispatch } = useSession();
+  const { state, dispatch, restoring } = useSession();
   const [startingSimulation, setStartingSimulation] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [emptyBank, setEmptyBank] = useState(false);
@@ -49,6 +50,15 @@ export function ModeSelectPage() {
       setStartingSimulation(false);
     }
   }
+
+  // Sessione recuperata dal server (reload, scheda chiusa, computer sospeso): da qui si rientra.
+  // I conteggi vanno per unita', come in sessione, cosi' i numeri combaciano con quelli lasciati.
+  const resumable = useMemo(() => {
+    if (restoring || state.status !== "in-progress" || state.questions.length === 0) return null;
+    const units = sessionUnits(state.questions);
+    const answered = unitsAnswered(state.questions, units, state.answers).filter(Boolean).length;
+    return { total: units.members.length, answered, mode: state.mode };
+  }, [restoring, state.status, state.questions, state.answers, state.mode]);
 
   const modeBgGrad = theme === "dark" ? MODE_BG_GRADIENT.dark : MODE_BG_GRADIENT.light;
 
@@ -98,6 +108,41 @@ export function ModeSelectPage() {
 
           {error && (
             <p style={{ margin: "0 0 20px", color: t.er, fontSize: 14 }}>{error}</p>
+          )}
+
+          {resumable && (
+            <div style={{
+              display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap", marginBottom: 18,
+              background: t.acs, border: `1px solid ${t.ac}`, borderRadius: 14, padding: "16px 20px",
+            }}>
+              <div style={{ flex: "1 1 260px", minWidth: 0 }}>
+                <div style={{ fontSize: 15, fontWeight: 600, color: t.ac, marginBottom: 3 }}>
+                  You have a session in progress
+                </div>
+                <div style={{ fontSize: 13.5, color: t.tx2 }}>
+                  {resumable.mode === "practice" ? "Practice" : "Simulation"} · {resumable.answered} of{" "}
+                  {resumable.total} answered · the clock stopped while you were away
+                </div>
+              </div>
+              <button
+                onClick={() => navigate("/session")}
+                style={{
+                  padding: "11px 20px", borderRadius: 10, border: "none", background: t.ac, color: "#fff",
+                  font: "inherit", fontSize: 14.5, fontWeight: 600,
+                }}
+              >
+                Resume
+              </button>
+              <button
+                onClick={() => dispatch({ type: "RESET" })}
+                style={{
+                  padding: "11px 16px", borderRadius: 10, border: `1px solid ${t.bd3}`, background: t.card,
+                  color: t.tx2, font: "inherit", fontSize: 14.5, fontWeight: 600,
+                }}
+              >
+                Discard
+              </button>
+            </div>
           )}
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 18 }}>
