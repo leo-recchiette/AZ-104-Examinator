@@ -4743,13 +4743,13 @@ You have an Azure subscription. You need to use an Azure Resource Manager (ARM) 
 
 Note: This question is part of a series of questions that present the same scenario. Each question in the series contains a unique solution that might meet the stated goals. Some question sets might have more than one correct solution, while others might not have a correct solution. After you answer a question in this section, you will NOT be able to return to it. As a result, these questions will not appear in the review screen. You have an Azure subscription named Subscription1 that contains the resources shown in the following table. Subscription1 also includes a virtual network named VNET2. VM1 connects to a virtual network named VNET2 by using a network interface named NIC1. You need to create a new network interface named NIC2 for VM1. Solution: You create NIC2 in RG1 and West US. Does this meet the goal?
 
-- **A.** Yes
-- **B.** No **← CORRETTA**
+- **A.** Yes **← CORRETTA**
+- **B.** No
 
-**Risposta corretta:** B
+**Risposta corretta:** A
 > Esibito: q326_pre0.png
 
-**Spiegazione:** To achieve the goal of creating a new network interface named NIC2 for VM1, the network interface must be in the same location as VM1, which is West US. The solution proposes creating NIC2 in RG1, which is located in East US. The region of the resource group does not affect the region of its resources, but the NIC itself must be in West US to match the region of VM1. Therefore, creating NIC2 in RG1 will not meet the goal as the region specified for NIC2 is incorrect.
+**Spiegazione:** A network interface attached to a virtual machine must exist in the same location and subscription as the virtual machine, but it can belong to a different resource group. VM1 is located in West US and the solution creates NIC2 in West US, so the location requirement is met. RG1 being located in East US is irrelevant: the location of a resource group only determines where its metadata is stored and does not constrain the location of the resources it contains. Therefore, the solution meets the goal.
 
 ---
 
@@ -4773,10 +4773,10 @@ Note: This question is part of a series of questions that present the same scena
 
 Note: This question is part of a series of questions that present the same scenario. Each question in the series contains a unique solution that might meet the stated goals. Some question sets might have more than one correct solution, while others might not have a correct solution. After you answer a question in this section, you will NOT be able to return to it. As a result, these questions will not appear in the review screen. You have an Azure subscription named Subscription1 that contains the resources shown in the following table. Subscription1 also includes a virtual network named VNET2. VM1 connects to a virtual network named VNET2 by using a network interface named NIC1. You need to create a new network interface named NIC2 for VM1. Solution: You create NIC2 in RG2 and West US. Does this meet the goal?
 
-- **A.** Yes
-- **B.** No **← CORRETTA**
+- **A.** Yes **← CORRETTA**
+- **B.** No
 
-**Risposta corretta:** B
+**Risposta corretta:** A
 > Esibito: q328_pre0.png
 
 **Spiegazione:** To create a new network interface named NIC2 for VM1, both the network interface (NIC2) and the virtual machine (VM1) must exist in the same location. VM1 is located in the West US region, so NIC2 must also be created in the West US region. While resource groups can be in different regions and still contain resources in other locations, the critical requirement here is that the NIC and VM must be in the same Azure region. However, the solution proposes creating NIC2 in RG2 and West US, which fulfills both conditions. Thus, the appropriate answer would be that this solution meets the goal.
