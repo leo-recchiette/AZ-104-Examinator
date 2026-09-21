@@ -1204,7 +1204,7 @@ You have an Azure subscription named Subscription1 that contains an Azure Log An
 - **A.** Get-Event Event | where {$_.EventType == "error"}
 - **B.** Event | search "error" **← CORRETTA**
 - **C.** select * from Event where EventType == "error"
-- **D.** search in (Event) * | where EventType ג€"eq ג€errorג€
+- **D.** search in (Event) * | where EventType -eq "error"
 
 **Risposta corretta:** B
 
@@ -5890,7 +5890,7 @@ You have an Azure subscription that contains the resources shown in the followin
 **Risposta corretta:** Resource group -> RG1, RG2, or RG3 | Location -> West US only
 > Immagini: q404_post0.png
 
-**Spiegazione:** Box 1: RG1, RG2, or RG3 - The resource group stores metadata about the resources. When you specify a location for the resource group, you're specifying where that metadata is stored. Box 2: West US only - Note: Virtual machine scale sets will support 2 distinct orchestration modes: ScaleSetVM ג€" Virtual machine instances added to the scale set are based on the scale set configuration model. The virtual machine instance lifecycle - creation, update, deletion - is managed by the scale set. VM (virtual machines) ג€" Virtual machines created outside of the scale set can be explicitly added to the scaleset. Reference: https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview
+**Spiegazione:** Box 1: RG1, RG2, or RG3 - The resource group stores metadata about the resources. When you specify a location for the resource group, you're specifying where that metadata is stored. Box 2: West US only - Note: Virtual machine scale sets will support 2 distinct orchestration modes: ScaleSetVM - Virtual machine instances added to the scale set are based on the scale set configuration model. The virtual machine instance lifecycle - creation, update, deletion - is managed by the scale set. VM (virtual machines) - Virtual machines created outside of the scale set can be explicitly added to the scaleset. Reference: https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview
 
 ---
 

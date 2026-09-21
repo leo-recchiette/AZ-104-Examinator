@@ -2944,7 +2944,7 @@
    },
    {
     "letter": "D",
-    "text": "search in (Event) * | where EventType ג€\"eq ג€errorג€"
+    "text": "search in (Event) * | where EventType -eq \"error\""
    }
   ],
   "correct_answers": [
@@ -15698,7 +15698,7 @@
  {
   "id": 404,
   "question": "You have an Azure subscription that contains the resources shown in the following table. VMSS1 is set to VM (virtual machines) orchestration mode. You need to deploy a new Azure virtual machine named VM1, and then add VM1 to VMSS1. Which resource group and location should you use to deploy VM1? To answer, select the appropriate options in the answer area. NOTE: Each correct selection is worth one point.",
-  "explanation": "Box 1: RG1, RG2, or RG3 - The resource group stores metadata about the resources. When you specify a location for the resource group, you're specifying where that metadata is stored. Box 2: West US only - Note: Virtual machine scale sets will support 2 distinct orchestration modes: ScaleSetVM ג€\" Virtual machine instances added to the scale set are based on the scale set configuration model. The virtual machine instance lifecycle - creation, update, deletion - is managed by the scale set. VM (virtual machines) ג€\" Virtual machines created outside of the scale set can be explicitly added to the scaleset. Reference: https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview",
+  "explanation": "Box 1: RG1, RG2, or RG3 - The resource group stores metadata about the resources. When you specify a location for the resource group, you're specifying where that metadata is stored. Box 2: West US only - Note: Virtual machine scale sets will support 2 distinct orchestration modes: ScaleSetVM - Virtual machine instances added to the scale set are based on the scale set configuration model. The virtual machine instance lifecycle - creation, update, deletion - is managed by the scale set. VM (virtual machines) - Virtual machines created outside of the scale set can be explicitly added to the scaleset. Reference: https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview",
   "group_id": null,
   "group_type": null,
   "group_members": [],
