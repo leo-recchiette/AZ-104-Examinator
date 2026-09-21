@@ -1,7 +1,8 @@
 # AZ-104 Examinator
 
 An exam simulator for the Microsoft AZ-104 (Azure Administrator Associate) certification, built around a question
-bank of 606 items. .NET 10 Web API, PostgreSQL, React + TypeScript — the whole stack runs in Docker, so nothing
+bank of 606 items. 
+.NET 10 Web API, PostgreSQL, React + TypeScript — the whole stack runs in Docker, so nothing
 has to be installed locally except Docker itself.
 
 ## Screenshots

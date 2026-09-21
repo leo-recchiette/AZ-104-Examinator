@@ -11,6 +11,12 @@ interface RowSelectAnswerProps {
   onChange: (next: string[]) => void;
   /** Presente solo dopo la rivelazione: risposta corretta per riga, posizionale come prompts. */
   answerRows?: AnswerRowDto[];
+  /**
+   * Corregge solo le righe a cui si e' gia' risposto, lasciando intatte le altre: e' l'auto-reveal
+   * a righe, che da' il riscontro subito senza scoprire le righe ancora da fare. A pannello aperto
+   * invece si mostra tutto, comprese le righe lasciate in bianco.
+   */
+  answeredRowsOnly?: boolean;
 }
 
 /**
@@ -24,7 +30,7 @@ function chosenLabels(raw: string | undefined): string[] {
   return raw ? raw.split("\n") : [];
 }
 
-export function RowSelectAnswer({ prompts, value, onChange, answerRows }: RowSelectAnswerProps) {
+export function RowSelectAnswer({ prompts, value, onChange, answerRows, answeredRowsOnly }: RowSelectAnswerProps) {
   const { tokens: t } = useTheme();
 
   function pick(rowIndex: number, label: string, single: boolean) {
@@ -38,10 +44,10 @@ export function RowSelectAnswer({ prompts, value, onChange, answerRows }: RowSel
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       {prompts.map((row, ri) => {
-        const rawCorrect = answerRows?.[ri]?.answer;
+        const chosen = chosenLabels(value[ri]);
+        const rawCorrect = answeredRowsOnly && chosen.length === 0 ? undefined : answerRows?.[ri]?.answer;
         const correctSet =
           rawCorrect !== undefined ? new Set((parseMultiValueAnswer(rawCorrect) ?? [rawCorrect]).map((s) => s.toLowerCase())) : undefined;
-        const chosen = chosenLabels(value[ri]);
         const single = isYesNoPool(row.options);
         return (
           <div key={`${row.prompt}-${ri}`} style={{ border: `1px solid ${t.bd2}`, borderRadius: 12, padding: "16px 17px", background: t.sub }}>

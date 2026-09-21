@@ -1,4 +1,5 @@
 import type { OptionDto, QuestionDto } from "../types/question";
+import type { QuestionAnswerDto } from "../types/answer";
 
 export type AnswerShape = "options" | "draggable" | "prompts";
 
@@ -30,6 +31,31 @@ export function isQuestionAnswered(question: QuestionDto, value: string[]): bool
   if (shape === "options") return value.length > 0;
   if (shape === "draggable") return value.length > 0;
   return value.filter(Boolean).length === question.prompts.length;
+}
+
+/**
+ * Se c'e' abbastanza risposta perche' valga la pena chiedere la soluzione. Per le domande a
+ * righe basta una riga: la correzione compare riga per riga, appena quella riga e' risposta
+ * (vedi RowSelectAnswer), senza aspettare le altre. Per le altre forme coincide con
+ * isQuestionAnswered, che e' gia' il momento giusto.
+ */
+export function isAnswerStarted(question: QuestionDto, value: string[]): boolean {
+  if (getAnswerShape(question) === "prompts") return value.some((v) => v && v.trim() !== "");
+  return isQuestionAnswered(question, value);
+}
+
+/**
+ * Se la risposta e' completa quanto la soluzione richiede. Serve solo all'auto-reveal, che
+ * altrimenti scoprirebbe la soluzione al primo click di una domanda che ne vuole tre.
+ * isQuestionAnswered non basta: prima di rivelare, il numero di scelte attese e' ignoto per
+ * costruzione (il DTO pre-risposta lo tace), e lo si scopre solo dalla soluzione stessa —
+ * che infatti viene chiesta subito ma tenuta nascosta finche' questa non e' vera.
+ */
+export function isAnswerComplete(question: QuestionDto, value: string[], correct: QuestionAnswerDto): boolean {
+  const shape = getAnswerShape(question);
+  if (shape === "options") return value.length >= correct.correctLetters.length;
+  if (shape === "draggable") return value.filter(Boolean).length >= correct.answerRows.length;
+  return isQuestionAnswered(question, value);
 }
 
 /**

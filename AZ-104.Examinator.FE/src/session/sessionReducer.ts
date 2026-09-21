@@ -45,6 +45,7 @@ export type SessionAction =
   | { type: "GO_PREVIOUS" }
   | { type: "GO_TO"; index: number }
   | { type: "SET_CHECK_RESULT"; questionNumber: number; result: AnswerCheckResultDto }
+  | { type: "SET_AUTO_REVEAL"; autoReveal: boolean }
   | { type: "TOGGLE_FLAG"; index: number }
   | { type: "FINISH_SESSION"; score: ExamScoreDto; timeUsedSeconds: number }
   | { type: "SET_HISTORY_OUTCOME"; outcome: "discarded" | "failed" }
@@ -107,6 +108,12 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
     // deve poter raggiungere un fratello senza passare per Next/Previous.
     case "GO_TO":
       return { ...state, currentIndex: Math.min(Math.max(action.index, 0), state.questions.length - 1) };
+
+    // Si accende e si spegne anche a sessione avviata, dal menu Options: sceglierlo solo al setup
+    // significava, se ci si dimenticava, dover ricominciare per averlo. Resta appannaggio della
+    // Practice: in Simulation le soluzioni non si rivelano, quindi SessionPage non lo offre.
+    case "SET_AUTO_REVEAL":
+      return { ...state, autoReveal: state.mode === "practice" && action.autoReveal };
 
     case "SET_CHECK_RESULT":
       return {

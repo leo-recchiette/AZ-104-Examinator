@@ -9,7 +9,7 @@ import { QuestionCard } from "../components/session/QuestionCard";
 import { GroupNav } from "../components/session/GroupNav";
 import { QuestionNavigator } from "../components/session/QuestionNavigator";
 import { groupMembers, sessionUnits, unitsAnswered } from "../utils/groups";
-import { isQuestionAnswered } from "../utils/questionShape";
+import { isAnswerStarted } from "../utils/questionShape";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
@@ -136,7 +136,7 @@ export function SessionPage() {
   useEffect(() => {
     if (!isPractice || !state.autoReveal || !question) return;
     if (state.checkResults[question.number]) return;
-    if (!isQuestionAnswered(question, value)) return;
+    if (!isAnswerStarted(question, value)) return;
 
     const questionNumber = question.number;
     const timer = setTimeout(() => {
@@ -267,7 +267,14 @@ export function SessionPage() {
           <div style={{ fontSize: 13.5, color: "#e4e7ee", fontVariantNumeric: "tabular-nums" }}>
             Question <strong style={{ color: "#fff" }}>{currentUnit + 1}</strong> of {totalUnits}
           </div>
-          <OptionsMenu variant="onDark" />
+          <OptionsMenu
+            variant="onDark"
+            autoReveal={
+              isPractice
+                ? { value: state.autoReveal, onChange: (next) => dispatch({ type: "SET_AUTO_REVEAL", autoReveal: next }) }
+                : undefined
+            }
+          />
         </div>
         <div style={{ height: 4, background: "rgba(255,255,255,.25)" }}>
           <div style={{ height: "100%", width: `${timePct}%`, background: clockColor, transition: "width 1s linear" }} />

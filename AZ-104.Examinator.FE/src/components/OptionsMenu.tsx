@@ -8,12 +8,12 @@ import {
 } from "../settings/DisplaySettingsContext";
 
 interface OptionsMenuProps {
-  /** "onDark" per il banner blu di sessione/revisione, dove il trigger galleggia su sfondo scuro qualunque sia il tema. */
   variant?: "default" | "onDark";
+  autoReveal?: { value: boolean; onChange: (next: boolean) => void };
 }
 
-/** Menu Options della navbar: dimensione del testo delle domande e tema chiaro/scuro. */
-export function OptionsMenu({ variant = "default" }: OptionsMenuProps) {
+
+export function OptionsMenu({ variant = "default", autoReveal }: OptionsMenuProps) {
   const { theme, tokens: t, toggleTheme } = useTheme();
   const { questionFontSize, setQuestionFontSize } = useDisplaySettings();
   const [open, setOpen] = useState(false);
@@ -36,7 +36,6 @@ export function OptionsMenu({ variant = "default" }: OptionsMenuProps) {
     };
   }, [open]);
 
-  /** Il tema si cambia solo se diverso da quello scelto: cliccare la voce gia' attiva non deve invertirlo. */
   function selectTheme(next: "light" | "dark") {
     if (theme !== next) toggleTheme();
   }
@@ -98,6 +97,36 @@ export function OptionsMenu({ variant = "default" }: OptionsMenuProps) {
             </button>
           </div>
           <div style={{ height: 1, background: t.bd2, margin: "0 0 16px" }} />
+
+          {autoReveal && (
+            <>
+              <div style={sectionLabelStyle(t.fa)}>Solutions</div>
+              <button
+                onClick={() => autoReveal.onChange(!autoReveal.value)}
+                role="switch"
+                aria-checked={autoReveal.value}
+                style={{
+                  display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left",
+                  marginBottom: 18, padding: 0, border: "none", background: "none", font: "inherit",
+                  color: autoReveal.value ? t.ac : t.mu,
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    flex: "none", width: 38, height: 22, borderRadius: 12, position: "relative",
+                    background: autoReveal.value ? t.ac : t.track,
+                    border: `1px solid ${autoReveal.value ? t.ac : t.bd3}`,
+                    transition: "background .18s",
+                  }}
+                >
+                  <span style={{ position: "absolute", top: 2, left: autoReveal.value ? 18 : 2, width: 16, height: 16, borderRadius: "50%", background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,.25)", transition: "left .18s" }} />
+                </span>
+                <span style={{ fontSize: 13, fontWeight: 500, lineHeight: 1.35 }}>Reveal automatically when answered</span>
+              </button>
+              <div style={{ height: 1, background: t.bd2, margin: "0 0 16px" }} />
+            </>
+          )}
 
           <div style={sectionLabelStyle(t.fa)}>Appearance</div>
           <div style={{ display: "flex", gap: 8 }}>

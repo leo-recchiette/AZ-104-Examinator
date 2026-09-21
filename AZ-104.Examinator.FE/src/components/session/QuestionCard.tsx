@@ -3,7 +3,7 @@ import { useTheme } from "../../theme/ThemeContext";
 import { useDisplaySettings } from "../../settings/DisplaySettingsContext";
 import type { QuestionDto } from "../../types/question";
 import type { AnswerCheckResultDto } from "../../types/answer";
-import { getAnswerShape, questionTypeLabel } from "../../utils/questionShape";
+import { getAnswerShape, isAnswerComplete, questionTypeLabel } from "../../utils/questionShape";
 import { MultipleChoiceAnswer } from "./MultipleChoiceAnswer";
 import { SequenceAnswer } from "./SequenceAnswer";
 import { RowSelectAnswer } from "./RowSelectAnswer";
@@ -36,13 +36,19 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
   const revealed = panelOpen && !!checkResult;
   const correct = checkResult?.correctAnswer;
   const multiHint = revealed && correct && correct.correctLetters.length > 1 ? `Select ${correct.correctLetters.length} answers` : "";
+  // Con l'auto-reveal le righe si correggono una per una man mano che si risponde; spiegazione e
+  // soluzione per esteso restano al pannello, che si apre solo a domanda completa.
+  const rowsPreview = autoReveal && !revealed ? correct?.answerRows : undefined;
 
   // Con l'auto-reveal chi chiede la soluzione e' SessionPage, non il pulsante: qui resta solo da
-  // aprire il pannello quando il risultato arriva. Non forza la riapertura finche' quel risultato
-  // non cambia, cosi' "Hide solution" continua a poter chiudere il pannello.
+  // decidere se mostrarla. Il risultato arriva gia' al primo click, ma finche' le scelte sono meno
+  // di quelle che la soluzione richiede resta nascosto: una domanda da tre risposte non deve
+  // scoprirsi dopo la prima. Cambiare risposta cancella il risultato (SET_ANSWER) e ne fa chiedere
+  // uno nuovo, quindi questa decisione si ripete a ogni modifica.
   useEffect(() => {
-    if (autoReveal && checkResult) setPanelOpen(true);
-  }, [autoReveal, checkResult]);
+    if (!autoReveal || !checkResult?.correctAnswer) return;
+    setPanelOpen(isAnswerComplete(question, value, checkResult.correctAnswer));
+  }, [autoReveal, checkResult, question, value]);
 
   async function handleToggleReveal() {
     if (!checkResult) {
@@ -101,7 +107,13 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
           <SequenceAnswer draggableItems={question.draggableItems} value={value} onChange={onChange} answerRows={revealed ? correct?.answerRows : undefined} />
         )}
         {shape === "prompts" && (
-          <RowSelectAnswer prompts={question.prompts} value={value} onChange={onChange} answerRows={revealed ? correct?.answerRows : undefined} />
+          <RowSelectAnswer
+            prompts={question.prompts}
+            value={value}
+            onChange={onChange}
+            answerRows={revealed ? correct?.answerRows : rowsPreview}
+            answeredRowsOnly={!revealed}
+          />
         )}
 
         {isPractice && (
