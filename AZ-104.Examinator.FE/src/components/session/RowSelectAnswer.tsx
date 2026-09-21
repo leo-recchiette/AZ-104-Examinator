@@ -2,6 +2,7 @@ import { useTheme } from "../../theme/ThemeContext";
 import type { PromptOptionsDto } from "../../types/question";
 import type { AnswerRowDto } from "../../types/answer";
 import { parseMultiValueAnswer } from "../../utils/grading";
+import { isYesNoPool } from "../../utils/questionShape";
 import { PlaceholderText } from "../PlaceholderText";
 
 interface RowSelectAnswerProps {
@@ -26,10 +27,11 @@ function chosenLabels(raw: string | undefined): string[] {
 export function RowSelectAnswer({ prompts, value, onChange, answerRows }: RowSelectAnswerProps) {
   const { tokens: t } = useTheme();
 
-  function pick(rowIndex: number, label: string) {
+  function pick(rowIndex: number, label: string, single: boolean) {
     const current = chosenLabels(value[rowIndex]);
     const next = [...value];
-    next[rowIndex] = current.includes(label) ? current.filter((l) => l !== label).join("\n") : [...current, label].join("\n");
+    if (single) next[rowIndex] = label;
+    else next[rowIndex] = current.includes(label) ? current.filter((l) => l !== label).join("\n") : [...current, label].join("\n");
     onChange(next);
   }
 
@@ -40,12 +42,13 @@ export function RowSelectAnswer({ prompts, value, onChange, answerRows }: RowSel
         const correctSet =
           rawCorrect !== undefined ? new Set((parseMultiValueAnswer(rawCorrect) ?? [rawCorrect]).map((s) => s.toLowerCase())) : undefined;
         const chosen = chosenLabels(value[ri]);
+        const single = isYesNoPool(row.options);
         return (
           <div key={`${row.prompt}-${ri}`} style={{ border: `1px solid ${t.bd2}`, borderRadius: 12, padding: "16px 17px", background: t.sub }}>
             <div style={{ fontSize: 14.5, lineHeight: 1.5, marginBottom: 12, fontFamily: "'Source Serif 4', Georgia, serif" }}>
               <PlaceholderText text={row.prompt} />
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            <div role={single ? "radiogroup" : "group"} style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               {row.options.map((label) => {
                 const sel = chosen.includes(label);
                 let bd = sel ? t.ac : t.bd3;
@@ -62,7 +65,9 @@ export function RowSelectAnswer({ prompts, value, onChange, answerRows }: RowSel
                 return (
                   <button
                     key={label}
-                    onClick={() => pick(ri, label)}
+                    onClick={() => pick(ri, label, single)}
+                    role={single ? "radio" : "checkbox"}
+                    aria-checked={sel}
                     style={{
                       padding: "9px 15px", borderRadius: 9, fontSize: 13.5, fontWeight: 500,
                       border: `1.5px solid ${bd}`, background: bg, color: fg, font: "inherit",

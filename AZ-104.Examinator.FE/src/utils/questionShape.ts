@@ -33,16 +33,19 @@ export function isQuestionAnswered(question: QuestionDto, value: string[]): bool
 }
 
 /**
- * Le "Does the solution meet the goal?" (96 nel banco, tutte con una sola risposta giusta)
- * offrono esattamente Yes e No: sono a scelta singola per costruzione, e poterle segnare
- * entrambe produce una risposta che nell'esame non esiste. E' l'unico caso in cui la forma
- * della domanda basta a saperlo senza rivelare nulla — per tutte le altre il DTO pre-risposta
- * tace su quante risposte servano, ed e' giusto cosi' (vedi MultipleChoiceAnswer).
+ * Un pool di esattamente Yes e No e' a scelta singola per costruzione, e poterli segnare
+ * entrambi produce una risposta che nell'esame non esiste. E' l'unico caso in cui la forma
+ * basta a saperlo senza rivelare nulla — per tutti gli altri il DTO pre-risposta tace su
+ * quante risposte servano, ed e' giusto cosi' (vedi MultipleChoiceAnswer e RowSelectAnswer).
  */
-export function isYesNoChoice(options: OptionDto[]): boolean {
-  if (options.length !== 2) return false;
-  const texts = options.map((o) => o.text.trim().toLowerCase());
+export function isYesNoPool(labels: string[]): boolean {
+  if (labels.length !== 2) return false;
+  const texts = labels.map((l) => l.trim().toLowerCase());
   return texts.includes("yes") && texts.includes("no");
+}
+
+export function isYesNoChoice(options: OptionDto[]): boolean {
+  return isYesNoPool(options.map((o) => o.text));
 }
 
 /** Etichetta del tipo per l'header della card domanda e i tag della revisione: segue la forma, non "type" grezzo. */
