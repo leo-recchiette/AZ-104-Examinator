@@ -5,6 +5,7 @@ import type { QuestionAnswerDto } from "../../types/answer";
 import { getAnswerShape, questionTypeLabel, formatYourAnswer, correctAnswerLines } from "../../utils/questionShape";
 import { pointsEarned } from "../../utils/grading";
 import { splitPreamble } from "../../utils/preamble";
+import { QuestionBody } from "../QuestionBody";
 import { ImageStack } from "../session/ImageStack";
 import { PlaceholderText } from "../PlaceholderText";
 
@@ -78,12 +79,10 @@ export function ReviewQuestionCard({ position, question, submitted, correct, asP
           {earned} / {pointsTotal} points
         </span>
       </div>
-      <p style={{ margin: "0 0 20px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: questionFontSize, lineHeight: 1.5 }}>
-        {/* Nella revisione le istruzioni d'esame si scartano del tutto: sono le stesse per 103 domande
-            e qui interessa solo capire la risposta. Nella sessione restano, dietro il riquadro collassabile.
-            Dentro un gruppo il corpo arriva gia' tagliato dello scenario condiviso. */}
-        {asPart ? asPart.body : splitPreamble(question.text).body}
-      </p>
+      {/* Nella revisione le istruzioni d'esame si scartano del tutto: sono le stesse per 103 domande
+          e qui interessa solo capire la risposta. Nella sessione restano, dietro il riquadro collassabile.
+          Dentro un gruppo il corpo arriva gia' tagliato dello scenario condiviso. */}
+      <QuestionBody text={asPart ? asPart.body : splitPreamble(question.text).body} fontSize={questionFontSize} marginBottom={20} />
       {/* L'exhibit sta sopra le colonne: e' il contesto della domanda, va guardato prima
           di leggere il confronto fra risposta data e soluzione. Servono ENTRAMBI i tipi di
           immagine, prima quelle della domanda e poi quella con la soluzione compilata: la

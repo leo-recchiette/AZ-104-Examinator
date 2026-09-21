@@ -10,6 +10,7 @@ import { RowSelectAnswer } from "./RowSelectAnswer";
 import { ImageStack } from "./ImageStack";
 import { PlaceholderText } from "../PlaceholderText";
 import { ExamNotice } from "./ExamNotice";
+import { QuestionBody } from "../QuestionBody";
 import { splitPreamble } from "../../utils/preamble";
 
 interface QuestionCardProps {
@@ -90,9 +91,7 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
 
       <div style={{ background: t.card, border: `1px solid ${t.bd}`, borderRadius: 16, padding: "26px 28px", boxShadow: `0 1px 3px ${t.sh}` }}>
         {preamble && <ExamNotice text={preamble} />}
-        <p style={{ margin: "0 0 14px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: questionFontSize, lineHeight: 1.5, letterSpacing: "-.003em" }}>
-          {body}
-        </p>
+        <QuestionBody text={body} fontSize={questionFontSize} marginBottom={14} />
         <ImageStack filenames={question.images} />
 
         {shape === "options" && (
