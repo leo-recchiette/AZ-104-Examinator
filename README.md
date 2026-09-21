@@ -58,8 +58,7 @@ imports the 606 questions: nothing else has to be started by hand beforehand. Th
 the frontend, which by then find a populated database.
 
 The API is served at **http://localhost:5080**, with interactive documentation at **http://localhost:5080/swagger**.
-The frontend is at **http://localhost:5173** (Vite dev server with hot reload — no local Node needed, it all runs
-inside the `web` container; no production build for now).
+The frontend is at **http://localhost:5173**.
 
 ### Subsequent runs
 
@@ -71,33 +70,16 @@ The database and the questions live in a Docker volume, so this command is all i
 importer again. That is only necessary after a `docker compose down -v` (which wipes the volume), or when you want
 to reload the question bank from an updated JSON file.
 
-### Importing the question bank
+### Reloading the question bank
 
-```bash
-docker compose --profile setup run --rm importer
-```
-
-Reads `AZ-104.QuestionsDataset/az104_606_domande.json` and fills the database with the 606 questions, replacing
-whatever was there. Unlike `db` and `api`, the importer is not among the services started automatically by
-`docker compose up` and does not come back by itself on a restart: run it explicitly whenever you need it.
-
-Note that the JSON is **copied into the importer image** at build time rather than mounted, so after editing the
-dataset rerun it with `--build`, otherwise the stale copy gets imported again:
+The importer replaces the contents of the question tables with what it reads from
+`AZ-104.QuestionsDataset/az104_606_domande.json` — it is not incremental. Note that the JSON is **copied into
+the importer image** at build time rather than mounted, so after editing the dataset rerun it with `--build`,
+otherwise the stale copy gets imported again:
 
 ```bash
 docker compose --profile setup run --rm --build importer
 ```
-
-### Database migrations
-
-`db/init/01_schema.sql` only runs when the `pgdata` volume is first created, so a database that already exists
-needs schema changes applied by hand, from `AZ-104.Examinator.Database/db/migrations/`:
-
-```bash
-docker compose exec -T db psql -U examinator -d examinator < AZ-104.Examinator.Database/db/migrations/<file>.sql
-```
-
-A fresh volume needs none of them: the same DDL is already part of `01_schema.sql`.
 
 ### Optional services
 
