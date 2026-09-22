@@ -6,6 +6,7 @@ import { getExam } from "../api/questions";
 import { ApiError } from "../api/client";
 import { FloatingThemeToggle } from "../components/FloatingThemeToggle";
 import { EmptyBankDialog } from "../components/EmptyBankDialog";
+import { ResumeSessionBanner } from "../components/ResumeSessionBanner";
 
 const COUNT_OPTIONS = [10, 20, 30, 40, 50, 60, 70, 80];
 const MINUTE_OPTIONS = [15, 30, 45, 60, 90, 120];
@@ -62,6 +63,8 @@ export function PracticeSetupPage() {
           <p style={{ margin: "0 0 28px", color: t.mu, fontSize: 14.5 }}>
             Nothing is scored until you submit. Solutions stay available throughout.
           </p>
+
+          <ResumeSessionBanner style={{ marginBottom: 26 }} />
 
           <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 10 }}>How many questions?</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
