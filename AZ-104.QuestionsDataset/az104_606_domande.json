@@ -16590,7 +16590,7 @@
  {
   "id": 427,
   "question": "You have an Azure virtual machine named VM1. The network interface for VM1 is configured as shown in the exhibit. (Click the Exhibit tab.) You deploy a web server on VM1, and then create a secure website that is accessible by using the HTTPS protocol. VM1 is used as a web server only. You need to ensure that users can connect to the website from the Internet. What should you do?",
-  "explanation": "To ensure that users can connect to the website from the Internet using the HTTPS protocol, you need to allow inbound traffic on TCP port 443. The current security rules deny traffic on port 443 due to Rule2 at priority 500. Creating a new inbound rule that specifically allows TCP traffic on port 443 with a priority of 501 will not work because it will still be blocked by the higher priority Rule2. However, since no options suggest changing Rule2 directly, the best course of action is to create a new rule that explicitly allows inbound traffic on port 443 with a lower priority number than the existing Rule2. Therefore, creating a new inbound rule allowing TCP protocol 443 with a priority of 450 would be a valid solution, but since this option is not listed, creating the rule with a lower priority would be the closest correct answer.",
+  "explanation": "HTTPS uses port 443. Rule2, with priority 500, denies HTTPS traffic. Rule5, with priority changed from 2000 to 401, would allow HTTPS traffic. Note: Priority is a number between 100 and 4096. Rules are processed in priority order, with lower numbers processed before higher numbers, because lower numbers have higher priority. Once traffic matches a rule, processing stops. As a result, any rules that exist with lower priorities (higher numbers) that have the same attributes as rules with higher priorities are not processed.",
   "group_id": null,
   "group_type": null,
   "group_members": [],
@@ -16614,9 +16614,9 @@
    }
   ],
   "correct_answers": [
-   "D"
+   "C"
   ],
-  "answer_text": "D. Create a new inbound rule that allows TCP protocol 443 and configure the rule to have a priority of 501.",
+  "answer_text": "C. For Rule5, change the Action to Allow and change the priority to 401",
   "images_question": [
    "q427_pre0.png"
   ],
@@ -22766,11 +22766,11 @@
   "all_actions": [],
   "answer_text": "Recovery Services vaults -> 3 | Backup policies -> 6",
   "images_question": [
+   "q587_post0.png",
+   "q587_post1.png",
    "q587_pre0.png"
   ],
   "images_answer": [
-   "q587_post0.png",
-   "q587_post1.png",
    "q587_post2.png"
   ],
   "source": "manual_vision",
@@ -23236,10 +23236,10 @@
   "all_actions": [],
   "answer_text": "From the Azure portal -> Create a virtual network gateway and a local network gateway. | In the New York office -> Configure a site-to-site VPN connection.",
   "images_question": [
+   "q599_post0.png",
    "q599_pre0.png"
   ],
   "images_answer": [
-   "q599_post0.png",
    "q599_post1.png"
   ],
   "source": "manual_vision",
@@ -23279,10 +23279,10 @@
   "all_actions": [],
   "answer_text": "Number of virtual networks -> 1 | Number of subnets per virtual network -> 3",
   "images_question": [
+   "q600_post0.png",
    "q600_pre0.png"
   ],
   "images_answer": [
-   "q600_post0.png",
    "q600_post1.png"
   ],
   "source": "manual_vision",

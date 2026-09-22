@@ -6215,13 +6215,13 @@ You have an Azure virtual machine named VM1. The network interface for VM1 is co
 
 - **A.** Modify the protocol of Rule4
 - **B.** Delete Rule1
-- **C.** For Rule5, change the Action to Allow and change the priority to 401
-- **D.** Create a new inbound rule that allows TCP protocol 443 and configure the rule to have a priority of 501. **← CORRETTA**
+- **C.** For Rule5, change the Action to Allow and change the priority to 401 **← CORRETTA**
+- **D.** Create a new inbound rule that allows TCP protocol 443 and configure the rule to have a priority of 501.
 
-**Risposta corretta:** D
+**Risposta corretta:** C
 > Esibito: q427_pre0.png
 
-**Spiegazione:** To ensure that users can connect to the website from the Internet using the HTTPS protocol, you need to allow inbound traffic on TCP port 443. The current security rules deny traffic on port 443 due to Rule2 at priority 500. Creating a new inbound rule that specifically allows TCP traffic on port 443 with a priority of 501 will not work because it will still be blocked by the higher priority Rule2. However, since no options suggest changing Rule2 directly, the best course of action is to create a new rule that explicitly allows inbound traffic on port 443 with a lower priority number than the existing Rule2. Therefore, creating a new inbound rule allowing TCP protocol 443 with a priority of 450 would be a valid solution, but since this option is not listed, creating the rule with a lower priority would be the closest correct answer.
+**Spiegazione:** HTTPS uses port 443. Rule2, with priority 500, denies HTTPS traffic. Rule5, with priority changed from 2000 to 401, would allow HTTPS traffic. Note: Priority is a number between 100 and 4096. Rules are processed in priority order, with lower numbers processed before higher numbers, because lower numbers have higher priority. Once traffic matches a rule, processing stops. As a result, any rules that exist with lower priorities (higher numbers) that have the same attributes as rules with higher priorities are not processed.
 
 ---
 
@@ -8580,7 +8580,7 @@ You need to meet the user requirement for Admin1. What should you do?
 You need to configure Azure Backup to back up the file shares and virtual machines. What is the minimum number of Recovery Services vaults and backup policies you should create? To answer, select the appropriate options in the answer area. NOTE: Each correct selection is worth one point.
 
 **Risposta corretta:** Recovery Services vaults -> 3 | Backup policies -> 6
-> Immagini: q587_post0.png, q587_post1.png, q587_post2.png
+> Immagini: q587_post2.png
 
 **Spiegazione:** Box 1: 3 - If you have data sources in multiple regions, create a Recovery Services vault for each region. The File Shares and VMs are located in three Regions: West US, East US, Central US. Box 2: 6 - A backup policy is scoped to a vault. For each vault we need one backup policy for File Shares and one backup policy for VM. Note: Back up the Azure file shares and virtual machines by using Azure Backup Reference: https://docs.microsoft.com/en-us/azure/backup/backup-create-rs-vault https://docs.microsoft.com/en-us/azure/backup/guidance-best-practices
 
@@ -8749,7 +8749,7 @@ You need to ensure that VM1 can communicate with VM4. The solution must minimize
 You need to meet the connection requirements for the New York office. What should you do? To answer, select the appropriate options in the answer area. NOTE: Each correct selection is worth one point.
 
 **Risposta corretta:** From the Azure portal -> Create a virtual network gateway and a local network gateway. | In the New York office -> Configure a site-to-site VPN connection.
-> Immagini: q599_post0.png, q599_post1.png
+> Immagini: q599_post1.png
 
 **Spiegazione:** Box 1: Create a virtual network gateway and a local network gateway. Azure VPN gateway. The VPN gateway service enables you to connect the VNet to the on-premises network through a VPN appliance. For more information, see Connect an on-premises network to a Microsoft Azure virtual network. The VPN gateway includes the following elements: ✑ Virtual network gateway. A resource that provides a virtual VPN appliance for the VNet. It is responsible for routing traffic from the on-premises network to the VNet. ✑ Local network gateway. An abstraction of the on-premises VPN appliance. Network traffic from the cloud application to the on-premises network is routed through this gateway. ✑ Connection. The connection has properties that specify the connection type (IPSec) and the key shared with the on-premises VPN appliance to encrypt traffic. ✑ Gateway subnet. The virtual network gateway is held in its own subnet, which is subject to various requirements, described in the Recommendations section below. Box 2: Configure a site-to-site VPN connection On premises create a site-to-site connection for the virtual network gateway and the local network gateway. Scenario: Connect the New York office to VNet1 over the Internet by using an encrypted connection. Incorrect Answers: Azure ExpressRoute: Established between your network and Azure, through an ExpressRoute partner. This connection is private. Traffic does not go over the internet. Reference: https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/vpn
 
@@ -8761,7 +8761,7 @@ You need to meet the connection requirements for the New York office. What shoul
 You need to recommend a solution for App1. The solution must meet the technical requirements. What should you include in the recommendation? To answer, select the appropriate options in the answer area. NOTE: Each correct selection is worth one point.
 
 **Risposta corretta:** Number of virtual networks -> 1 | Number of subnets per virtual network -> 3
-> Immagini: q600_post0.png, q600_post1.png
+> Immagini: q600_post1.png
 
 **Spiegazione:** This reference architecture shows how to deploy VMs and a virtual network configured for an N-tier application, using SQL Server on Windows for the data tier. Scenario: You have a public-facing application named App1. App1 is comprised of the following three tiers: ✑ A SQL database ✑ A web front end ✑ A processing middle tier Each tier is comprised of five virtual machines. Users access the web front end by using HTTPS only. Technical requirements include: ✑ Move all the virtual machines for App1 to Azure. ✑ Minimize the number of open ports between the App1 tiers. Reference: https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/n-tier/n-tier-sql-server
 
