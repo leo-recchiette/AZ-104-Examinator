@@ -84,7 +84,7 @@ export function ModeSelectPage() {
                 AZ-104 Examinator
               </h1>
               <p style={{ margin: 0, color: t.mu, fontSize: 16, lineHeight: 1.55, maxWidth: "52ch" }}>
-                Question bank of 606 items. Choose how you want to work: practise at your own pace with solutions
+                Question bank of 584 items. Choose how you want to work: practise at your own pace with solutions
                 available, or sit a timed simulation under exam conditions.
               </p>
             </div>

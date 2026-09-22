@@ -1,7 +1,7 @@
 # AZ-104 Examinator
 
 An exam simulator for the Microsoft AZ-104 (Azure Administrator Associate) certification, built around a question
-bank of 606 items. 
+bank of 584 items. 
 .NET 10 Web API, PostgreSQL, React + TypeScript — the whole stack runs in Docker, so nothing
 has to be installed locally except Docker itself.
 
@@ -55,7 +55,7 @@ docker compose up -d
 ```
 
 The first command creates everything it needs on its own — volume, database, schema — waits until it is ready and
-imports the 606 questions: nothing else has to be started by hand beforehand. The second one brings up the API and
+imports the 584 questions: nothing else has to be started by hand beforehand. The second one brings up the API and
 the frontend, which by then find a populated database.
 
 The API is served at **http://localhost:5080**, with interactive documentation at **http://localhost:5080/swagger**.
@@ -119,7 +119,7 @@ question bank re-imported, since `-v` wiped the database volume.
 
 ```bash
 docker compose build --no-cache                    # optional: force a rebuild with no cache
-docker compose --profile setup run --rm importer   # recreate the schema and reload the 606 questions
+docker compose --profile setup run --rm importer   # recreate the schema and reload the 584 questions
 docker compose up -d
 ```
 

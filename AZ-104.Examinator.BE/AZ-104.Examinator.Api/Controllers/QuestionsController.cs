@@ -10,7 +10,7 @@ namespace Examinator.Api.Controllers;
 [Route("api/questions")]
 public sealed class QuestionsController : ControllerBase
 {
-    private const int MaxCount = 606; // dimensione dell'intero question bank: bound di buon senso, non una regola di business
+    private const int MaxCount = 584; // dimensione dell'intero question bank: bound di buon senso, non una regola di business
 
     private readonly IQuestionService _questionService;
 

@@ -33,7 +33,7 @@ CREATE TYPE question_type AS ENUM (
 
 CREATE TABLE questions (
     id            SERIAL PRIMARY KEY,
-    number        INTEGER       NOT NULL UNIQUE,  -- "id" nel JSON, 1..606
+    number        INTEGER       NOT NULL UNIQUE,  -- "id" nel JSON, 1..584
     type          question_type NOT NULL,
     -- Forma della risposta per i tipi non-MCQ: 'ordered_answer' | 'selection'
     -- | 'yes_no'. NULL per multiple_choice, che non ne ha bisogno.

@@ -8,7 +8,7 @@ namespace Examinator.Api.Controllers;
 [Route("api/sessions")]
 public sealed class SessionsController : ControllerBase
 {
-    private const int MaxCount = 606; // dimensione dell'intero question bank
+    private const int MaxCount = 584; // dimensione dell'intero question bank
     private static readonly string[] ValidModes = ["practice", "exam"];
 
     private readonly IActiveSessionService _activeSessionService;

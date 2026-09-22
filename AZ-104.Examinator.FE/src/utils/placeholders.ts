@@ -5,7 +5,7 @@
  * mostriamo in grassetto (vedi components/PlaceholderText.tsx). E' una
  * trasformazione puramente di presentazione: il dataset resta ground truth.
  *
- * Il dataset non usa una notazione sola: sulle 606 domande il segnaposto compare in
+ * Il dataset non usa una notazione sola: sulle 584 domande il segnaposto compare in
  * tre forme, tutte da riconoscere qui (i conteggi sono su prompt + answer_text, gli
  * unici campi che passano da PlaceholderText).
  *   [box 1] / [answer choice]  104x  in mezzo alla frase, fra parentesi quadre.

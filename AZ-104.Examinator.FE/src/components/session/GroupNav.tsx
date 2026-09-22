@@ -17,7 +17,7 @@ interface GroupNavProps {
  * fra loro senza scorrere la sessione con Next/Previous.
  *
  * Mostra la posizione dentro il gruppo, non il numero di domanda: dentro uno scenario conta
- * "la seconda delle tre", non "la 251 su 606".
+ * "la seconda delle tre", non "la 251 su 584".
  */
 export function GroupNav({ members, currentIndex, answers, onSelect }: GroupNavProps) {
   const { tokens: t } = useTheme();

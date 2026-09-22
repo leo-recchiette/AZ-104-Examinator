@@ -9,7 +9,7 @@ namespace Examinator.Api.Controllers;
 [Route("api/results")]
 public sealed class ResultsController : ControllerBase
 {
-    private const int MaxCount = 606; // dimensione dell'intero question bank
+    private const int MaxCount = 584; // dimensione dell'intero question bank
     private static readonly string[] ValidModes = ["practice", "exam"];
 
     private readonly IExamResultService _examResultService;
