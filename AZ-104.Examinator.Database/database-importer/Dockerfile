@@ -1,5 +1,3 @@
-# Il build context e' la radice del repo: da li' si copiano sia questa cartella
-# sia il JSON sorgente, che sta in AZ-104.QuestionsDataset/.
 FROM python:3.13-slim
 
 ENV PYTHONUNBUFFERED=1 \
