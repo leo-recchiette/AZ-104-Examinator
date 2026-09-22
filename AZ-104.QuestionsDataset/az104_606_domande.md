@@ -1233,10 +1233,10 @@ You have a registered DNS domain named contoso.com. You create a public Azure DN
 
 You have an Azure subscription that contains a storage account named storage1. The subscription is linked to an Azure Active Directory (Azure AD) tenant named contoso.com that syncs to an on-premises Active Directory domain. The domain contains the security principals shown in the following table. In Azure AD, you create a user named User2. The storage1 account contains a file share named share1 and has the following configurations. For each of the following statements, select Yes if the statement is true. Otherwise, select No. NOTE: Each correct selection is worth one point.
 
-**Risposta corretta:** You can assign the Storage File Data SMB Share Contributor role to User1 for share1. -> Yes | You can assign the Storage File Data SMB Share Reader role to Computer1 for share1. -> No | You can assign the Storage File Data SMB Share Elevated Contributor role to User2 for share1. -> Yes
-> Immagini: q084_post0.png
+**Risposta corretta:** You can assign the Storage File Data SMB Share Contributor role to User1 for share1. -> Yes | You can assign the Storage File Data SMB Share Reader role to Computer1 for share1. -> No | You can assign the Storage File Data SMB Share Elevated Contributor role to User2 for share1. -> No
+> Nota: Terza riga corretta a mano in No: lo screenshot della soluzione (q084_post0.png) segnava Yes, ma User2 e' creato solo in Azure AD e senza identita' ibrida non puo' autenticarsi contro AD DS. L'immagine e' stata tolta da images_answer perche' contraddiceva la risposta corretta.
 
-**Spiegazione:** Reference: https://docs.microsoft.com/en-us/azure/storage/files/storage-files-identity-ad-ds-assign- permissions?tabs=azure-portal
+**Spiegazione:** Share-level access to an Azure file share is granted through Azure RBAC roles, but with AD DS identity-based authentication only hybrid identities can actually be authorized: the account must exist in the on-premises AD DS domain and be synced to Azure AD. User1 is a domain user synced to contoso.com, so the Storage File Data SMB Share Contributor role can be assigned to it: Yes. Computer1 is a computer account, and neither on-premises AD DS nor Azure AD DS authentication supports authenticating computer accounts, so it cannot be granted share-level access: No. User2 was created directly in Azure AD and never existed in the on-premises domain, so it is not a hybrid identity and cannot be authenticated against AD DS for share1: No. Reference: https://learn.microsoft.com/azure/storage/files/storage-files-identity-ad-ds-assign-permissions and https://learn.microsoft.com/azure/storage/files/storage-files-active-directory-overview
 
 ---
 
