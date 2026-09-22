@@ -8,6 +8,8 @@ interface SequenceAnswerProps {
   onChange: (next: string[]) => void;
   /** Presente solo dopo la rivelazione: sequenza corretta, posizionale. */
   answerRows?: AnswerRowDto[];
+  /** Sequenza gia' corretta a schermo: non si riordina e non si aggiunge piu' nulla. */
+  locked?: boolean;
 }
 
 /**
@@ -15,13 +17,13 @@ interface SequenceAnswerProps {
  * sequenza a destra riordinabile con frecce su/giu'/rimuovi — lo stesso
  * pattern del mockup, piu' semplice e accessibile di un drag reale.
  */
-export function SequenceAnswer({ draggableItems, value, onChange, answerRows }: SequenceAnswerProps) {
+export function SequenceAnswer({ draggableItems, value, onChange, answerRows, locked }: SequenceAnswerProps) {
   const { tokens: t } = useTheme();
   const revealed = answerRows !== undefined;
   const chosen = value;
 
   function append(label: string) {
-    if (chosen.includes(label) || chosen.length >= draggableItems.length) return;
+    if (locked || chosen.includes(label) || chosen.length >= draggableItems.length) return;
     onChange([...chosen, label]);
   }
   function moveUp(i: number) {
@@ -53,7 +55,7 @@ export function SequenceAnswer({ draggableItems, value, onChange, answerRows }: 
               <button
                 key={label}
                 onClick={() => append(label)}
-                disabled={used}
+                disabled={used || locked}
                 style={{
                   textAlign: "left", padding: "12px 14px", borderRadius: 10,
                   border: `1px dashed ${used ? t.bd2 : t.bd3}`, background: used ? t.bg : t.card,
@@ -85,11 +87,15 @@ export function SequenceAnswer({ draggableItems, value, onChange, answerRows }: 
                   {i + 1}
                 </span>
                 <span style={{ fontSize: 13.5, lineHeight: 1.4, flex: 1 }}>{label}</span>
-                <span style={{ display: "flex", gap: 3 }}>
-                  <button onClick={() => moveUp(i)} style={arrowButtonStyle(t.bd, t.card, t.mu)}>↑</button>
-                  <button onClick={() => moveDown(i)} style={arrowButtonStyle(t.bd, t.card, t.mu)}>↓</button>
-                  <button onClick={() => remove(i)} style={arrowButtonStyle(t.bd, t.card, t.mu)}>✕</button>
-                </span>
+                {/* A sequenza bloccata i comandi spariscono invece di restare inerti: tre bottoni
+                    che non fanno niente si leggono come un guasto, non come una scelta. */}
+                {!locked && (
+                  <span style={{ display: "flex", gap: 3 }}>
+                    <button onClick={() => moveUp(i)} style={arrowButtonStyle(t.bd, t.card, t.mu)}>↑</button>
+                    <button onClick={() => moveDown(i)} style={arrowButtonStyle(t.bd, t.card, t.mu)}>↓</button>
+                    <button onClick={() => remove(i)} style={arrowButtonStyle(t.bd, t.card, t.mu)}>✕</button>
+                  </span>
+                )}
               </div>
             );
           })}

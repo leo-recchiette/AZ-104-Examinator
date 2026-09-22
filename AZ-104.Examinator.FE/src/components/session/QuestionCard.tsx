@@ -40,6 +40,30 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
   // soluzione per esteso restano al pannello, che si apre solo a domanda completa.
   const rowsPreview = autoReveal && !revealed ? correct?.answerRows : undefined;
 
+  // Vista la correzione, la risposta non si cambia piu': modificarla dopo averne visto l'esito
+  // non e' esercitarsi, e' aggiustare il punteggio. Vale solo in Practice, l'unica modalita' in
+  // cui si rivela qualcosa; in Simulation non c'e' niente da cui proteggersi e si resta liberi di
+  // ripensarci, come nell'esame vero.
+  //
+  // Il blocco si ricalcola dai dati a ogni render invece di essere memorizzato: uno stato locale
+  // andrebbe perduto al cambio domanda (la card si rimonta, vedi il key in SessionPage) e tornando
+  // indietro la risposta sarebbe di nuovo modificabile.
+  //
+  // Le due forme si bloccano in momenti diversi perche' in momenti diversi mostrano l'esito:
+  // opzioni e sequenze quando si apre il pannello, cioe' a risposta completa (prima non si vede
+  // nulla e un click di troppo resta rimediabile); le griglie riga per riga, appena quella riga e'
+  // risposta, perche' e' allora che si colora (vedi rowsPreview). Il "revealed ||" copre la
+  // rivelazione manuale, che scopre tutto in una volta comprese le righe ancora vuote.
+  //
+  // Da notare che il blocco delle righe non guarda autoReveal: l'impostazione si puo' cambiare a
+  // meta' sessione dal menu Options, e legarcisi bloccherebbe di colpo anche le righe mai
+  // risposte, lasciando la domanda incompletabile.
+  const answerLocked = isPractice && !!correct && (revealed || isAnswerComplete(question, value, correct));
+  const lockedRows =
+    isPractice && !!correct
+      ? question.prompts.map((_, ri) => revealed || (value[ri] ?? "").trim() !== "")
+      : undefined;
+
   // Con l'auto-reveal chi chiede la soluzione e' SessionPage, non il pulsante: qui resta solo da
   // decidere se mostrarla. Il risultato arriva gia' al primo click, ma finche' le scelte sono meno
   // di quelle che la soluzione richiede resta nascosto: una domanda da tre risposte non deve
@@ -50,13 +74,14 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
     setPanelOpen(isAnswerComplete(question, value, checkResult.correctAnswer));
   }, [autoReveal, checkResult, question, value]);
 
-  async function handleToggleReveal() {
-    if (!checkResult) {
-      await onReveal();
-      setPanelOpen(true);
-    } else {
-      setPanelOpen((p) => !p);
-    }
+  // A senso unico: una volta mostrata, la soluzione non si richiude. Poterla nascondere
+  // rimetterebbe in gioco le risposte bloccate da answerLocked/lockedRows, che si ricavano anche
+  // da "revealed" — il pulsante sarebbe di fatto uno sblocco. Nulla si perde: il pannello puo'
+  // restare aperto, e la domanda successiva e' comunque un'altra card.
+  async function handleReveal() {
+    if (revealed) return;
+    if (!checkResult) await onReveal();
+    setPanelOpen(true);
   }
 
   return (
@@ -101,10 +126,10 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
         <ImageStack filenames={question.images} />
 
         {shape === "options" && (
-          <MultipleChoiceAnswer options={question.options} value={value} onChange={onChange} correctLetters={revealed ? correct?.correctLetters : undefined} />
+          <MultipleChoiceAnswer options={question.options} value={value} onChange={onChange} correctLetters={revealed ? correct?.correctLetters : undefined} locked={answerLocked} />
         )}
         {shape === "draggable" && (
-          <SequenceAnswer draggableItems={question.draggableItems} value={value} onChange={onChange} answerRows={revealed ? correct?.answerRows : undefined} />
+          <SequenceAnswer draggableItems={question.draggableItems} value={value} onChange={onChange} answerRows={revealed ? correct?.answerRows : undefined} locked={answerLocked} />
         )}
         {shape === "prompts" && (
           <RowSelectAnswer
@@ -113,20 +138,23 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
             onChange={onChange}
             answerRows={revealed ? correct?.answerRows : rowsPreview}
             answeredRowsOnly={!revealed}
+            lockedRows={lockedRows}
           />
         )}
 
         {isPractice && (
           <div style={{ marginTop: 20, paddingTop: 18, borderTop: `1px solid ${t.bd2}` }}>
             <button
-              onClick={handleToggleReveal}
+              onClick={handleReveal}
+              aria-disabled={revealed || undefined}
               style={{
                 padding: "11px 18px", borderRadius: 10, fontSize: 14, fontWeight: 600, font: "inherit",
                 border: `1px solid ${revealed ? t.okbd : t.bd3}`, background: revealed ? t.okbg : t.card,
                 color: revealed ? t.ok : t.tx2,
+                cursor: revealed ? "default" : "pointer",
               }}
             >
-              {revealed ? "Hide solution" : "Show solution"}
+              {revealed ? "Solution shown" : "Show solution"}
             </button>
             {revealed && correct && (
               <div style={{ marginTop: 18, border: `1px solid ${t.okbd}`, background: t.okbg, borderRadius: 12, padding: "20px 22px" }}>

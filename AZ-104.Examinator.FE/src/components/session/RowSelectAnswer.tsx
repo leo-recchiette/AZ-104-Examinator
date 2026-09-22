@@ -12,6 +12,9 @@ interface RowSelectAnswerProps {
   onChange: (next: string[]) => void;
   answerRows?: AnswerRowDto[];
   answeredRowsOnly?: boolean;
+  /** Per riga: quelle gia' corrette a schermo non si cambiano piu'. Le righe si bloccano una
+   *  alla volta perche' una alla volta si correggono (vedi answeredRowsOnly). */
+  lockedRows?: boolean[];
 }
 
 /**
@@ -25,10 +28,11 @@ function chosenLabels(raw: string | undefined): string[] {
   return raw ? raw.split("\n") : [];
 }
 
-export function RowSelectAnswer({ prompts, value, onChange, answerRows, answeredRowsOnly }: RowSelectAnswerProps) {
+export function RowSelectAnswer({ prompts, value, onChange, answerRows, answeredRowsOnly, lockedRows }: RowSelectAnswerProps) {
   const { tokens: t } = useTheme();
 
   function pick(rowIndex: number, label: string, single: boolean) {
+    if (lockedRows?.[rowIndex]) return;
     const current = chosenLabels(value[rowIndex]);
     const next = [...value];
     if (single) next[rowIndex] = label;
@@ -44,6 +48,7 @@ export function RowSelectAnswer({ prompts, value, onChange, answerRows, answered
         const correctSet =
           rawCorrect !== undefined ? new Set((parseMultiValueAnswer(rawCorrect) ?? [rawCorrect]).map((s) => s.toLowerCase())) : undefined;
         const single = isYesNoPool(row.options);
+        const rowLocked = lockedRows?.[ri] ?? false;
         return (
           <div key={`${row.prompt}-${ri}`} style={{ border: `1px solid ${t.bd2}`, borderRadius: 12, padding: "16px 17px", background: t.sub }}>
             <div style={{ fontSize: 14.5, lineHeight: 1.5, marginBottom: 12, fontFamily: QUESTION_FONT, fontFeatureSettings: QUESTION_FONT_FEATURES }}>
@@ -69,9 +74,11 @@ export function RowSelectAnswer({ prompts, value, onChange, answerRows, answered
                     onClick={() => pick(ri, label, single)}
                     role={single ? "radio" : "checkbox"}
                     aria-checked={sel}
+                    aria-disabled={rowLocked || undefined}
                     style={{
                       padding: "9px 15px", borderRadius: 9, fontSize: 13.5, fontWeight: 500,
                       border: `1.5px solid ${bd}`, background: bg, color: fg, font: "inherit",
+                      cursor: rowLocked ? "default" : "pointer",
                     }}
                   >
                     {label}

@@ -9,6 +9,8 @@ interface MultipleChoiceAnswerProps {
   onChange: (next: string[]) => void;
   /** Presente solo dopo la rivelazione: lettere corrette secondo il backend. */
   correctLetters?: string[];
+  /** Risposta gia' corretta a schermo: le scelte non si cambiano piu'. */
+  locked?: boolean;
 }
 
 /**
@@ -22,13 +24,14 @@ interface MultipleChoiceAnswerProps {
  * — per giunta sempre premiata, visto che il punteggio a credito parziale conta le lettere
  * giuste senza togliere nulla per le altre. Badge tondo e semantica radio per dirlo a vista.
  */
-export function MultipleChoiceAnswer({ options, value, onChange, correctLetters }: MultipleChoiceAnswerProps) {
+export function MultipleChoiceAnswer({ options, value, onChange, correctLetters, locked }: MultipleChoiceAnswerProps) {
   const { tokens: t } = useTheme();
   const revealed = correctLetters !== undefined;
   const grades = revealed ? gradeMultipleChoice(value, correctLetters, options.map((o) => o.letter)) : null;
   const single = isYesNoChoice(options);
 
   function choose(letter: string) {
+    if (locked) return;
     // Da radio: la scelta sostituisce la precedente e un secondo click non la annulla,
     // cosi' non si torna "senza risposta" per un click di troppo.
     if (single) {
@@ -67,10 +70,15 @@ export function MultipleChoiceAnswer({ options, value, onChange, correctLetters 
             onClick={() => choose(option.letter)}
             role={single ? "radio" : "checkbox"}
             aria-checked={sel}
+            // aria-disabled e non disabled: "disabled" toglierebbe il bottone dalla navigazione
+            // da tastiera e lascerebbe allo user agent l'ultima parola sui colori, proprio quando
+            // sono i colori a dire se la risposta era giusta.
+            aria-disabled={locked || undefined}
             style={{
               display: "flex", alignItems: "flex-start", gap: 14, textAlign: "left",
               padding: "15px 17px", borderRadius: 11, border: `1.5px solid ${bd}`, background: bg,
               color: "inherit", transition: "border-color .15s, background .15s", font: "inherit",
+              cursor: locked ? "default" : "pointer",
             }}
           >
             <span
