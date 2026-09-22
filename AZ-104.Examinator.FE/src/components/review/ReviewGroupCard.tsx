@@ -3,6 +3,7 @@ import { useDisplaySettings } from "../../settings/DisplaySettingsContext";
 import type { ReviewUnit } from "../../utils/reviewUnits";
 import { groupTypeLabel } from "../../utils/groups";
 import { getAnswerShape } from "../../utils/questionShape";
+import { QUESTION_FONT, QUESTION_FONT_FEATURES } from "../../theme/fonts";
 import { pointsEarned } from "../../utils/grading";
 import { ReviewQuestionCard } from "./ReviewQuestionCard";
 
@@ -57,7 +58,7 @@ export function ReviewGroupCard({ unit }: ReviewGroupCardProps) {
       </div>
 
       {unit.shared !== "" && (
-        <p style={{ margin: "0 0 4px", fontFamily: "'Source Serif 4', Georgia, serif", fontSize: questionFontSize, lineHeight: 1.5 }}>
+        <p style={{ margin: "0 0 4px", fontFamily: QUESTION_FONT, fontFeatureSettings: QUESTION_FONT_FEATURES, fontSize: questionFontSize, lineHeight: 1.5 }}>
           {unit.shared}
         </p>
       )}

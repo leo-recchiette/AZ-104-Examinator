@@ -3,19 +3,14 @@ import type { PromptOptionsDto } from "../../types/question";
 import type { AnswerRowDto } from "../../types/answer";
 import { parseMultiValueAnswer } from "../../utils/grading";
 import { isYesNoPool } from "../../utils/questionShape";
+import { QUESTION_FONT, QUESTION_FONT_FEATURES } from "../../theme/fonts";
 import { PlaceholderText } from "../PlaceholderText";
 
 interface RowSelectAnswerProps {
   prompts: PromptOptionsDto[];
   value: string[];
   onChange: (next: string[]) => void;
-  /** Presente solo dopo la rivelazione: risposta corretta per riga, posizionale come prompts. */
   answerRows?: AnswerRowDto[];
-  /**
-   * Corregge solo le righe a cui si e' gia' risposto, lasciando intatte le altre: e' l'auto-reveal
-   * a righe, che da' il riscontro subito senza scoprire le righe ancora da fare. A pannello aperto
-   * invece si mostra tutto, comprese le righe lasciate in bianco.
-   */
   answeredRowsOnly?: boolean;
 }
 
@@ -51,7 +46,7 @@ export function RowSelectAnswer({ prompts, value, onChange, answerRows, answered
         const single = isYesNoPool(row.options);
         return (
           <div key={`${row.prompt}-${ri}`} style={{ border: `1px solid ${t.bd2}`, borderRadius: 12, padding: "16px 17px", background: t.sub }}>
-            <div style={{ fontSize: 14.5, lineHeight: 1.5, marginBottom: 12, fontFamily: "'Source Serif 4', Georgia, serif" }}>
+            <div style={{ fontSize: 14.5, lineHeight: 1.5, marginBottom: 12, fontFamily: QUESTION_FONT, fontFeatureSettings: QUESTION_FONT_FEATURES }}>
               <PlaceholderText text={row.prompt} />
             </div>
             <div role={single ? "radiogroup" : "group"} style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>

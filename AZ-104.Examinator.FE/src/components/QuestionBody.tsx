@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { useTheme } from "../theme/ThemeContext";
+import { QUESTION_FONT, QUESTION_FONT_FEATURES } from "../theme/fonts";
 import { splitQuestionBody } from "../utils/questionBody";
 
 interface QuestionBodyProps {
@@ -24,10 +25,10 @@ export function QuestionBody({ text, fontSize, marginBottom }: QuestionBodyProps
             key={i}
             style={{
               margin: i === segments.length - 1 ? 0 : "0 0 12px",
-              fontFamily: "'Source Serif 4', Georgia, serif",
+              fontFamily: QUESTION_FONT,
+              fontFeatureSettings: QUESTION_FONT_FEATURES,
               fontSize,
-              lineHeight: 1.5,
-              letterSpacing: "-.003em",
+              lineHeight: 1.55,
             }}
           >
             {segment.lead && <strong style={{ fontWeight: 700 }}>{segment.lead} </strong>}
