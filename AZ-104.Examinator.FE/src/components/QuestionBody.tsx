@@ -9,32 +9,64 @@ interface QuestionBodyProps {
   marginBottom: number;
 }
 
-/**
- * Corpo della domanda: prosa normale, piu' le schede di configurazione rese come
- * coppie campo/valore invece che srotolate nel paragrafo (vedi utils/questionBody.ts).
- */
+
 export function QuestionBody({ text, fontSize, marginBottom }: QuestionBodyProps) {
   const { tokens: t } = useTheme();
   const segments = splitQuestionBody(text);
 
   return (
     <div style={{ marginBottom }}>
-      {segments.map((segment, i) =>
-        segment.kind === "text" ? (
-          <p
-            key={i}
-            style={{
-              margin: i === segments.length - 1 ? 0 : "0 0 12px",
-              fontFamily: QUESTION_FONT,
-              fontFeatureSettings: QUESTION_FONT_FEATURES,
-              fontSize,
-              lineHeight: 1.55,
-            }}
-          >
-            {segment.lead && <strong style={{ fontWeight: 700 }}>{segment.lead} </strong>}
-            {segment.text}
-          </p>
-        ) : (
+      {segments.map((segment, i) => {
+        const spacing = i === segments.length - 1 ? 0 : 12;
+
+        if (segment.kind === "text") {
+          return (
+            <p
+              key={i}
+              style={{
+                margin: `0 0 ${spacing}px`,
+                fontFamily: QUESTION_FONT,
+                fontFeatureSettings: QUESTION_FONT_FEATURES,
+                fontSize,
+                lineHeight: 1.55,
+              }}
+            >
+              {segment.lead && <strong style={{ fontWeight: 700 }}>{segment.lead} </strong>}
+              {segment.text}
+            </p>
+          );
+        }
+
+        if (segment.kind === "list") {
+          return (
+            <ul
+              key={i}
+              style={{
+                display: "grid",
+                gap: 7,
+                margin: `0 0 ${spacing}px`,
+                padding: "0 0 0 4px",
+                listStyle: "none",
+                fontFamily: QUESTION_FONT,
+                fontFeatureSettings: QUESTION_FONT_FEATURES,
+                fontSize,
+                lineHeight: 1.5,
+              }}
+            >
+              {segment.items.map((item, j) => (
+                <li key={j} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 10 }}>
+                  {/* Il pallino sta fuori dal testo: le voci vanno a capo restando allineate fra loro. */}
+                  <span aria-hidden style={{ color: t.ac, lineHeight: 1.5 }}>
+                    •
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          );
+        }
+
+        return (
           <div
             key={i}
             style={{
@@ -59,8 +91,8 @@ export function QuestionBody({ text, fontSize, marginBottom }: QuestionBodyProps
               </Fragment>
             ))}
           </div>
-        ),
-      )}
+        );
+      })}
     </div>
   );
 }

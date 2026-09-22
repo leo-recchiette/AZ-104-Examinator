@@ -5,38 +5,24 @@ import type { QuestionAnswerDto } from "../../types/answer";
 import { getAnswerShape, questionTypeLabel, formatYourAnswer, correctAnswerLines } from "../../utils/questionShape";
 import { pointsEarned } from "../../utils/grading";
 import { splitPreamble } from "../../utils/preamble";
+import { reviewAnchorId } from "../../utils/reviewUnits";
 import { QuestionBody } from "../QuestionBody";
 import { ImageStack } from "../session/ImageStack";
 import { PlaceholderText } from "../PlaceholderText";
 
 interface ReviewQuestionCardProps {
-  /** Posizione nella sessione, 1-based: e' il "Question N" dell'intestazione. */
   position: number;
-  /** null se il numero non esiste piu' nel question bank (dataset reimportato dopo il tentativo). */
   question: QuestionDto | null;
   submitted: string[];
   correct: QuestionAnswerDto | null;
-  /**
-   * Valorizzato solo dentro una card di gruppo (ReviewGroupCard): la cornice la mette il
-   * contenitore, l'intestazione diventa "Part N" e il corpo arriva gia' senza lo scenario
-   * condiviso, che il gruppo mostra una volta sola in cima.
-   */
+
   asPart?: { number: number; body: string };
 }
 
-/**
- * Una domanda gia' corretta, con accanto la risposta data e quella giusta.
- * Condivisa fra la revisione di fine sessione (dove si mostrano solo le domande
- * che hanno perso punti) e la rilettura di un tentativo dello storico (dove si
- * mostrano tutte): la colorazione del riquadro "Your answer" segue il punteggio,
- * non il contesto in cui la card e' usata.
- */
 export function ReviewQuestionCard({ position, question, submitted, correct, asPart }: ReviewQuestionCardProps) {
   const { tokens: t } = useTheme();
   const { questionFontSize } = useDisplaySettings();
 
-  // Dentro un gruppo la card non ha cornice propria: si separa dalla parte precedente
-  // (o dallo scenario condiviso) con un filetto.
   const frame = asPart
     ? { borderTop: `1px solid ${t.bd2}`, paddingTop: 20, marginTop: 20 }
     : { background: t.card, border: `1px solid ${t.bd}`, borderRadius: 14 };
@@ -44,7 +30,7 @@ export function ReviewQuestionCard({ position, question, submitted, correct, asP
 
   if (!question || !correct) {
     return (
-      <div style={{ ...frame, padding: asPart ? "20px 0 0" : "22px 26px" }}>
+      <div id={reviewAnchorId(position)} style={{ ...frame, padding: asPart ? "20px 0 0" : "22px 26px", scrollMarginTop: 80 }}>
         <div style={{ fontSize: 12, fontWeight: 600, color: t.fa, marginBottom: 8 }}>{label}</div>
         <div style={{ fontSize: 14, color: t.mu, lineHeight: 1.5 }}>
           This question is no longer in the question bank, so its text and solution cannot be shown.
@@ -59,17 +45,13 @@ export function ReviewQuestionCard({ position, question, submitted, correct, asP
   const shape = getAnswerShape(question);
   const [earned, pointsTotal] = pointsEarned(shape, submitted, correct, question.options.map((o) => o.letter));
   const allCorrect = earned >= pointsTotal;
-  // Punteggio pieno non vuol dire risposta identica: le scelte in piu' non tolgono punti
-  // (regola Microsoft, vedi ScoreService), quindi una multiple choice con una lettera in piu'
-  // - o una sequenza con passi in coda - vale comunque tutto pur restando diversa dalla
-  // soluzione, e va mostrata. Solo quando coincidono davvero i due riquadri direbbero la
-  // stessa cosa e se ne mostra uno.
+  
   const sameAsCorrect =
     allCorrect && submitted.length === (shape === "options" ? correct.correctLetters.length : correct.answerRows.length);
   const correctLines = correctAnswerLines(correct.answerText);
 
   return (
-    <div style={{ ...frame, padding: asPart ? "20px 0 0" : "26px 26px 24px" }}>
+    <div id={reviewAnchorId(position)} style={{ ...frame, padding: asPart ? "20px 0 0" : "26px 26px 24px", scrollMarginTop: 80 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
         <span style={{ fontSize: 12, fontWeight: 600, color: t.fa }}>{label}</span>
         <span style={{ fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 600, padding: "3px 8px", borderRadius: 6, background: t.bg, color: t.mu }}>
@@ -79,16 +61,9 @@ export function ReviewQuestionCard({ position, question, submitted, correct, asP
           {earned} / {pointsTotal} points
         </span>
       </div>
-      {/* Nella revisione le istruzioni d'esame si scartano del tutto: sono le stesse per 103 domande
-          e qui interessa solo capire la risposta. Nella sessione restano, dietro il riquadro collassabile.
-          Dentro un gruppo il corpo arriva gia' tagliato dello scenario condiviso. */}
+      
       <QuestionBody text={asPart ? asPart.body : splitPreamble(question.text).body} fontSize={questionFontSize} marginBottom={20} />
-      {/* L'exhibit sta sopra le colonne: e' il contesto della domanda, va guardato prima
-          di leggere il confronto fra risposta data e soluzione. Servono ENTRAMBI i tipi di
-          immagine, prima quelle della domanda e poi quella con la soluzione compilata: la
-          sola "answer" lascerebbe fuori 638 screenshot (le tabelle e i template di cui il
-          testo parla), e in 118 domande che hanno solo immagini "question" la revisione
-          resterebbe senza alcun exhibit pur riferendosi a un grafico. */}
+      
       <ImageStack filenames={[...question.images, ...correct.images]} />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12, marginBottom: 18 }}>
         {!sameAsCorrect && (

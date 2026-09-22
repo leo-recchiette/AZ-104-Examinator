@@ -2,6 +2,9 @@ import type { QuestionDto } from "../types/question";
 import type { QuestionAnswerDto } from "../types/answer";
 import { splitPreamble, splitSharedScenario } from "./preamble";
 
+/** L'ancora a cui il navigatore fa scorrere la pagina: la dichiara la card, la usa il pannello. */
+export const reviewAnchorId = (position: number) => `review-q${position}`;
+
 /** Una domanda da rivedere, nella forma comune alle due schermate di revisione. */
 export interface ReviewEntry {
   /** Posizione nella sessione, 1-based: e' il "Question N" dell'intestazione. */

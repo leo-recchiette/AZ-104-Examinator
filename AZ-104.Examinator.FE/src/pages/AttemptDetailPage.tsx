@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTheme } from "../theme/ThemeContext";
 import { getAttempt } from "../api/results";
@@ -7,9 +7,10 @@ import type { ExamAttemptDetailDto } from "../types/answer";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { ReviewQuestionCard } from "../components/review/ReviewQuestionCard";
 import { ReviewGroupCard } from "../components/review/ReviewGroupCard";
+import { ReviewNavigator, type ReviewOutcome } from "../components/review/ReviewNavigator";
 import { getAnswerShape } from "../utils/questionShape";
 import { pointsEarned } from "../utils/grading";
-import { reviewUnits } from "../utils/reviewUnits";
+import { reviewAnchorId, reviewUnits } from "../utils/reviewUnits";
 import { formatDateTime, formatDuration } from "../utils/format";
 import { PASS_MARK_PERCENT } from "../constants";
 import { HEADER_GRADIENT } from "../theme/tokens";
@@ -23,6 +24,9 @@ export function AttemptDetailPage() {
   const [detail, setDetail] = useState<ExamAttemptDetailDto | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [onlyWrong, setOnlyWrong] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
+  /** Domanda da raggiungere appena il filtro l'ha rimessa in pagina (vedi goToQuestion). */
+  const [pendingScroll, setPendingScroll] = useState<number | null>(null);
 
   useEffect(() => {
     const attemptId = Number(id);
@@ -49,14 +53,53 @@ export function AttemptDetailPage() {
     });
   }, [detail]);
 
+  const outcomes = useMemo(() => {
+    const byPosition = new Map<number, ReviewOutcome>();
+    for (const g of graded) {
+      const known = g.answer.question && g.answer.correctAnswer;
+      byPosition.set(g.position, !known ? "unknown" : g.lostPoints ? "wrong" : "correct");
+    }
+    return byPosition;
+  }, [graded]);
+  const outcomeOf = useCallback((position: number) => outcomes.get(position) ?? "unknown", [outcomes]);
+
   const lostCount = graded.filter((g) => g.lostPoints).length;
   const shown = onlyWrong ? graded.filter((g) => g.lostPoints) : graded;
+  const allQuestions = graded.flatMap((g) => (g.answer.question ? [g.answer.question] : []));
+  const toEntry = (g: (typeof graded)[number]) => ({
+    position: g.position,
+    question: g.answer.question,
+    submitted: g.answer.userAnswers,
+    correct: g.answer.correctAnswer,
+  });
   // Le domande di una scenario series si rivedono insieme, in una card sola: lo scenario che
   // si ripetono identico va letto una volta, non una per parte.
-  const units = reviewUnits(
-    shown.map((g) => ({ position: g.position, question: g.answer.question, submitted: g.answer.userAnswers, correct: g.answer.correctAnswer })),
-    graded.flatMap((g) => (g.answer.question ? [g.answer.question] : [])),
-  );
+  // Il pannello elenca sempre tutto il tentativo, anche cio' che il filtro nasconde.
+  const allUnits = reviewUnits(graded.map(toEntry), allQuestions);
+  const units = onlyWrong ? reviewUnits(shown.map(toEntry), allQuestions) : allUnits;
+
+  function scrollToQuestion(position: number) {
+    document.getElementById(reviewAnchorId(position))?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function goToQuestion(position: number) {
+    setNavOpen(false);
+    // Con "Incorrectly answered" attivo la card giusta non e' in pagina: si toglie il filtro
+    // e si scorre al giro dopo, quando esiste l'elemento a cui saltare.
+    if (onlyWrong && outcomeOf(position) !== "wrong") {
+      setOnlyWrong(false);
+      setPendingScroll(position);
+      return;
+    }
+    scrollToQuestion(position);
+  }
+
+  useEffect(() => {
+    if (pendingScroll === null) return;
+    scrollToQuestion(pendingScroll);
+    setPendingScroll(null);
+  }, [pendingScroll]);
+
   const attempt = detail?.attempt;
   const passed = (attempt?.percentage ?? 0) >= PASS_MARK_PERCENT;
 
@@ -134,6 +177,17 @@ export function AttemptDetailPage() {
           </>
         )}
       </div>
+
+      {detail && detail.answers.length > 0 && (
+        <ReviewNavigator
+          open={navOpen}
+          onOpen={() => setNavOpen(true)}
+          onClose={() => setNavOpen(false)}
+          units={allUnits}
+          outcomeOf={outcomeOf}
+          onSelect={goToQuestion}
+        />
+      )}
     </div>
   );
 }
