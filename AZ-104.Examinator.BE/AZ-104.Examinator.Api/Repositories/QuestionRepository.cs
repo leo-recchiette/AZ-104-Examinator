@@ -37,14 +37,15 @@ public sealed class QuestionRepository : IQuestionRepository
     {
         var typeFilter = type is null ? "" : "WHERE type = @type::question_type";
 
-        // min(random()) sorteggia una volta per unita': random() non e' aggregabile e con il
-        // GROUP BY servirebbe comunque un valore unico per chiave.
+
         var sql = $"""
             WITH picked AS (
-                SELECT {UnitKey} AS unit_key, min(random()) AS draw
-                FROM questions
-                {typeFilter}
-                GROUP BY unit_key
+                SELECT unit_key, random() AS draw
+                FROM (
+                    SELECT DISTINCT {UnitKey} AS unit_key
+                    FROM questions
+                    {typeFilter}
+                ) u
                 ORDER BY draw
                 LIMIT @count
             ),
