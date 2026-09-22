@@ -238,7 +238,19 @@ export function SessionPage() {
       <div style={{ flexShrink: 0, position: "relative", zIndex: 5, background: headerGradient, backdropFilter: "blur(8px)", borderBottom: "1px solid rgba(255,255,255,.18)" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", padding: "14px 24px 12px", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
-            <span style={{ fontSize: 14.5, fontWeight: 600, whiteSpace: "nowrap", color: "#fff" }}>AZ-104</span>
+            {/* Torna alla home senza toccare la sessione: resta "in-progress", quindi la riga sul
+                server non viene cancellata e il banner della home la ripropone con "Resume". */}
+            <button
+              onClick={() => navigate("/")}
+              title="Back to the home page"
+              style={{
+                // "font" e' una shorthand e azzera size/weight: va prima di loro, non dopo.
+                font: "inherit", fontSize: 14.5, fontWeight: 600, whiteSpace: "nowrap",
+                color: "#fff", background: "none", border: "none", padding: 0, cursor: "pointer",
+              }}
+            >
+              AZ-104
+            </button>
             <span style={{ fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 600, padding: "4px 8px", borderRadius: 6, background: modeChipBg, color: modeChipFg }}>
               {modeLabel}
             </span>
