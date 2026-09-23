@@ -179,7 +179,9 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
                     <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.mu, marginBottom: 8 }}>
                       Explanation
                     </div>
-                    <div style={{ fontSize: 14.5, lineHeight: 1.6, color: t.tx2 }}>{correct.explanation}</div>
+                    <div lang="en" style={{ fontSize: 14.5, lineHeight: 1.6, color: t.tx2, textAlign: "justify", hyphens: "auto" }}>
+                      {correct.explanation}
+                    </div>
                   </>
                 )}
               </div>

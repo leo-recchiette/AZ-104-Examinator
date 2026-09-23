@@ -15,7 +15,9 @@ export function QuestionBody({ text, fontSize, marginBottom }: QuestionBodyProps
   const segments = splitQuestionBody(text);
 
   return (
-    <div style={{ marginBottom }}>
+    // lang="en": il testo delle domande e' inglese, e la sillabazione di "hyphens: auto" segue la
+    // lingua dichiarata — senza, varrebbe l'"it" di <html> e le righe giustificate si allargherebbero.
+    <div lang="en" style={{ marginBottom }}>
       {segments.map((segment, i) => {
         const spacing = i === segments.length - 1 ? 0 : 12;
 
@@ -29,6 +31,8 @@ export function QuestionBody({ text, fontSize, marginBottom }: QuestionBodyProps
                 fontFeatureSettings: QUESTION_FONT_FEATURES,
                 fontSize,
                 lineHeight: 1.55,
+                textAlign: "justify",
+                hyphens: "auto",
               }}
             >
               {segment.lead && <strong style={{ fontWeight: 700 }}>{segment.lead} </strong>}
@@ -51,6 +55,8 @@ export function QuestionBody({ text, fontSize, marginBottom }: QuestionBodyProps
                 fontFeatureSettings: QUESTION_FONT_FEATURES,
                 fontSize,
                 lineHeight: 1.5,
+                textAlign: "justify",
+                hyphens: "auto",
               }}
             >
               {segment.items.map((item, j) => (
