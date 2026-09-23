@@ -17,7 +17,7 @@ export interface QuestionAnswerDto {
   note: string | null;
   correctLetters: string[];
   answerRows: AnswerRowDto[];
-  /** Screenshot con la risposta corretta gia' compilata, da mostrare solo dopo aver rivelato/inviato. */
+  /** Solo dopo la rivelazione. */
   images: string[];
 }
 
@@ -39,10 +39,7 @@ export interface SaveExamAttemptDto {
   startTime: string;
   /** ISO 8601. */
   endTime: string;
-  /**
-   * L'intero set proposto, nell'ordine di presentazione e comprese le domande lasciate
-   * in bianco (userAnswers vuoto): e' cio' che rende il tentativo riconsultabile.
-   */
+  /** Tutte le domande, in ordine, anche quelle lasciate in bianco. */
   answers: AnswerSubmissionDto[];
 }
 
@@ -56,11 +53,7 @@ export interface ExamAttemptDto {
   completedAt: string;
 }
 
-/**
- * Una domanda di un tentativo storico. question e correctAnswer sono null insieme
- * quando il numero non esiste piu' nel question bank (dataset reimportato dopo il
- * tentativo): resta comunque leggibile cosa era stato risposto.
- */
+/** question e correctAnswer sono null se la domanda non esiste piu' dopo un reimport. */
 export interface AttemptAnswerDto {
   questionNumber: number;
   userAnswers: string[];

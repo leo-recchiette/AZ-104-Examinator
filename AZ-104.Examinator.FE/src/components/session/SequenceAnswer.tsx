@@ -7,21 +7,17 @@ interface SequenceAnswerProps {
   sequenceLength: number;
   value: string[];
   onChange: (next: string[]) => void;
-  /** Presente solo dopo la rivelazione: sequenza corretta, posizionale. */
+  /** Solo dopo la rivelazione. */
   answerRows?: AnswerRowDto[];
-  /** Sequenza gia' corretta a schermo: non si riordina e non si aggiunge piu' nulla. */
   locked?: boolean;
 }
 
-/**
- * Non un vero gesto di drag: pool a sinistra (click per aggiungere) e
- * sequenza a destra riordinabile con frecce su/giu'/rimuovi — lo stesso
- * pattern del mockup, piu' semplice e accessibile di un drag reale.
- */
+/** Click per aggiungere e frecce per riordinare, come nel mockup: niente drag reale. */
 export function SequenceAnswer({ draggableItems, sequenceLength, value, onChange, answerRows, locked }: SequenceAnswerProps) {
   const { tokens: t } = useTheme();
   const revealed = answerRows !== undefined;
   const chosen = value;
+  // 0 se l'API non la manda: vale l'intero pool.
   const slots = sequenceLength > 0 ? sequenceLength : draggableItems.length;
 
   function append(label: string) {
@@ -89,8 +85,6 @@ export function SequenceAnswer({ draggableItems, sequenceLength, value, onChange
                   {i + 1}
                 </span>
                 <span style={{ fontSize: 13.5, lineHeight: 1.4, flex: 1 }}>{label}</span>
-                {/* A sequenza bloccata i comandi spariscono invece di restare inerti: tre bottoni
-                    che non fanno niente si leggono come un guasto, non come una scelta. */}
                 {!locked && (
                   <span style={{ display: "flex", gap: 3 }}>
                     <button onClick={() => moveUp(i)} style={arrowButtonStyle(t.bd, t.card, t.mu)}>↑</button>

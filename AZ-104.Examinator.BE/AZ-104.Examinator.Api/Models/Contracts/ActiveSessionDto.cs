@@ -1,9 +1,6 @@
 namespace Examinator.Api.Models.Contracts;
 
-/// <summary>
-/// Risposta di GET /api/sessions/current: lo stato salvato piu' le domande gia' ricostruite, nello
-/// stesso ordine in cui erano state proposte, cosi' che il client possa riprendere senza altre chiamate.
-/// </summary>
+/// <summary>Domande gia' ricostruite, nell'ordine di presentazione.</summary>
 public sealed record ActiveSessionDto(
     string Mode,
     IReadOnlyList<QuestionDto> Questions,

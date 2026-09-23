@@ -2,23 +2,20 @@ import type { QuestionDto } from "../types/question";
 import type { QuestionAnswerDto } from "../types/answer";
 import { splitPreamble, splitSharedScenario } from "./preamble";
 
-/** L'ancora a cui il navigatore fa scorrere la pagina: la dichiara la card, la usa il pannello. */
 export const reviewAnchorId = (position: number) => `review-q${position}`;
 
-/** Una domanda da rivedere, nella forma comune alle due schermate di revisione. */
 export interface ReviewEntry {
-  /** Posizione nella sessione, 1-based: e' il "Question N" dell'intestazione. */
+  /** 1-based. */
   position: number;
-  /** null se il numero non esiste piu' nel question bank (dataset reimportato dopo il tentativo). */
+  /** null se la domanda non esiste piu' dopo un reimport. */
   question: QuestionDto | null;
   submitted: string[];
   correct: QuestionAnswerDto | null;
 }
 
 export interface ReviewGroupPart extends ReviewEntry {
-  /** 1-based dentro il gruppo: resta stabile anche mostrando solo le parti sbagliate. */
+  /** 1-based, stabile anche filtrando le parti. */
   partNumber: number;
-  /** Corpo della domanda senza lo scenario condiviso, che sta gia' in cima al gruppo. */
   body: string;
 }
 
@@ -28,21 +25,15 @@ export type ReviewUnit =
       kind: "group";
       groupId: string;
       groupType: string | null;
-      /** Quante parti ha il gruppo in tutto: puo' essere piu' di parts.length quando si filtra. */
+      /** Anche quelle filtrate via. */
       totalParts: number;
       shared: string;
       parts: ReviewGroupPart[];
     };
 
 /**
- * Raggruppa le domande da rivedere: una domanda sciolta resta una card, i membri di una
- * scenario series confluiscono in una sola card che mostra lo scenario condiviso una volta
- * e poi ogni parte con la propria soluzione.
- *
- * `allQuestions` e' l'intero set della sessione, non solo cio' che si sta mostrando: serve
- * a ricavare lo scenario condiviso (che si ottiene confrontando i corpi di TUTTI i fratelli)
- * e a numerare le parti in modo stabile anche quando si filtrano solo quelle sbagliate —
- * senza, "Part 2 of 3" diventerebbe "Part 1 of 1" appena la prima parte risulta corretta.
+ * I membri di un gruppo confluiscono in una card sola. `allQuestions` e' l'intero set: serve per
+ * lo scenario condiviso e per numerare le parti anche quando se ne mostra solo una parte.
  */
 export function reviewUnits(entries: ReviewEntry[], allQuestions: QuestionDto[]): ReviewUnit[] {
   const membersByGroup = new Map<string, QuestionDto[]>();
@@ -76,7 +67,6 @@ export function reviewUnits(entries: ReviewEntry[], allQuestions: QuestionDto[])
     const scenario = scenarioByGroup.get(question.groupId);
     let unit = groupUnits.get(question.groupId);
     if (!unit) {
-      // Il gruppo prende il posto del suo primo membro mostrato: l'ordine della sessione resta.
       unit = {
         kind: "group",
         groupId: question.groupId,

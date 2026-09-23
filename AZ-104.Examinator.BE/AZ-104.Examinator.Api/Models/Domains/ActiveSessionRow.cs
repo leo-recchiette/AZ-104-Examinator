@@ -1,10 +1,6 @@
 namespace Examinator.Api.Models.Domains;
 
-/// <summary>
-/// Riga grezza di active_session cosi' come la restituisce Dapper da Postgres: answers resta il
-/// testo JSON della colonna jsonb (Dapper non sa farne un dizionario da solo) e gli array arrivano
-/// come int[], non come IReadOnlyList. ActiveSessionRepository la converte in ActiveSession.
-/// </summary>
+/// <summary>Riga grezza di Dapper: answers e' ancora il testo JSON della colonna jsonb.</summary>
 internal sealed record ActiveSessionRow
 {
     public required string Mode { get; init; }

@@ -44,12 +44,8 @@ public sealed class ActiveSessionService : IActiveSessionService
 
     public Task SaveAsync(SaveActiveSessionDto request, CancellationToken cancellationToken)
     {
-        // Una sessione in cui non e' stata data nemmeno una risposta non e' qualcosa da riprendere:
-        // e' un set di domande appena estratto, che ricominciare da capo costa quanto riprendere.
-        // Stesso criterio con cui lo storico scarta le sessioni mai giocate ("almeno una risposta
-        // non vuota", non "almeno una domanda completa": una sola riga di una hotspot conta gia').
-        // La cancellazione invece del semplice "non salvare" serve al caso in cui la sessione ci
-        // fosse gia': svuotata di tutte le risposte, quello che resta sul server non va ripreso.
+        // Senza risposte non c'e' niente da riprendere. Si cancella, non si salta: una sessione gia'
+        // salvata e poi svuotata non deve restare sul server.
         if (!HasAnyAnswer(request.Answers))
             return _repository.DeleteAsync(cancellationToken);
 
@@ -59,8 +55,6 @@ public sealed class ActiveSessionService : IActiveSessionService
             QuestionNumbers = request.QuestionNumbers,
             Answers = request.Answers,
             FlaggedIndexes = request.FlaggedIndexes,
-            // Un indice fuori dall'elenco riaprirebbe la sessione su una domanda che non esiste:
-            // viene riportato dentro i limiti qui, non lasciato passare fino al client.
             CurrentIndex = Math.Clamp(request.CurrentIndex, 0, Math.Max(0, request.QuestionNumbers.Count - 1)),
             TimeLimitSeconds = request.TimeLimitSeconds,
             AutoReveal = request.AutoReveal,
@@ -74,7 +68,6 @@ public sealed class ActiveSessionService : IActiveSessionService
     public Task DeleteAsync(CancellationToken cancellationToken) 
         => _repository.DeleteAsync(cancellationToken);
 
-    /// <summary>Le righe lasciate in bianco arrivano come stringhe vuote: non contano come risposta.</summary>
     private static bool HasAnyAnswer(IReadOnlyDictionary<int, IReadOnlyList<string>> answers)
         => answers.Values.Any(answer => answer.Any(value => !string.IsNullOrWhiteSpace(value)));
 }

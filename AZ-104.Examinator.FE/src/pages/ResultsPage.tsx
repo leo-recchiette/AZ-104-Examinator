@@ -98,9 +98,6 @@ export function ResultsPage() {
             What you got wrong
           </h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {/* Qui si mostrano solo le domande che hanno perso punti: di una scenario series
-                possono quindi comparire alcune parti soltanto, ma restano dentro la card del
-                gruppo, con lo scenario condiviso in cima e il conteggio "2 of 3 parts". */}
             {reviewUnits(
               wrong.map((w) => ({ position: w.no, question: w.question, submitted: w.submitted, correct: w.correct })),
               state.questions,

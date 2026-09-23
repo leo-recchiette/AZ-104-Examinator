@@ -1,10 +1,6 @@
 namespace Examinator.Api.Models.Domains;
 
-/// <summary>
-/// Una riga della risposta corretta di DragAndDrop, Hotspot e HotspotYesNo.
-/// Prompt e' null quando la domanda e' un drag&amp;drop in sequenza: li' la
-/// risposta e' l'ordine stesso, dato da Ord.
-/// </summary>
+/// <summary>Prompt e' null per le sequenze: la risposta e' l'ordine stesso.</summary>
 public sealed class AnswerRow
 {
     public int Id { get; init; }

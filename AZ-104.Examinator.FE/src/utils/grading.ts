@@ -13,11 +13,7 @@ export interface RowGrade {
   isCorrect: boolean;
 }
 
-/**
- * Confronto per lettera, insiemistico e case-insensitive: rispecchia
- * ScoreService.Score per MultipleChoice (una lettera in piu' o in meno non
- * invalida le altre gia' giuste).
- */
+/** Deve restare allineato a ScoreService.Score. */
 export function gradeMultipleChoice(submitted: string[], correctLetters: string[], allLetters: string[]): LetterGrade[] {
   const correctSet = new Set(correctLetters.map((l) => l.toUpperCase()));
   const givenSet = new Set(submitted.map((l) => l.toUpperCase()));
@@ -29,11 +25,8 @@ export function gradeMultipleChoice(submitted: string[], correctLetters: string[
 }
 
 /**
- * Una riga 'selection' con piu' di una risposta corretta (es. domanda 242, "Allowed
- * permissions" -> Read + List) e' salvata come "{valore1,valore2}": un artefatto di come
- * l'importer scrive una lista Python in una colonna TEXT, riusato qui come marcatore -
- * verificato univoco su tutto il dataset. Torna null se la riga ha un solo valore corretto.
- * Deve restare sincronizzato con ScoreService.RowMatches.
+ * Riga con piu' valori corretti, salvata come "{valore1,valore2}" (domanda 242). Null se il
+ * valore e' uno solo. Allineato a ScoreService.RowMatches.
  */
 export function parseMultiValueAnswer(raw: string): string[] | null {
   if (raw.length >= 2 && raw.startsWith("{") && raw.endsWith("}")) {
@@ -42,13 +35,7 @@ export function parseMultiValueAnswer(raw: string): string[] | null {
   return null;
 }
 
-/**
- * Confronto posizionale e case-insensitive: rispecchia ScoreService.Score per
- * drag&drop/hotspot/hotspot_yes_no (un passo/riga sbagliata non invalida gli
- * altri gia' giusti). Per una riga a piu' valori il punto richiede l'insieme
- * esatto scelto dall'utente (ne' di piu' ne' di meno) — l'utente separa le
- * scelte multiple con "\n" (vedi RowSelectAnswer.tsx).
- */
+/** Posizionale. Una riga a piu' valori (separati da "\n") vuole l'insieme esatto. */
 export function gradeRows(submitted: string[], answerRows: AnswerRowDto[]): RowGrade[] {
   return answerRows.map((row, index) => {
     const given = submitted[index] ?? null;
@@ -65,7 +52,6 @@ export function gradeRows(submitted: string[], answerRows: AnswerRowDto[]): RowG
   });
 }
 
-/** Punti guadagnati/totali per una domanda, dato il confronto per-componente: usato per la caption "e/tot punti" nella revisione. */
 export function pointsEarned(shape: "options" | "draggable" | "prompts", submitted: string[], correct: { correctLetters: string[]; answerRows: AnswerRowDto[] }, allLetters: string[]): [number, number] {
   if (shape === "options") {
     const grades = gradeMultipleChoice(submitted, correct.correctLetters, allLetters);

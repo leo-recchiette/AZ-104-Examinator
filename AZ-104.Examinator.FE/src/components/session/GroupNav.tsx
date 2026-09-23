@@ -3,22 +3,13 @@ import { isQuestionAnswered } from "../../utils/questionShape";
 import { groupTypeLabel, type GroupMember } from "../../utils/groups";
 
 interface GroupNavProps {
-  /** I fratelli dello scenario corrente, in ordine di sessione. */
   members: GroupMember[];
-  /** Indice, nella sessione, della domanda attualmente aperta. */
   currentIndex: number;
   answers: Record<number, string[]>;
   onSelect: (index: number) => void;
 }
 
-/**
- * Elenco laterale delle sotto-domande di uno scenario: le domande di un gruppo condividono
- * lo stesso testo introduttivo e vanno affrontate insieme, quindi devono essere raggiungibili
- * fra loro senza scorrere la sessione con Next/Previous.
- *
- * Mostra la posizione dentro il gruppo, non il numero di domanda: dentro uno scenario conta
- * "la seconda delle tre", non "la 251 su 584".
- */
+/** Elenco laterale per saltare fra le sotto-domande di uno scenario. */
 export function GroupNav({ members, currentIndex, answers, onSelect }: GroupNavProps) {
   const { tokens: t } = useTheme();
   const label = groupTypeLabel(members[0]?.question.groupType ?? null);
@@ -48,14 +39,12 @@ export function GroupNav({ members, currentIndex, answers, onSelect }: GroupNavP
                 display: "flex", alignItems: "center", gap: 9, padding: "9px 11px", borderRadius: 9,
                 border: `1.5px solid ${current ? t.ac : t.bd3}`, background: current ? t.acs : t.card,
                 color: current ? t.ac : t.tx2, textAlign: "left",
-                // Nessun font:"inherit": la shorthand azzererebbe fontSize/fontWeight
-                // dichiarati qui sotto (index.html fa gia' ereditare il font-family ai button).
+                // Niente font:"inherit": la shorthand azzererebbe fontSize/fontWeight.
                 fontSize: 13.5, fontWeight: current ? 600 : 500,
               }}
             >
               <span style={{ flex: 1 }}>Question {position + 1}</span>
-              {/* Verde significa "risposta data", non "risposta giusta": la correzione non e' ancora avvenuta.
-                  L'etichetta serve perche' il colore da solo non e' leggibile da tutti (screen reader, daltonismo). */}
+              {/* Verde = risposta data, non giusta. */}
               <span
                 role="img"
                 aria-label={answered ? "Answered" : "Not answered"}

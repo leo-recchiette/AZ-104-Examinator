@@ -6,10 +6,7 @@ export function getActiveSession(): Promise<ActiveSessionDto | null> {
   return requestOptional<ActiveSessionDto>("/api/sessions/getCurrentSession");
 }
 
-/**
- * keepalive permette alla richiesta di partire anche mentre la pagina si sta chiudendo: e'
- * esattamente il salvataggio che conta di piu', quello di chi abbassa il coperchio o chiude la scheda.
- */
+/** keepalive: la richiesta parte anche mentre la pagina si chiude. */
 export function saveActiveSession(session: SaveActiveSessionDto, keepalive = false): Promise<void> {
   return requestVoid("/api/sessions/saveCurrentSession", {
     method: "PUT",

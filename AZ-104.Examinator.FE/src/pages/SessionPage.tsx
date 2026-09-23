@@ -13,19 +13,15 @@ import { isAnswerStarted } from "../utils/questionShape";
 import { OptionsMenu } from "../components/OptionsMenu";
 import { HEADER_GRADIENT } from "../theme/tokens";
 
-/** Colori del cronometro, dal "tutto a posto" all'allarme. Non sono token del tema: vivono sul
- *  banner blu dell'header, uguale in light e dark. */
+// Non token del tema: stanno sul banner blu, uguale in light e dark.
 const CLOCK_OK = "#3ddc84";
 const CLOCK_WARN = "#ffd23f";
 const CLOCK_DANGER = "#ff6b6b";
-/** Quanto tempo deve restare perche' scatti l'avviso, in frazione del limite scelto. */
 const WARN_FRACTION = 1 / 3;
 const DANGER_FRACTION = 0.1;
-/** Attesa prima dell'auto-reveal: le hotspot si compilano una riga alla volta e senza questa
- *  pausa ogni riga farebbe partire una checkAnswers, l'ultima delle quali e' l'unica utile. */
+// Debounce: le hotspot si compilano una riga alla volta.
 const AUTO_REVEAL_DELAY_MS = 400;
-/** Riferimento stabile per "nessuna risposta": un [] nuovo a ogni render rifarebbe partire
- *  l'effetto dell'auto-reveal di continuo. */
+// Riferimento stabile: un [] nuovo a ogni render rilancerebbe l'effetto dell'auto-reveal.
 const NO_ANSWER: string[] = [];
 
 function fmt(totalSeconds: number): string {
@@ -46,8 +42,7 @@ export function SessionPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const firedRef = useRef(false);
-  // Letto da handleFinish al momento dell'invio, senza dover ricreare la
-  // callback (e quindi l'effect del timer) a ogni tick del secondo.
+  // Evita di ricreare handleFinish a ogni tick.
   const elapsedSecRef = useRef(0);
 
   const question = state.questions[state.currentIndex];
@@ -62,10 +57,7 @@ export function SessionPage() {
     setError(null);
     setSubmitting(true);
     try {
-      // Sempre l'intero set di domande caricate, non solo quelle a cui e'
-      // stata data risposta: ExamResultService.ScoreAsync itera solo sulle
-      // submission ricevute, quindi una domanda omessa non conterebbe ne' a
-      // numeratore ne' a denominatore, gonfiando la percentuale.
+      // Tutte le domande, anche senza risposta: quelle omesse non conterebbero nel denominatore.
       const submissions = state.questions.map((q) => ({
         questionNumber: q.number,
         userAnswers: state.answers[q.number] ?? [],
@@ -74,21 +66,14 @@ export function SessionPage() {
       dispatch({ type: "FINISH_SESSION", score, timeUsedSeconds: elapsedSecRef.current });
       navigate("/results");
 
-      // Una sessione senza nemmeno una scelta fatta non viene registrata: e' una sessione
-      // abbandonata, non un tentativo. Il criterio e' "almeno una risposta non vuota", non
-      // isQuestionAnswered: aver risposto a una riga sola di una hotspot conta comunque come
-      // aver giocato la sessione. Anche l'API la rifiuterebbe; qui si evita la chiamata e si
-      // distingue lo scarto voluto da un errore vero.
+      // Una sessione senza alcuna risposta non va nello storico. Il salvataggio e' best-effort.
       const answeredAnything = submissions.some((s) => s.userAnswers.some((a) => a.trim() !== ""));
 
-      // Registrazione dello storico best-effort: un errore qui non deve bloccare la
-      // navigazione ai risultati, il punteggio e' gia' stato calcolato e mostrato.
       if (!answeredAnything) {
         dispatch({ type: "SET_HISTORY_OUTCOME", outcome: "discarded" });
       } else if (state.mode && state.startedAt) {
         const endTime = new Date();
-        // Inizio ricavato dal tempo effettivamente giocato invece che da state.startedAt: lo
-        // storico mostra la durata come endTime - startTime, e le pause non devono gonfiarla.
+        // Dal tempo giocato, non da startedAt: le pause non devono allungare la durata.
         const startTime = new Date(endTime.getTime() - elapsedSecRef.current * 1000);
         saveAttempt({
           mode: state.mode,
@@ -96,8 +81,6 @@ export function SessionPage() {
           percentage: score.percentage,
           startTime: startTime.toISOString(),
           endTime: endTime.toISOString(),
-          // Le stesse submission inviate a getScore: lo storico registra l'intera
-          // sessione, non solo il punteggio, cosi' e' riconsultabile domanda per domanda.
           answers: submissions,
         }).catch((err) => {
           console.error("Impossibile salvare il tentativo nello storico:", err);
@@ -116,8 +99,6 @@ export function SessionPage() {
   const limit = state.timeLimitSeconds;
   const remaining = limit ? Math.max(0, limit - elapsedSec) : 0;
 
-  // Il timer resta attivo sia sulla domanda corrente sia sulla schermata di
-  // conferma (showConfirm) e puo' auto-inviare da entrambe.
   useEffect(() => {
     if (!limit) return;
     if (remaining === 0 && !firedRef.current) {
@@ -130,9 +111,7 @@ export function SessionPage() {
     if (!question) navigate("/", { replace: true });
   }, [question, navigate]);
 
-  // Auto-reveal, se scelto al setup della Practice: la soluzione si chiede da sola non appena la
-  // domanda risulta completamente risposta. SET_ANSWER cancella il checkResult della domanda, quindi
-  // cambiare risposta fa ripartire questo effetto e la soluzione si riallinea da se'.
+  // SET_ANSWER cancella il checkResult, quindi cambiare risposta rilancia l'auto-reveal.
   useEffect(() => {
     if (!isPractice || !state.autoReveal || !question) return;
     if (state.checkResults[question.number]) return;
@@ -149,9 +128,7 @@ export function SessionPage() {
     return () => clearTimeout(timer);
   }, [isPractice, state.autoReveal, state.checkResults, question, value, dispatch]);
 
-  // Sopra l'early return: gli hook devono essere chiamati sempre, nello stesso ordine.
-  // I conteggi mostrati all'utente vanno per unita', non per domanda: chi ha chiesto 80
-  // domande deve vederne 80, e un gruppo di sotto-domande e' una di quelle 80.
+  // I conteggi mostrati vanno per unita': un gruppo di sotto-domande conta come una.
   const units = useMemo(() => sessionUnits(state.questions), [state.questions]);
   const unitAnswered = useMemo(
     () => unitsAnswered(state.questions, units, state.answers),
@@ -167,10 +144,8 @@ export function SessionPage() {
 
   const totalUnits = units.members.length;
   const currentUnit = units.unitOf[state.currentIndex] ?? 0;
-  // Un'unita' conta come "risposta" solo quando lo sono tutte le sue sotto-domande.
   const answeredCount = unitAnswered.filter(Boolean).length;
-  // Il salto arriva anche dal riepilogo, che va chiuso: altrimenti si cambia domanda
-  // restando davanti alla schermata di conferma, senza vedere nulla succedere.
+  // Chiude anche il riepilogo, altrimenti il salto non si vedrebbe.
   function goToQuestion(index: number) {
     dispatch({ type: "GO_TO", index });
     setShowConfirm(false);
@@ -183,21 +158,15 @@ export function SessionPage() {
 
   const timerCaption = limit ? "Time remaining" : "Elapsed";
   const timeLabel = fmt(limit ? remaining : elapsedSec);
-  // Soglie proporzionali al limite scelto, non minuti fissi: con le soglie assolute di prima
-  // (giallo a 30 minuti trascorsi) una Practice da 90 minuti virava al giallo con ancora un'ora
-  // davanti, mentre una da 15 minuti non ci arrivava mai. Cosi' l'avviso cade sempre allo stesso
-  // punto della sessione, qualunque durata si sia scelta.
+  // Soglie in frazione del limite, non minuti fissi, per valere con qualunque durata.
   let clockColor = CLOCK_OK;
   if (limit) {
     if (remaining <= limit * DANGER_FRACTION) clockColor = CLOCK_DANGER;
     else if (remaining <= limit * WARN_FRACTION) clockColor = CLOCK_WARN;
   }
-  // Bianco finche' non c'e' nulla da segnalare; poi il numero prende il colore dell'avviso.
   const timeColor = clockColor === CLOCK_OK ? "#ffffff" : clockColor;
   const timePct = limit ? (elapsedSec / limit) * 100 : (answeredCount / totalUnits) * 100;
 
-  // Le domande che condividono uno scenario si affiancano a un elenco per saltare
-  // fra loro; per le domande sciolte la card resta a tutta larghezza come prima.
   const members = groupMembers(state.questions, state.currentIndex);
   const card = (
     <QuestionCard
@@ -222,7 +191,7 @@ export function SessionPage() {
         answers={state.answers}
         onSelect={(index) => dispatch({ type: "GO_TO", index })}
       />
-      {/* minWidth 0: senza, il contenuto largo della card impedirebbe al flex item di restringersi. */}
+      {/* minWidth 0: altrimenti il flex item non si restringe. */}
       <div style={{ flex: "1 1 320px", minWidth: 0 }}>{card}</div>
     </div>
   );
@@ -234,17 +203,16 @@ export function SessionPage() {
 
   return (
     <div style={{ height: "100dvh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
-      {/* position/zIndex non servono piu' per lo sticky, ma per far uscire il popover di Options sopra l'area che scorre. */}
+      {/* zIndex: il popover di Options deve uscire sopra l'area che scorre. */}
       <div style={{ flexShrink: 0, position: "relative", zIndex: 5, background: headerGradient, backdropFilter: "blur(8px)", borderBottom: "1px solid rgba(255,255,255,.18)" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", padding: "14px 24px 12px", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
-            {/* Torna alla home senza toccare la sessione: resta "in-progress", quindi la riga sul
-                server non viene cancellata e il banner della home la ripropone con "Resume". */}
+            {/* La sessione resta in-progress: la home la ripropone con "Resume". */}
             <button
               onClick={() => navigate("/")}
               title="Back to the home page"
               style={{
-                // "font" e' una shorthand e azzera size/weight: va prima di loro, non dopo.
+                // "font" e' una shorthand: va prima di size/weight.
                 font: "inherit", fontSize: 14.5, fontWeight: 600, whiteSpace: "nowrap",
                 color: "#fff", background: "none", border: "none", padding: 0, cursor: "pointer",
               }}
@@ -260,8 +228,6 @@ export function SessionPage() {
             <span style={{ fontSize: 12.5, color: "#e4e7ee" }}>{timerCaption}</span>
             <span style={{ fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums", color: timeColor }}>{timeLabel}</span>
           </div>
-          {/* In entrambe le modalita', purche' a tempo: senza limite non ci sarebbe un orologio
-              da fermare. */}
           {limit !== null && (
             <button
               onClick={() => setPaused(true)}
@@ -293,7 +259,7 @@ export function SessionPage() {
         </div>
       </div>
 
-      {/* minHeight 0: senza, un flex item non scende sotto l'altezza del proprio contenuto e lo scroll tornerebbe sulla pagina. */}
+      {/* minHeight 0: altrimenti lo scroll torna sulla pagina. */}
       <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", width: "100%", padding: "22px 24px" }}>
           {error && <p style={{ margin: "0 0 20px", color: t.er, fontSize: 14 }}>{error}</p>}
@@ -313,8 +279,6 @@ export function SessionPage() {
                   <SummaryRow label="Flagged for review" value={String(flagCount)} fg={flagCount ? t.warn : t.tx} />
                   <SummaryRow label="Time used" value={fmt(elapsedSec)} fg={t.tx} />
                 </div>
-                {/* La riga "Unanswered" da sola non dice *quali*: senza questa scorciatoia
-                    l'unico modo di trovarle e' scorrere la sessione con Next/Previous. */}
                 {totalUnits - answeredCount > 0 && (
                   <button
                     onClick={() => setNavFilter("unanswered")}
@@ -357,8 +321,7 @@ export function SessionPage() {
         onSelect={goToQuestion}
       />
 
-      {/* zIndex sopra header (5) e modali (30): in pausa la domanda va davvero coperta, altrimenti
-          si continuerebbe a leggerla e a rispondere con l'orologio fermo. */}
+      {/* Sopra header e modali: in pausa la domanda non deve restare leggibile. */}
       {paused && (
         <div
           role="dialog"
@@ -459,7 +422,6 @@ function SummaryRow({ label, value, fg }: { label: string; value: string; fg: st
   );
 }
 
-/** I bottoni sul banner blu dell'header: vetro chiaro su gradiente, uguale in light e dark. */
 const headerButtonStyle = {
   display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 8,
   border: "1px solid rgba(255,255,255,.35)", background: "rgba(255,255,255,.12)",

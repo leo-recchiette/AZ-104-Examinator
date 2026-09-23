@@ -73,8 +73,6 @@ public sealed class ExamResultServiceTests
 
         var actual = await _sut.ReviewAsync(submissions, CancellationToken.None);
 
-        // A differenza di CheckAnswersAsync, qui la domanda va restituita per intero: chi rilegge
-        // un tentativo dello storico non ha piu' il testo da nessuna parte.
         actual.Should().ContainSingle();
         actual[0].UserAnswers.Should().BeEquivalentTo(["A"]);
         actual[0].Question!.Text.Should().Be("Domanda di prova");
@@ -89,8 +87,6 @@ public sealed class ExamResultServiceTests
 
         var actual = await _sut.ReviewAsync(submissions, CancellationToken.None);
 
-        // Numero sparito dal bank dopo un reimport: la risposta data resta leggibile e il resto
-        // del tentativo non deve saltare per questa.
         var expected = new[] { new AttemptAnswerDto(QuestionNumber: 999, UserAnswers: ["B"], Question: null, CorrectAnswer: null) };
 
         actual.Should().BeEquivalentTo(expected);
@@ -103,18 +99,13 @@ public sealed class ExamResultServiceTests
 
         var actual = await _sutWithTenQuestions.ReviewAsync(submissions, CancellationToken.None);
 
-        // L'ordine e' quello di presentazione salvato nel tentativo, non quello dei numeri:
-        // riordinare qui rimescolerebbe una sessione con dei gruppi.
+        // Ordine di presentazione, non numerico: conta per i gruppi.
         actual.Select(a => a.QuestionNumber).Should().Equal(3, 1, 2);
     }
 
     #region Utils
 
-    /// <summary>
-    /// ExamResultService su un substitute di IQuestionRepository che ignora i filtri per numero e
-    /// restituisce sempre le liste passate. answer_rows e immagini restano vuote ma vanno stubbate
-    /// lo stesso: LoadGradedQuestionsAsync le carica in blocco per ogni submission.
-    /// </summary>
+    /// <summary>Il repository ignora i filtri e restituisce sempre le liste passate.</summary>
     private static ExamResultService Sut(IReadOnlyList<Question> questions, IReadOnlyList<Option> options)
     {
         var repository = Substitute.For<IQuestionRepository>();
@@ -122,8 +113,7 @@ public sealed class ExamResultServiceTests
         repository.GetOptionsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns(options);
         repository.GetAnswerRowsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
         repository.GetImagesAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
-        // Solo ReviewAsync li carica, ma stubbarli sempre evita che gli altri test dipendano da
-        // quale metodo del repository il service chiama davvero.
+        // Stubbati sempre, cosi' i test non dipendono da quali metodi chiama il service.
         repository.GetAnswerRowOptionsAsync(Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>()).Returns([]);
         return new ExamResultService(repository, new ScoreService());
     }

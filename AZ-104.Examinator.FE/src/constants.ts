@@ -1,10 +1,4 @@
-/**
- * Numeri di business della Simulazione: fissi, non configurabili dall'utente.
- *
- * Attenzione a EXAM_QUESTION_COUNT: finisce in getExam(count), che sorteggia UNITA' e non
- * domande (una serie di scenario o un case study occupano un posto solo, ma tornano interi).
- * 54 e' quindi il numero di posti estratti, non di domande servite: quelle sono di piu'.
- */
+/** EXAM_QUESTION_COUNT conta unita', non domande: un gruppo torna intero e le domande sono di piu'. */
 export const EXAM_QUESTION_COUNT = 54;
 export const EXAM_TIME_LIMIT_MINUTES = 100;
 export const EXAM_TIME_LIMIT_SECONDS = EXAM_TIME_LIMIT_MINUTES * 60;

@@ -9,17 +9,11 @@ const PAD = { top: 16, right: 20, bottom: 34, left: 44 };
 const Y_TICKS = [0, 25, 50, 75, 100];
 
 interface ProgressChartProps {
-  /** Tentativi dal piu' vecchio al piu' recente: e' l'ordine in cui li restituisce getAllAttempts. */
+  /** Dal piu' vecchio. */
   attempts: ExamAttemptDto[];
 }
 
-/**
- * Andamento dei punteggi: tempo sull'asse X, punteggio (0-100) sull'asse Y.
- *
- * Disegnato in pixel reali misurati sul contenitore, non dentro un viewBox riscalato: con
- * preserveAspectRatio="none" l'SVG veniva stirato in orizzontale e verticale in modo diverso,
- * trasformando i pallini in ellissi e allargando il testo delle etichette.
- */
+/** In pixel misurati, non in un viewBox riscalato, che deformerebbe pallini ed etichette. */
 export function ProgressChart({ attempts }: ProgressChartProps) {
   const { tokens: t } = useTheme();
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -39,9 +33,7 @@ export function ProgressChart({ attempts }: ProgressChartProps) {
   const innerW = Math.max(0, width - PAD.left - PAD.right);
   const innerH = HEIGHT - PAD.top - PAD.bottom;
 
-  // I tentativi sono spaziati in modo uniforme nell'ordine in cui sono stati svolti, non in
-  // proporzione alla distanza reale fra le date: due sessioni fatte a un mese l'una dall'altra
-  // schiaccerebbero tutte le altre in un angolo. Le date agli estremi dicono il periodo coperto.
+  // Spaziatura uniforme, non proporzionale alle date: un buco di un mese schiaccerebbe il resto.
   const x = (i: number) => (n === 1 ? PAD.left + innerW / 2 : PAD.left + (i / (n - 1)) * innerW);
   const y = (pct: number) => PAD.top + (1 - Math.min(100, Math.max(0, pct)) / 100) * innerH;
 
@@ -66,7 +58,6 @@ export function ProgressChart({ attempts }: ProgressChartProps) {
             </g>
           ))}
 
-          {/* Soglia di superamento: da' un riferimento all'asse dei punteggi. */}
           <line
             x1={PAD.left} y1={y(PASS_MARK_PERCENT)} x2={width - PAD.right} y2={y(PASS_MARK_PERCENT)}
             stroke={t.ok} strokeWidth={1} strokeDasharray="4 4" opacity={0.7}
@@ -85,7 +76,7 @@ export function ProgressChart({ attempts }: ProgressChartProps) {
           {points.map((p, i) => (
             <g key={p.attempt.id}>
               <circle cx={p.x} cy={p.y} r={active === i ? 6 : 4} fill={t.ac} stroke={t.card} strokeWidth={active === i ? 2 : 0} />
-              {/* Bersaglio invisibile piu' generoso del pallino: 4px di raggio sono scomodi da centrare. */}
+              {/* Area di click piu' grande del pallino. */}
               <circle
                 cx={p.x} cy={p.y} r={15} fill="transparent" tabIndex={0} role="img"
                 aria-label={`${p.attempt.percentage.toFixed(1)}% — ${formatDateTime(p.attempt.endTime)}, ${
@@ -94,7 +85,6 @@ export function ProgressChart({ attempts }: ProgressChartProps) {
                 onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
                 onBlur={() => setActive(null)}
-                // Su touch non esiste l'hover: il tocco sul punto apre la stessa scheda.
                 onClick={() => setActive((prev) => (prev === i ? null : i))}
               />
             </g>
@@ -120,7 +110,6 @@ export function ProgressChart({ attempts }: ProgressChartProps) {
           role="tooltip"
           style={{
             position: "absolute", left: hovered.x, top: hovered.y - 14, pointerEvents: "none",
-            // translate(-50%) centra la scheda sul punto; il clamp tiene i bordi dentro il pannello.
             transform: `translate(${Math.min(Math.max(hovered.x, 96), Math.max(width - 96, 96)) - hovered.x}px, -100%) translateX(-50%)`,
             background: t.card, border: `1px solid ${t.bd3}`, borderRadius: 10, padding: "9px 12px",
             boxShadow: `0 4px 14px ${t.sh}`, whiteSpace: "nowrap", zIndex: 2,

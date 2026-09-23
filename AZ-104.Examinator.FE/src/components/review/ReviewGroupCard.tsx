@@ -11,12 +11,7 @@ interface ReviewGroupCardProps {
   unit: Extract<ReviewUnit, { kind: "group" }>;
 }
 
-/**
- * Le domande di una scenario series riviste insieme: lo scenario che si ripetono identico
- * compare una volta sola in cima, poi ogni parte porta solo la propria soluzione con
- * risposta data, soluzione e spiegazione. Prima erano N card che ripetevano lo stesso
- * scenario, lasciando all'occhio il compito di trovare l'unica frase diversa.
- */
+/** Una scenario series in una card: lo scenario comune una volta sola, poi le parti. */
 export function ReviewGroupCard({ unit }: ReviewGroupCardProps) {
   const { tokens: t } = useTheme();
   const { questionFontSize } = useDisplaySettings();
@@ -36,8 +31,7 @@ export function ReviewGroupCard({ unit }: ReviewGroupCardProps) {
     [0, 0],
   );
   const allCorrect = total > 0 && earned >= total;
-  // Mostrando solo le parti sbagliate il gruppo ne espone meno di quante ne ha: va detto,
-  // altrimenti "3 parts" con due sole parti sotto sembra un pezzo mancante.
+  // Filtrando, le parti mostrate possono essere meno di quelle totali: va detto.
   const partsLabel =
     unit.parts.length === unit.totalParts
       ? `${unit.totalParts} parts`

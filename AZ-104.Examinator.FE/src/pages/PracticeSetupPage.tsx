@@ -29,8 +29,7 @@ export function PracticeSetupPage() {
     setLoading(true);
     try {
       const questions = await getExam(count);
-      // Vedi ModeSelectPage.goSimulation: un set vuoto e' un 200 con [], non un errore, e va
-      // intercettato qui o la sessione parte a vuoto e RequireSession rimbalza alla home.
+      // 200 con []: question bank vuoto, non un errore dell'API.
       if (questions.length === 0) {
         setEmptyBank(true);
         setLoading(false);

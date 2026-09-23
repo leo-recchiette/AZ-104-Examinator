@@ -12,23 +12,9 @@ const ZOOM_STEP = 0.25;
 const ZOOM_DEFAULT = 0.75;
 
 /**
- * Pila di screenshot (spesso 1, a volte 2-3 per domanda), usata sia per le immagini pre-risposta
- * che per quelle della spiegazione. Aperta di default — gli screenshot sono parte integrante del
- * testo della domanda, non un extra da andare a cercare — ma richiudibile dall'etichetta "Exhibit"
- * (minuscola, con freccia, sopra una linea sottile blu), e con altezza limitata: alcuni screenshot
- * del dataset sono enormi. Il cap e' relativo alla viewport, non un valore fisso: a 420px fissi gli screenshot verticali
- * (il dataset ne ha 76 piu' alti di cosi', fino a 308x1100) venivano ridotti a ~118px di larghezza, illeggibili.
- *
- * Problema opposto: molti screenshot sono nativamente piccoli e a dimensione naturale restano illeggibili.
- * I pulsanti +/- ingrandiscono la pila oltre il "fit" (fino a 4x) senza dover zoomare tutto il browser.
- * La larghezza di partenza non e' calcolata ma *misurata* dal DOM nel momento in cui si lascia lo zoom 1x
- * (getBoundingClientRect sulle img, che li' hanno ancora gli stili di fit): cosi' lo zoom moltiplica
- * esattamente cio' che l'utente sta vedendo, qualunque sia il vincolo che ha deciso quella dimensione
- * (larghezza naturale, larghezza della card o il cap di 78vh). Tornando a 1x le misure vengono buttate e
- * l'immagine ricade sugli stili di fit, quindi torna a seguire i resize della finestra.
- *
- * Si parte da ZOOM_DEFAULT, non da 1x: finche' un'immagine non ha la sua misura resta sugli stili di fit,
- * e la misura si prende appena e' caricata (measureBase), poi lo zoom le si applica.
+ * Screenshot della domanda o della spiegazione. A 1x le immagini seguono gli stili di fit (altezza
+ * max 78vh); fuori da 1x lo zoom moltiplica la larghezza di fit misurata dal DOM, cosi' ingrandisce
+ * esattamente cio' che si vede.
  */
 export function ImageStack({ filenames }: ImageStackProps) {
   const { tokens: t } = useTheme();
@@ -41,8 +27,7 @@ export function ImageStack({ filenames }: ImageStackProps) {
   const label = open ? "Hide exhibit" : "Show exhibit";
 
   function toggle() {
-    // Chiudendo si torna a 1x: cosi' alla riapertura le img montano sempre con gli stili di fit,
-    // e la misura della base resta valida.
+    // Alla riapertura le img rimontano con gli stili di fit: le misure vecchie non valgono piu'.
     if (open) {
       setZoom(ZOOM_DEFAULT);
       setBaseWidths({});
@@ -65,8 +50,7 @@ export function ImageStack({ filenames }: ImageStackProps) {
     setZoom(next);
   }
 
-  // Misura la larghezza di fit di un'immagine appena caricata, se lo zoom corrente ne ha bisogno. Si
-  // chiama anche dal ref: un'immagine gia' in cache puo' risultare completa prima dell'onLoad.
+  // Chiamata anche dal ref: un'immagine in cache puo' essere completa prima dell'onLoad.
   function measureBase(filename: string, el: HTMLImageElement) {
     if (zoom === 1 || baseWidths[filename] !== undefined || !el.complete || el.naturalWidth === 0) return;
     const width = el.getBoundingClientRect().width;
@@ -98,8 +82,7 @@ export function ImageStack({ filenames }: ImageStackProps) {
           style={{
             display: "flex", alignItems: "center", gap: 4, background: "none", border: "none", padding: 0,
             color: t.ac, letterSpacing: ".03em", textTransform: "uppercase", cursor: "pointer",
-            // Niente font:"inherit" qui: la shorthand azzererebbe fontSize/fontWeight dichiarati sopra
-            // (index.html fa gia' ereditare il font-family ai button).
+            // Niente font:"inherit": la shorthand azzererebbe fontSize/fontWeight.
             fontSize: 10, fontWeight: 600,
           }}
         >
@@ -138,15 +121,9 @@ export function ImageStack({ filenames }: ImageStackProps) {
         <div
           style={{
             display: "flex", flexWrap: "wrap", gap: 12, marginTop: 16,
-            // Riga che va a capo, non colonna fissa: rimpicciolite, piu' immagini della stessa domanda
-            // stanno affiancate (e allineate in alto) invece di sprecare una riga a testa; appena una
-            // non ci sta piu' in larghezza, il wrap la manda da sola su una riga sua.
             alignItems: "flex-start",
-            // "safe" e' la parte importante: centra finche' il contenuto ci sta, ma quando un'immagine
-            // ingrandita supera la card ricade su start, altrimenti il centraggio le taglierebbe il
-            // bordo sinistro rendendolo irraggiungibile allo scroll.
+            // "safe": se l'immagine ingrandita supera la card, il bordo sinistro resta raggiungibile.
             justifyContent: "safe center",
-            // Ingrandita, l'immagine puo' superare la card: si scorre dentro il box invece di allargarla.
             overflow: zoom > 1 ? "auto" : "visible",
           }}
         >
@@ -167,7 +144,6 @@ export function ImageStack({ filenames }: ImageStackProps) {
                   maxWidth: zoomed ? "none" : "100%", maxHeight: zoomed ? "none" : "78vh",
                   width: zoomed ? base * zoom : "auto", height: "auto", objectFit: "contain",
                   borderRadius: 10, border: `1px solid ${t.bd2}`, display: "block",
-                  // Niente margini auto: allineamento e centraggio li decide il contenitore flex.
                   margin: 0, background: t.sub, flexShrink: 0,
                 }}
               />

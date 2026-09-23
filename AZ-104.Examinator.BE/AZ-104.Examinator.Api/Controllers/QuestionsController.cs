@@ -19,8 +19,7 @@ public sealed class QuestionsController : ControllerBase
         _questionService = questionService;
     }
 
-    /// <summary>Un set casuale di domande per una sessione di simulazione. 
-    /// "type" filtra opzionalmente su uno dei 4 tipi (es. "multiple_choice").</summary>
+    /// <summary>"type" filtra opzionalmente su uno dei 4 tipi.</summary>
     [HttpGet("getExam")]
     public async Task<ActionResult<IReadOnlyList<QuestionDto>>> GetExamAsync(
         [FromQuery] int count = 40,

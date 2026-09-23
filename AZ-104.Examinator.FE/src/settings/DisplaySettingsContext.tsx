@@ -1,18 +1,9 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-/**
- * Preferenze di lettura scelte dall'utente dal menu Options, separate da ThemeContext:
- * quello risolve i token di colore del mockup, qui c'e' solo cio' che l'utente regola a mano.
- */
 
 const STORAGE_KEY = "az104-question-font-size";
 
-/**
- * Corpo del testo della domanda, in px. Il mockup usava 20.5 fisso, troppo grande sulle
- * domande lunghe: il default scende a 15 e resta regolabile fino a 22 per chi vuole la resa
- * originale. Il minimo di 14 e' il corpo del testo di servizio della card: sotto, la domanda
- * non si distinguerebbe piu' dalle opzioni di risposta.
- */
+/** In px. Sotto 14 la domanda non si distinguerebbe dal testo delle opzioni. */
 export const QUESTION_FONT_SIZE_MIN = 14;
 export const QUESTION_FONT_SIZE_MAX = 22;
 export const QUESTION_FONT_SIZE_DEFAULT = 15;
@@ -20,7 +11,7 @@ export const QUESTION_FONT_SIZE_STEP = 1;
 
 interface DisplaySettingsValue {
   questionFontSize: number;
-  /** Il valore viene sempre riportato dentro [MIN, MAX]: i chiamanti non devono preoccuparsi dei limiti. */
+  /** Riportato dentro [MIN, MAX]. */
   setQuestionFontSize: (px: number) => void;
 }
 

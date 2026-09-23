@@ -48,8 +48,6 @@ public sealed class ActiveSessionRepository : IActiveSessionRepository
 
     public async Task SaveAsync(ActiveSession session, CancellationToken cancellationToken)
     {
-        // Upsert sulla chiave fissa: la riga e' una sola e ogni salvataggio la riscrive per intero,
-        // quindi non serve distinguere fra creazione e aggiornamento.
         const string sql = """
             INSERT INTO active_session (
                 id, mode, question_numbers, answers, flagged_indexes, current_index,

@@ -13,10 +13,7 @@ internal static class GradedQuestionMapper
         Explanation: question.Explanation,
         AnswerText: question.AnswerText,
         Note: question.Note,
-        // Solo MultipleChoice ha lettere: per gli altri tipi Options puo'
-        // comunque essere non vuota (pool 'ordered_answer'), ma quelle non
-        // sono "la risposta corretta", sono il pool da cui l'utente sceglie -
-        // niente a che vedere con CorrectLetters.
+        // Options e' non vuota anche per 'ordered_answer', ma li' e' il pool, non la risposta.
         CorrectLetters: question.Type == QuestionType.MultipleChoice
             ? question.Options.Where(o => o.IsCorrect).Select(o => o.Letter!).ToList()
             : [],

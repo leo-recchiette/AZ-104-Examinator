@@ -1,11 +1,6 @@
 namespace Examinator.Api.Models.Contracts;
 
-/// <summary>
-/// Corpo di PUT /api/sessions/current: la fotografia della sessione in corso, riscritta per intero a
-/// ogni salvataggio (l'endpoint e' un upsert su riga unica, non un merge parziale).
-/// Non contiene il testo delle domande, solo i loro numeri nell'ordine di presentazione: il resto
-/// si rilegge dal question bank quando serve ricostruirla.
-/// </summary>
+/// <summary>Upsert dell'intera sessione, non un merge. Solo i numeri delle domande, non il testo.</summary>
 public sealed record SaveActiveSessionDto(
     string Mode,
     IReadOnlyList<int> QuestionNumbers,

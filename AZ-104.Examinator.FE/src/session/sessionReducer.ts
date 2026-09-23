@@ -7,33 +7,21 @@ export interface SessionState {
   mode: SessionMode | null;
   questions: QuestionDto[];
   currentIndex: number;
-  /** questionNumber -> risposta data dall'utente. */
+  /** Per questionNumber. */
   answers: Record<number, string[]>;
-  /** Cache della "verifica"/reveal per domanda: se una entry esiste, la domanda e' stata rivelata. */
+  /** Se una entry esiste, la domanda e' stata rivelata. */
   checkResults: Record<number, AnswerCheckResultDto>;
-  /** Domande marcate per la revisione (indice nell'array questions, non questionNumber). */
+  /** Per indice in questions, non per questionNumber. */
   flags: Record<number, boolean>;
-  /** null = nessun limite, quindi nessuna barra di progresso. */
   timeLimitSeconds: number | null;
-  /**
-   * Scelto al setup della Practice: quando e' attivo la soluzione si apre da sola appena la
-   * domanda risulta risposta, senza passare dal pulsante "Show solution" (che resta comunque
-   * disponibile per richiuderla e riaprirla). Sempre false in Simulation, dove non si rivela nulla.
-   */
+  /** Sempre false in Simulation. */
   autoReveal: boolean;
-  /** Timestamp fisso (Date.now()), scritto una sola volta all'avvio. */
   startedAt: number | null;
   status: "idle" | "in-progress" | "finished";
   score: ExamScoreDto | null;
-  /** Tempo trascorso al momento dell'invio, congelato (non ricalcolato da Date.now() sulla pagina risultati). */
+  /** Congelato all'invio: la pagina risultati non lo ricalcola. */
   timeUsedSeconds: number | null;
-  /**
-   * Come e' andata la registrazione nello storico, quando c'e' qualcosa da dire: "discarded" per
-   * una sessione senza nemmeno una risposta (scartata di proposito, non registrata), "failed" per
-   * un salvataggio andato storto. null quando e' filato tutto liscio. Il salvataggio e'
-   * best-effort e non blocca i risultati, ma restare senza saperlo e' peggio: la pagina risultati
-   * lo dice.
-   */
+  /** Esito del salvataggio nello storico da mostrare nei risultati; null se e' andato bene. */
   historyOutcome: "discarded" | "failed" | null;
 }
 
@@ -80,15 +68,11 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
         status: "in-progress",
       };
 
-    // Sessione ripresa dal database: lo stato arriva gia' completo da SessionContext, che lo
-    // ricostruisce dal DTO (comprese le correzioni sul tempo). Qui non c'e' nulla da fondere con
-    // lo stato corrente: una sessione ripristinata sostituisce tutto.
     case "RESTORE_SESSION":
       return action.state;
 
     case "SET_ANSWER": {
-      // Cambiare risposta invalida un'eventuale rivelazione gia' mostrata: la
-      // ricolorazione non deve sopravvivere a un cambio di risposta.
+      // Una rivelazione non sopravvive a un cambio di risposta.
       const checkResults = { ...state.checkResults };
       delete checkResults[action.questionNumber];
       return {
@@ -104,14 +88,9 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
     case "GO_PREVIOUS":
       return { ...state, currentIndex: Math.max(state.currentIndex - 1, 0) };
 
-    // Salto diretto: lo usa l'elenco delle sotto-domande di uno scenario, che
-    // deve poter raggiungere un fratello senza passare per Next/Previous.
     case "GO_TO":
       return { ...state, currentIndex: Math.min(Math.max(action.index, 0), state.questions.length - 1) };
 
-    // Si accende e si spegne anche a sessione avviata, dal menu Options: sceglierlo solo al setup
-    // significava, se ci si dimenticava, dover ricominciare per averlo. Resta appannaggio della
-    // Practice: in Simulation le soluzioni non si rivelano, quindi SessionPage non lo offre.
     case "SET_AUTO_REVEAL":
       return { ...state, autoReveal: state.mode === "practice" && action.autoReveal };
 
@@ -130,8 +109,7 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
     case "FINISH_SESSION":
       return { ...state, status: "finished", score: action.score, timeUsedSeconds: action.timeUsedSeconds };
 
-    // "failed" arriva dopo che SessionPage e' gia' smontata (la POST e' fire-and-forget): il
-    // dispatch e' valido lo stesso, il context vive sopra le rotte.
+    // Puo' arrivare a SessionPage gia' smontata: il context vive sopra le rotte.
     case "SET_HISTORY_OUTCOME":
       return { ...state, historyOutcome: action.outcome };
 

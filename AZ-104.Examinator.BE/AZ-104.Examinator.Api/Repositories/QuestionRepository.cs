@@ -21,18 +21,10 @@ public sealed class QuestionRepository : IQuestionRepository
         group_id AS "GroupId", group_type AS "GroupType"
         """;
 
-    /// <summary>
-    /// Chiave dell'unita' di estrazione: il gruppo se la domanda ne fa parte, altrimenti la domanda
-    /// stessa. Il '#' non compare mai in un group_id ('ss01', 'cs01'), quindi le due famiglie di
-    /// chiavi non possono collidere.
-    /// </summary>
+    /// <summary>Il '#' non compare mai in un group_id, quindi le chiavi non collidono.</summary>
     private const string UnitKey = "COALESCE(group_id, '#' || number)";
 
-    /// <summary>
-    /// Sorteggia @count UNITA', non @count domande: un gruppo occupa un posto solo e viene
-    /// restituito per intero. Selezione e ordinamento stanno entrambi qui, in una query sola,
-    /// cosi' il service riceve gia' i gruppi completi e contigui.
-    /// </summary>
+    /// <summary>Un gruppo occupa un posto solo e torna intero e contiguo.</summary>
     public async Task<IReadOnlyList<Question>> GetRandomAsync(int count, QuestionType? type, CancellationToken cancellationToken)
     {
         var typeFilter = type is null ? "" : "WHERE type = @type::question_type";

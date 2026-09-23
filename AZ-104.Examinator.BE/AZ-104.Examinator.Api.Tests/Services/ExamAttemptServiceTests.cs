@@ -23,7 +23,6 @@ public sealed class ExamAttemptServiceTests
 
         await sut.SaveAttemptAsync(SaveRequest(), CancellationToken.None);
 
-        // Id e CompletedAt li assegna il database, la richiesta non li porta.
         var expected = new ExamAttempt
         {
             Mode = "practice",
@@ -48,8 +47,7 @@ public sealed class ExamAttemptServiceTests
 
         await sut.SaveAttemptAsync(SaveRequest(), CancellationToken.None);
 
-        // L'ordine e' quello di presentazione (qui 7 prima di 3): diventa "ord" sul database ed e'
-        // l'unica traccia di come la sessione era stata proposta.
+        // Ordine di presentazione (7 prima di 3), non numerico.
         var expected = new[]
         {
             new ExamAttemptAnswer { QuestionNumber = 7, UserAnswers = ["C"] },
@@ -69,8 +67,7 @@ public sealed class ExamAttemptServiceTests
             .Returns(Saved());
         var sut = Sut(repository);
 
-        // Un client che non manda affatto il dettaglio (una versione precedente del frontend):
-        // il tentativo si registra lo stesso, altrimenti si perderebbe anche il punteggio.
+        // Client vecchio senza dettaglio: il tentativo si registra lo stesso.
         await sut.SaveAttemptAsync(SaveRequest() with { Answers = null }, CancellationToken.None);
 
         inserted.Should().BeEmpty();
@@ -79,8 +76,7 @@ public sealed class ExamAttemptServiceTests
     [TestMethod]
     public async Task Should_Return_Saved_Attempt_Not_The_Requested_One()
     {
-        // La insert reale fa un RETURNING: il substitute restituisce percio' un'entita' diversa da
-        // quella ricevuta, altrimenti mappare la richiesta o il risultato sarebbe indistinguibile.
+        // Entita' diversa da quella ricevuta, per distinguere richiesta e risultato.
         var repository = Substitute.For<IExamAttemptRepository>();
         repository
             .InsertAsync(Arg.Any<ExamAttempt>(), Arg.Any<IReadOnlyList<ExamAttemptAnswer>>(), Arg.Any<CancellationToken>())
@@ -89,7 +85,7 @@ public sealed class ExamAttemptServiceTests
 
         var actual = await sut.SaveAttemptAsync(SaveRequest(), CancellationToken.None);
 
-        // Se il service mappasse la richiesta invece del risultato della insert, Id sarebbe 0 e CompletedAt default.
+        // Id e CompletedAt devono venire dalla insert, non dalla richiesta.
         var expected = new ExamAttemptDto(
             Id: 7,
             Mode: "practice",
@@ -113,7 +109,7 @@ public sealed class ExamAttemptServiceTests
 
         var actual = await sut.GetAllAttemptsAsync(CancellationToken.None);
 
-        // L'ordine e' quello deciso dal repository (dal piu' vecchio al piu' recente): il grafico "Your progress" ci si appoggia, il service non deve riordinare.
+        // Il service non deve riordinare: il grafico si appoggia all'ordine del repository.
         var expected = new[] { AttemptDto(1, 50), AttemptDto(2, 60), AttemptDto(3, 90) };
 
         actual.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
@@ -155,7 +151,6 @@ public sealed class ExamAttemptServiceTests
         var actual = await sut.GetAttemptDetailAsync(404, CancellationToken.None);
 
         actual.Should().BeNull();
-        // Nessuna domanda da rileggere: il question bank non va nemmeno interrogato.
         await examResultService.DidNotReceiveWithAnyArgs().ReviewAsync(default!, default);
     }
 
@@ -179,8 +174,6 @@ public sealed class ExamAttemptServiceTests
 
         var actual = await sut.GetAttemptDetailAsync(42, CancellationToken.None);
 
-        // Il tentativo salva solo i numeri delle domande: testo e soluzione si rileggono dal bank,
-        // nell'ordine in cui erano state proposte.
         reviewed.Should().BeEquivalentTo(
             new[] { new AnswerSubmissionDto(7, ["C"]), new AnswerSubmissionDto(3, []) },
             options => options.WithStrictOrdering());
@@ -191,8 +184,7 @@ public sealed class ExamAttemptServiceTests
     [TestMethod]
     public async Task Should_Return_Detail_Without_Questions_For_A_Legacy_Attempt()
     {
-        // Tentativi registrati prima che si salvassero anche le risposte: l'intestazione c'e',
-        // il dettaglio no. Vanno mostrati lo stesso, non trattati come inesistenti.
+        // Tentativi salvati prima del dettaglio: vanno mostrati lo stesso.
         var repository = Substitute.For<IExamAttemptRepository>();
         repository.GetDetailAsync(42, Arg.Any<CancellationToken>()).Returns(new ExamAttemptDetail(Saved(), []));
         var examResultService = Substitute.For<IExamResultService>();
@@ -219,14 +211,12 @@ public sealed class ExamAttemptServiceTests
         Percentage: 76.5,
         StartTime: StartTime,
         EndTime: EndTime,
-        // Una risposta data e una lasciata in bianco: anche la seconda va salvata, altrimenti
-        // rileggendo il tentativo la domanda sembrerebbe non essere mai stata proposta.
+        // Anche la domanda in bianco va salvata.
         Answers: [new AnswerSubmissionDto(7, ["C"]), new AnswerSubmissionDto(3, [])]);
 
     private static AttemptAnswerDto ReviewedAnswer(int number, IReadOnlyList<string> userAnswers) =>
         new(number, userAnswers, Question: null, CorrectAnswer: null);
 
-    /// <summary>Entita' come torna dal RETURNING della insert, per i test a cui l'esito non interessa.</summary>
     private static ExamAttempt Saved() => new()
     {
         Id = 42,

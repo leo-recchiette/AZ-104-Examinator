@@ -7,14 +7,11 @@ import { NavigatorEntry, NavigatorFilter, NavigatorPanel } from "../NavigatorPan
 
 interface QuestionNavigatorProps {
   open: boolean;
-  /** Aperto per cercare i buchi (dal riepilogo): il filtro parte gia' attivo. */
   focusUnanswered: boolean;
   questions: QuestionDto[];
   units: SessionUnits;
-  /** Per unita', se tutte le sue domande hanno risposta: lo stesso array che conta il footer. */
   unitAnswered: boolean[];
   answers: Record<number, string[]>;
-  /** Chiavi per indice di sessione, come nel reducer. */
   flags: Record<number, boolean>;
   currentIndex: number;
   onOpen: () => void;
@@ -22,19 +19,7 @@ interface QuestionNavigatorProps {
   onSelect: (index: number) => void;
 }
 
-/**
- * Elenco completo delle domande della sessione, dentro il pannello scorrevole condiviso
- * (vedi NavigatorPanel).
- *
- * Nasce da un problema concreto: il riepilogo di fine sessione dice quante domande sono
- * rimaste senza risposta ma non quali, e trovarle con Next/Previous su 60-80 domande e'
- * impraticabile. Qui ogni voce porta il suo semaforo e un click salta direttamente alla
- * domanda; il filtro "Only unanswered" riduce l'elenco ai soli buchi.
- *
- * L'elenco e' per unita' come tutti i conteggi mostrati all'utente (un gruppo di sotto-domande
- * vale una voce, vedi sessionUnits), con le sotto-domande annidate sotto la loro: il semaforo
- * dell'unita' e' verde solo quando lo sono tutte.
- */
+/** Elenco delle domande per unita', con le sotto-domande annidate, per saltare ai buchi. */
 export function QuestionNavigator({
   open, focusUnanswered, questions, units, unitAnswered, answers, flags, currentIndex,
   onOpen, onClose, onSelect,
@@ -43,8 +28,7 @@ export function QuestionNavigator({
   const [onlyUnanswered, setOnlyUnanswered] = useState(false);
   const currentRef = useRef<HTMLButtonElement | null>(null);
 
-  // Il pannello resta montato anche da chiuso (deve poter scorrere), quindi il filtro si
-  // allinea al motivo dell'apertura a ogni apertura, non una volta sola alla creazione.
+  // Il pannello resta montato da chiuso: il filtro va riallineato a ogni apertura.
   useEffect(() => {
     if (open) setOnlyUnanswered(focusUnanswered);
   }, [open, focusUnanswered]);
@@ -74,7 +58,6 @@ export function QuestionNavigator({
         <NavigatorFilter active={onlyUnanswered} onClick={() => setOnlyUnanswered((v) => !v)} label="Only unanswered" />
       }
       tabBadge={
-        // Il pallino rosso da fuori: qualcosa e' rimasto scoperto, senza dover aprire.
         missing > 0 ? (
           <span
             role="img"
@@ -120,8 +103,7 @@ export function QuestionNavigator({
           isQuestionAnswered(questions[i], answers[questions[i].number] ?? []),
         ).length;
         const groupCurrent = memberIndexes.includes(currentIndex);
-        // La testata del gruppo porta alla prima sotto-domanda scoperta, non alla prima in
-        // assoluto: chi apre l'elenco per un semaforo rosso cerca quella.
+        // Porta alla prima sotto-domanda senza risposta, non alla prima in assoluto.
         const entryIndex =
           memberIndexes.find((i) => !isQuestionAnswered(questions[i], answers[questions[i].number] ?? [])) ??
           memberIndexes[0];
@@ -188,8 +170,7 @@ function Flag({ flagged }: { flagged: boolean }) {
   );
 }
 
-/** Verde significa "risposta data", non "risposta giusta": la correzione non e' ancora avvenuta.
- *  L'etichetta serve perche' il colore da solo non e' leggibile da tutti (screen reader, daltonismo). */
+/** Verde = risposta data, non giusta. */
 function Dot({ answered }: { answered: boolean }) {
   const { tokens: t } = useTheme();
   return (

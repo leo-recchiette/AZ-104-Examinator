@@ -28,8 +28,7 @@ public sealed class ActiveSessionServiceTests
     [TestMethod]
     public async Task Should_Discard_The_Session_When_A_Question_No_Longer_Exists()
     {
-        // Succede dopo un re-import del dataset: con un elenco piu' corto gli indici salvati
-        // (domanda corrente, domande marcate) punterebbero alla domanda sbagliata.
+        // Dopo un reimport gli indici salvati punterebbero alla domanda sbagliata.
         var repository = Repository(Session([7, 3, 9]));
         var sut = new ActiveSessionService(repository, QuestionService(7, 9));
 
@@ -85,8 +84,6 @@ public sealed class ActiveSessionServiceTests
     [TestMethod]
     public async Task Should_Not_Save_A_Session_Without_A_Single_Answer()
     {
-        // Un set di domande appena estratto non e' qualcosa da riprendere: ricominciarlo costa
-        // quanto continuarlo. Stesso criterio con cui lo storico scarta le sessioni mai giocate.
         var repository = Substitute.For<IActiveSessionRepository>();
         var sut = new ActiveSessionService(repository, QuestionService());
 
@@ -98,7 +95,7 @@ public sealed class ActiveSessionServiceTests
     [TestMethod]
     public async Task Should_Drop_The_Stored_Session_When_Every_Answer_Is_Erased()
     {
-        // Non basta non salvare: se una riga c'era gia', quella che resta sul server non va ripresa.
+        // Una riga gia' presente sul server va cancellata.
         var repository = Substitute.For<IActiveSessionRepository>();
         var sut = new ActiveSessionService(repository, QuestionService());
 
@@ -110,8 +107,7 @@ public sealed class ActiveSessionServiceTests
     [TestMethod]
     public async Task Should_Treat_Blank_Answers_As_No_Answer()
     {
-        // Le righe non compilate di una hotspot arrivano come stringhe vuote: una domanda
-        // "aperta e non toccata" non deve far sembrare la sessione iniziata.
+        // Le righe non compilate arrivano come stringhe vuote.
         var repository = Substitute.For<IActiveSessionRepository>();
         var sut = new ActiveSessionService(repository, QuestionService());
 
@@ -142,7 +138,6 @@ public sealed class ActiveSessionServiceTests
         return repository;
     }
 
-    /// <summary>Restituisce un DTO per ciascun numero indicato, nell'ordine in cui e' stato chiesto.</summary>
     private static IQuestionService QuestionService(params int[] existingNumbers)
     {
         var service = Substitute.For<IQuestionService>();

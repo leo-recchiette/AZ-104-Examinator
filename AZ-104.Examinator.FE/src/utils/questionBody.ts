@@ -23,31 +23,24 @@ const KEY = new RegExp(
   "g",
 );
 
-/** Il punto decimale di "2.5" non chiude una frase, " value. " si'. */
 const SENTENCE_END = /[.?!](\s|$)/;
 
-/** Oltre questa misura non e' il valore di un campo ma prosa finita in mezzo. */
 const MAX_VALUE_LENGTH = 60;
 
 const MIN_PAIRS = 3;
 
-/** Un tag scritto come nel dataset, "`tag1`: `value1`": i due punti interni non aprono un'altra coppia. */
+/** "`tag1`: `value1`": i due punti interni non aprono un'altra coppia. */
 const TAG_PAIR = "`[^`]*`:\\s*`[^`]*`";
 
-/** Il valore di una coppia dopo cui riparte la prosa: un tag intero oppure un token solo. */
 const CLOSING_VALUE = new RegExp(`^\\s*(?:${TAG_PAIR}|\\S+)`);
 
-/** La prosa che riparte dopo l'ultimo valore: una maiuscola, o il " - " con cui la fonte a volte la stacca. */
 const PROSE_RESTART = /^\s+(?:[-–—]\s|[A-Z])/;
 
-/** Il trattino che la fonte lascia in testa alla prosa dopo un elenco di campi ("value2 - After Policy1 ..."). */
 const LEADING_DASH = /^[-–—]\s*/;
 
 /**
- * Valore di chiusura di una catena di campi seguita da altri campi piu' avanti: in "Tag value: value2
- * - After Policy1 is assigned, ... Name: storage1" il valore arriverebbe fino a "Name:" e, troppo
- * lungo, la coppia andrebbe persa. Si tiene il primo token solo se dopo riparte davvero una frase:
- * "Policy definition: Append a tag ..." non ha nessuna ripresa dopo "Append" e resta scartato.
+ * Ultimo valore di una catena seguita da prosa ("Tag value: value2 - After Policy1 ..."): si tiene
+ * il primo token solo se dopo riparte davvero una frase.
  */
 function closingValue(rest: string): string | null {
   const match = CLOSING_VALUE.exec(rest);
@@ -56,30 +49,24 @@ function closingValue(rest: string): string | null {
 }
 
 function cleanValue(raw: string): string {
-  // I backtick sono la notazione dei tag nel dataset: nel riquadro, gia' monospaziato, sono solo rumore.
   return raw.trim().replace(/[,;–—-]+$/, "").replace(/`/g, "").trim();
 }
 
 const LEAD = /(^|[^A-Za-z])(Solution:)\s*/;
 
-/** Il glifo con cui la fonte apre le voci di un elenco: dove c'e' quello, l'elenco e' esplicito. */
 const BULLET = "\u2711";
 
-/** L'attacco di un elenco. Volutamente stretto: "the following table" e' un esibito, non una lista. */
+/** Volutamente stretto: "the following table" e' un esibito, non una lista. */
 const LIST_INTRO = /(?:the )?following (?:tasks|requirements)\s*:\s*/i;
 
-/**
- * Dove l'elenco finisce e riprende la domanda. Serve perche' nel dataset il testo e' una riga
- * sola: dopo l'ultima voce riparte "What should you do?" senza nessun segno a separarle.
- */
+/** Dove riprende la domanda dopo l'ultima voce: nel dataset il testo e' una riga sola. */
 const QUESTION_CUE = /(?:What|Which|How|To answer|To which|You need|You must|NOTE|Note)\b/;
 
-/** Oltre questa misura non e' una voce di elenco ma un paragrafo finito li' dentro. */
 const MAX_ITEM_LENGTH = 250;
 
 const MIN_ITEMS = 2;
 
-/** Taglia la voce dove ricomincia la domanda, anche a meta' frase (la fonte perde i punti fermi). */
+/** Anche a meta' frase: la fonte perde i punti fermi. */
 function cutAtQuestion(item: string): { item: string; tail: string } {
   const cue = new RegExp(`\\s(?=${QUESTION_CUE.source})`).exec(item);
   if (!cue) return { item, tail: "" };
@@ -98,7 +85,6 @@ function splitSentences(rest: string): { items: string[]; tail: string } {
   const items: string[] = [];
   for (const sentence of sentences) {
     const trimmed = sentence.trim();
-    // Una frase che chiede qualcosa non e' un requisito: e' la domanda che riprende.
     const isQuestion = trimmed.endsWith("?") || new RegExp(`^${QUESTION_CUE.source}`).test(trimmed);
     if (!trimmed || isQuestion) break;
     items.push(trimmed);
@@ -106,12 +92,7 @@ function splitSentences(rest: string): { items: string[]; tail: string } {
   return { items, tail: rest.slice(items.join(" ").length).trim() };
 }
 
-/**
- * Elenchi resi come elenchi: nel dataset "...the following requirements: Use the principle of
- * least privilege. Minimize administrative effort. What should you do?" e' una riga sola, e i
- * requisiti si perdono nella prosa proprio mentre servono per rispondere. Trasformazione di sola
- * presentazione: il testo non viene riscritto, solo spezzato.
- */
+/** "...the following requirements: A. B. What should you do?" diventa un elenco vero. */
 function splitList(segment: QuestionSegment): QuestionSegment[] {
   if (segment.kind !== "text") return [segment];
 
@@ -141,7 +122,6 @@ function splitLead(text: string): QuestionSegment[] {
   segments.push({ kind: "text", lead: match[2], text: after });
   return segments;
 }
-
 
 const EXHIBIT_TAB_HINT = /\s*\(Click the [^()]+ tab\.\)/g;
 
@@ -186,16 +166,13 @@ export function splitQuestionBody(rawText: string): QuestionSegment[] {
       closes = true;
     }
 
-    // Un valore vuoto e' ammesso solo se la chiave seguente arriva subito: e' un'intestazione
-    // ("Parameters: Tag name: tag2 ..."), non un campo rimasto senza valore.
+    // Valore vuoto solo per un'intestazione seguita da un'altra chiave ("Parameters: Tag name: ...").
     const value = cleanValue(raw);
     if (!value && !next) {
       flush();
       continue;
     }
     chain.push({ key: match[1], value, start: match.index, end: valueStart + raw.length });
-    // Dopo un valore di chiusura riparte la prosa: la catena finisce qui anche se piu' avanti
-    // ci sono altri campi, che formano un riquadro a parte.
     if (closes) flush();
   }
   flush();

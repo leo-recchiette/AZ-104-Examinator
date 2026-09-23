@@ -2,14 +2,7 @@ import { useTheme } from "../theme/ThemeContext";
 
 const IMPORT_COMMAND = "docker compose --profile setup run --rm importer";
 
-/**
- * Avviso per il caso "l'API risponde, ma il question bank e' vuoto": succede quando il volume del
- * database e' stato ricreato (tipicamente dopo un 'docker compose down -v') senza rieseguire
- * l'importer, che sta dietro un profilo e non riparte da solo con un 'docker compose up'.
- *
- * Senza questo avviso il sintomo e' muto e fuorviante: la sessione partirebbe con zero domande e
- * RequireSession rimanderebbe subito alla home, dando l'impressione che il pulsante non funzioni.
- */
+/** Question bank vuoto, di solito dopo un 'docker compose down -v' senza rieseguire l'importer. */
 export function EmptyBankDialog({ onClose }: { onClose: () => void }) {
   const { tokens: t } = useTheme();
 

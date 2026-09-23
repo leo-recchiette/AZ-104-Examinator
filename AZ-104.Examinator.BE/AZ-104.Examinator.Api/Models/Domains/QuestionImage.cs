@@ -1,6 +1,6 @@
 namespace Examinator.Api.Models.Domains;
 
-/// <summary>Uno screenshot associato a una domanda. Kind e' 'question' (mostrato prima di rispondere) o 'answer' (mostrato solo dopo, insieme alla spiegazione) - stringa nuda, come AnswerLayout, non un enum.</summary>
+/// <summary>Kind: 'question' (prima della risposta) o 'answer' (solo dopo).</summary>
 public sealed class QuestionImage
 {
     public required int QuestionId { get; init; }

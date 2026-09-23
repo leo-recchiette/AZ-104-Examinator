@@ -20,7 +20,6 @@ interface QuestionCardProps {
   flagged: boolean;
   onToggleFlag: () => void;
   isPractice: boolean;
-  /** Impostazione di sessione: apre il pannello da sola appena la soluzione e' disponibile. */
   autoReveal: boolean;
   checkResult?: AnswerCheckResultDto;
   onReveal: () => void | Promise<void>;
@@ -36,48 +35,25 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
   const revealed = panelOpen && !!checkResult;
   const correct = checkResult?.correctAnswer;
   const multiHint = revealed && correct && correct.correctLetters.length > 1 ? `Select ${correct.correctLetters.length} answers` : "";
-  // Con l'auto-reveal le righe si correggono una per una man mano che si risponde; spiegazione e
-  // soluzione per esteso restano al pannello, che si apre solo a domanda completa.
+  // Con l'auto-reveal le righe si correggono una alla volta; il pannello si apre a domanda completa.
   const rowsPreview = autoReveal && !revealed ? correct?.answerRows : undefined;
 
-  // Vista la correzione, la risposta non si cambia piu': modificarla dopo averne visto l'esito
-  // non e' esercitarsi, e' aggiustare il punteggio. Vale solo in Practice, l'unica modalita' in
-  // cui si rivela qualcosa; in Simulation non c'e' niente da cui proteggersi e si resta liberi di
-  // ripensarci, come nell'esame vero.
-  //
-  // Il blocco si ricalcola dai dati a ogni render invece di essere memorizzato: uno stato locale
-  // andrebbe perduto al cambio domanda (la card si rimonta, vedi il key in SessionPage) e tornando
-  // indietro la risposta sarebbe di nuovo modificabile.
-  //
-  // Le due forme si bloccano in momenti diversi perche' in momenti diversi mostrano l'esito:
-  // opzioni e sequenze quando si apre il pannello, cioe' a risposta completa (prima non si vede
-  // nulla e un click di troppo resta rimediabile); le griglie riga per riga, appena quella riga e'
-  // risposta, perche' e' allora che si colora (vedi rowsPreview). Il "revealed ||" copre la
-  // rivelazione manuale, che scopre tutto in una volta comprese le righe ancora vuote.
-  //
-  // Da notare che il blocco delle righe non guarda autoReveal: l'impostazione si puo' cambiare a
-  // meta' sessione dal menu Options, e legarcisi bloccherebbe di colpo anche le righe mai
-  // risposte, lasciando la domanda incompletabile.
+  // Vista la correzione la risposta non si cambia piu' (solo Practice). Ricalcolato a ogni render,
+  // non in stato locale, che si perderebbe al rimontaggio della card. Le righe si bloccano una per
+  // una, quando si colorano; il resto a risposta completa.
   const answerLocked = isPractice && !!correct && (revealed || isAnswerComplete(question, value, correct));
   const lockedRows =
     isPractice && !!correct
       ? question.prompts.map((_, ri) => revealed || (value[ri] ?? "").trim() !== "")
       : undefined;
 
-  // Con l'auto-reveal chi chiede la soluzione e' SessionPage, non il pulsante: qui resta solo da
-  // decidere se mostrarla. Il risultato arriva gia' al primo click, ma finche' le scelte sono meno
-  // di quelle che la soluzione richiede resta nascosto: una domanda da tre risposte non deve
-  // scoprirsi dopo la prima. Cambiare risposta cancella il risultato (SET_ANSWER) e ne fa chiedere
-  // uno nuovo, quindi questa decisione si ripete a ogni modifica.
+  // Il risultato lo chiede SessionPage; resta nascosto finche' la risposta non e' completa.
   useEffect(() => {
     if (!autoReveal || !checkResult?.correctAnswer) return;
     setPanelOpen(isAnswerComplete(question, value, checkResult.correctAnswer));
   }, [autoReveal, checkResult, question, value]);
 
-  // A senso unico: una volta mostrata, la soluzione non si richiude. Poterla nascondere
-  // rimetterebbe in gioco le risposte bloccate da answerLocked/lockedRows, che si ricavano anche
-  // da "revealed" — il pulsante sarebbe di fatto uno sblocco. Nulla si perde: il pannello puo'
-  // restare aperto, e la domanda successiva e' comunque un'altra card.
+  // A senso unico: richiuderla sbloccherebbe le risposte, che dipendono da "revealed".
   async function handleReveal() {
     if (revealed) return;
     if (!checkResult) await onReveal();
@@ -161,8 +137,6 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
                 <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.ok, marginBottom: 10 }}>
                   Correct answer
                 </div>
-                {/* Stesso elenco puntato della revisione (ReviewQuestionCard): il pallino in
-                    colonna propria tiene allineata sotto il testo una riga che va a capo. */}
                 <div style={{ display: "grid", gap: 6, fontSize: 15, lineHeight: 1.55, fontWeight: 500, marginBottom: 16 }}>
                   {correctAnswerLines(correct.answerText).map((line, i, lines) => (
                     <div key={i} style={{ display: "flex", gap: 8, alignItems: "baseline" }}>

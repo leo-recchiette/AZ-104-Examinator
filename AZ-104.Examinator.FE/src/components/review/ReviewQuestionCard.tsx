@@ -80,9 +80,7 @@ export function ReviewQuestionCard({ position, question, submitted, correct, asP
           <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 700, color: t.ok, marginBottom: 7 }}>
             Correct answer
           </div>
-          {/* Elenco puntato con il pallino in colonna propria: una riga lunga che va a capo
-              resta allineata sotto il testo, non sotto il pallino. Su una riga sola il
-              pallino sarebbe solo rumore. */}
+          {/* Pallino in colonna propria: la riga che va a capo resta allineata al testo. */}
           <div style={{ display: "grid", gap: 5, fontSize: 14, lineHeight: 1.5, color: t.tx2 }}>
             {correctLines.map((line, i) => (
               <div key={i} style={{ display: "flex", gap: 8, alignItems: "baseline" }}>

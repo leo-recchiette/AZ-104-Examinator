@@ -1,10 +1,6 @@
 namespace Examinator.Api.Models.Domains;
 
-/// <summary>
-/// Una scelta del pool question-scoped: le opzioni A..H di una MultipleChoice
-/// (Letter valorizzata), o il pool trascinabile di un DragAndDrop
-/// 'ordered_answer' (Letter null, non ha lettere).
-/// </summary>
+/// <summary>Letter e' null per il pool di un 'ordered_answer'.</summary>
 public sealed class Option
 {
     public required int QuestionId { get; init; }

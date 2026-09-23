@@ -38,9 +38,7 @@ export function NavigatorPanel({ id, open, onOpen, onClose, title, subtitle, fil
         />
       )}
 
-      {/* Pannello e linguetta scorrono insieme: da chiuso il pannello e' oltre il bordo e resta
-          fuori la sola linguetta; da aperto la linguetta diventa la maniglia per richiudere.
-          zIndex sopra l'header (5) ma sotto l'overlay di pausa (40), che deve coprire tutto. */}
+      {/* zIndex sopra l'header (5), sotto l'overlay di pausa (40). */}
       <div
         style={{
           position: "fixed", left: 0, top: 0, bottom: 0, zIndex: 35, display: "flex",
@@ -55,8 +53,7 @@ export function NavigatorPanel({ id, open, onOpen, onClose, title, subtitle, fil
           style={{
             width: PANEL_WIDTH, height: "100%", display: "flex", flexDirection: "column",
             background: t.card, borderRight: `1px solid ${t.bd}`, boxShadow: `0 10px 30px ${t.sh}`,
-            // Da chiuso il contenuto esce anche dal percorso del tab, ma solo a scorrimento
-            // finito: nasconderlo subito farebbe sparire il pannello invece di farlo uscire.
+            // Fuori dal tab solo a scorrimento finito, altrimenti sparirebbe senza animazione.
             visibility: open ? "visible" : "hidden",
             transition: open ? undefined : "visibility 0s linear .28s",
           }}

@@ -2,10 +2,7 @@ using Examinator.Api.Models.Domains;
 
 namespace Examinator.Api.Mapper;
 
-/// <summary>
-/// Traduce fra l'enum C# e le stringhe usate da Postgres e dal JSON sorgente
-/// ("multiple_choice", "drag_and_drop", ...). 
-/// </summary>
+/// <summary>Enum C# <-> stringhe di Postgres e del JSON ("multiple_choice", ...).</summary>
 public static class QuestionTypeMapper
 {
     public static QuestionType FromDb(string value) => value switch

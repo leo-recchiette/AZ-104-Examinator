@@ -28,8 +28,7 @@ public sealed class QuestionServiceTests
     [TestMethod]
     public async Task Should_Preserve_The_Order_Returned_By_The_Repository()
     {
-        // Contiguita' e ordine dei gruppi li decide la query di estrazione (sorteggio per unita'):
-        // al service resta il compito di non rimescolare quello che riceve.
+        // L'ordine lo decide la query: il service non deve rimescolare.
         var sut = new QuestionService(Repository(
             questions: [Question(), Grouped(2, "ss01"), Grouped(3, "ss01"), Grouped(50, "ss09")],
             options: []));

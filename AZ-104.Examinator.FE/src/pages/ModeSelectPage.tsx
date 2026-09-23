@@ -35,9 +35,7 @@ export function ModeSelectPage() {
     setStartingSimulation(true);
     try {
       const questions = await getExam(EXAM_QUESTION_COUNT);
-      // Un set vuoto e' una risposta valida per l'API (200 con []), non un errore: senza questo
-      // controllo la sessione partirebbe con zero domande e RequireSession rimbalzerebbe subito
-      // alla home, facendo sembrare il pulsante rotto.
+      // 200 con []: question bank vuoto, non un errore dell'API.
       if (questions.length === 0) {
         setEmptyBank(true);
         setStartingSimulation(false);
@@ -70,7 +68,6 @@ export function ModeSelectPage() {
         <div style={{ position: "absolute", top: -180, left: -120, width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,120,212,.32), transparent 70%)", filter: "blur(10px)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: -220, right: -160, width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(80,230,255,.18), transparent 70%)", filter: "blur(10px)", pointerEvents: "none" }} />
         <div style={{ width: "100%", maxWidth: 760, position: "relative" }}>
-          {/* Il badge sta a destra dell'intero blocco di testata, non della sola h1: e' quadrato e alto quanto le tre righe insieme. Con flexWrap scende sotto quando non ci sta. */}
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 24, marginBottom: 36 }}>
             <div style={{ flex: "1 1 340px" }}>
               <div style={{ fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: t.fa, fontWeight: 600 }}>

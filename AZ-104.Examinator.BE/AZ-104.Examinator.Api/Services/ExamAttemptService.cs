@@ -27,8 +27,7 @@ public sealed class ExamAttemptService : IExamAttemptService
             StartTime = request.StartTime,
             EndTime = request.EndTime,
         };
-        // L'ordine della lista e' l'ordine di presentazione: il repository lo trasforma in "ord",
-        // qui non si riordina nulla (per i gruppi non coincide con l'ordine dei numeri).
+        // Ordine di presentazione: per i gruppi non coincide con quello dei numeri.
         var answers = (request.Answers ?? [])
             .Select(a => new ExamAttemptAnswer
             {
@@ -53,8 +52,6 @@ public sealed class ExamAttemptService : IExamAttemptService
         if (detail is null)
             return null;
 
-        // Le domande non sono salvate nel tentativo (solo i loro numeri): il testo e la soluzione
-        // si rileggono dal question bank, che e' l'unica copia buona di quei dati.
         var submissions = detail.Answers
             .Select(a => new AnswerSubmissionDto(a.QuestionNumber, a.UserAnswers))
             .ToList();

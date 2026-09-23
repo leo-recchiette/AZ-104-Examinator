@@ -1,9 +1,6 @@
 """Importa il question bank AZ-104 da JSON a PostgreSQL.
 
-Il file sorgente (az104_606_domande.json) contiene gia' domande, opzioni e
-risposte verificate a monte: qui si legge, si scrive nelle tabelle SQL, punto.
-Nessuna euristica di ricostruzione: se il JSON dovesse cambiare forma, e'
-questo script che va aggiornato di conseguenza, non il contrario.
+Il JSON e' ground truth: se cambia forma si aggiorna questo script, non il JSON.
 
 Uso:
     python import_questions.py              legge il JSON e popola il database
@@ -70,11 +67,7 @@ def insert_question(cur: psycopg.Cursor, q: dict) -> int:
 
 
 def insert_option_pool(cur: psycopg.Cursor, question_id: int, items: list[tuple[str | None, str, bool]]) -> None:
-    """Pool di scelte question-scoped: le opzioni A..H di una multiple_choice
-    (con lettera) o il pool trascinabile di un drag_and_drop 'ordered_answer'
-    (senza lettera). is_correct segnala l'appartenenza alla risposta corretta,
-    non la posizione: per ordered_answer la posizione la da' answer_rows.ord.
-    """
+    """is_correct = appartiene alla risposta; la posizione sta in answer_rows.ord."""
     for ord_, (letter, text, is_correct) in enumerate(items):
         cur.execute(
             """
@@ -86,8 +79,7 @@ def insert_option_pool(cur: psycopg.Cursor, question_id: int, items: list[tuple[
 
 
 def insert_ordered_sequence(cur: psycopg.Cursor, question_id: int, answer_items: list[str]) -> None:
-    """La sequenza corretta di un drag_and_drop 'ordered_answer': prompt resta
-    NULL, l'ordine stesso e' la risposta."""
+    """Prompt NULL: l'ordine stesso e' la risposta."""
     for ord_, item_text in enumerate(answer_items):
         cur.execute(
             """
@@ -99,13 +91,7 @@ def insert_ordered_sequence(cur: psycopg.Cursor, question_id: int, answer_items:
 
 
 def insert_answer_rows(cur: psycopg.Cursor, question_id: int, rows: list[dict]) -> None:
-    """Righe prompt/risposta di 'selection' (hotspot, e la minoranza di
-    drag_and_drop che sono in realta' selezioni, non sequenze) o 'yes_no'
-    (hotspot_yes_no). Le chiavi cambiano nome a seconda del tipo
-    ('prompt'/'selected' oppure 'statement'/'answer'). Le righe 'selection'
-    portano anche un pool di opzioni proprio (assente per 'yes_no'), salvato
-    in answer_row_options usando l'id della riga appena inserita.
-    """
+    """Le chiavi dipendono dal tipo: 'prompt'/'selected' oppure 'statement'/'answer'."""
     for ord_, row in enumerate(rows):
         prompt = row.get("prompt", row.get("statement"))
         answer = row.get("selected", row.get("answer"))
@@ -132,9 +118,7 @@ def insert_answer_rows(cur: psycopg.Cursor, question_id: int, rows: list[dict]) 
 
 
 def insert_images(cur: psycopg.Cursor, question_id: int, q: dict) -> None:
-    """Screenshot associati alla domanda: images_question (kind 'question',
-    mostrato prima di rispondere) e images_answer (kind 'answer', mostrato
-    solo dopo - lo stesso stato con la risposta corretta compilata)."""
+    """images_question -> kind 'question', images_answer -> kind 'answer'."""
     for ord_, filename in enumerate(q.get("images_question", [])):
         cur.execute(
             """
@@ -154,8 +138,7 @@ def insert_images(cur: psycopg.Cursor, question_id: int, q: dict) -> None:
 
 
 def find_selection_mismatches(questions: list[dict]) -> list[tuple[int, str | None, str]]:
-    """Righe 'selection' dove la risposta corretta non compare nel proprio
-    pool di opzioni: puro controllo sul JSON, nessuna scrittura sul DB."""
+    """Righe 'selection' la cui risposta non compare nel proprio pool."""
     mismatches = []
     for q in questions:
         for row in q.get("answer_rows", []):
@@ -169,9 +152,7 @@ def find_selection_mismatches(questions: list[dict]) -> list[tuple[int, str | No
 
 
 def find_group_mismatches(questions: list[dict]) -> list[tuple[str, list[int], list[int]]]:
-    """Gruppi in cui "group_members" non combacia con i membri reali di quel
-    group_id. Il DB salva solo group_id e ricava i fratelli da li', quindi una
-    divergenza qui significa dataset incoerente, non un problema di import."""
+    """Gruppi in cui "group_members" non combacia con i membri reali del group_id."""
     by_group: dict[str, list[int]] = {}
     declared: dict[str, list[int]] = {}
     for q in questions:

@@ -9,15 +9,7 @@ interface ResumeSessionBannerProps {
   style?: CSSProperties;
 }
 
-/**
- * Sessione recuperata dal server (reload, scheda chiusa, computer sospeso, tasto Indietro del
- * browser): da qui si rientra. I conteggi vanno per unita', come in sessione, cosi' i numeri
- * combaciano con quelli lasciati.
- *
- * Sta su ogni pagina da cui se ne puo' far partire una nuova, non solo sulla home: START_SESSION
- * sovrascrive quella in corso, quindi dove c'e' un pulsante che la avvia ci vuole anche l'avviso
- * che ce n'e' gia' una. Non rende nulla se non c'e' niente da riprendere.
- */
+/** Va su ogni pagina che puo' avviare una sessione: START_SESSION sovrascrive quella in corso. */
 export function ResumeSessionBanner({ style }: ResumeSessionBannerProps) {
   const navigate = useNavigate();
   const { tokens: t } = useTheme();

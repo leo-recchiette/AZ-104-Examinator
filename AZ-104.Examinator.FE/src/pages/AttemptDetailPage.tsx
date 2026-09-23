@@ -41,8 +41,7 @@ export function AttemptDetailPage() {
       );
   }, [id]);
 
-  // Il punteggio per domanda si ricalcola qui con le stesse regole della revisione di
-  // fine sessione: il tentativo salva le risposte, non quanti punti avevano fruttato.
+  // I punti per domanda non sono salvati: si ricalcolano.
   const graded = useMemo(() => {
     if (!detail) return [];
     return detail.answers.map((a, index) => {
@@ -72,9 +71,7 @@ export function AttemptDetailPage() {
     submitted: g.answer.userAnswers,
     correct: g.answer.correctAnswer,
   });
-  // Le domande di una scenario series si rivedono insieme, in una card sola: lo scenario che
-  // si ripetono identico va letto una volta, non una per parte.
-  // Il pannello elenca sempre tutto il tentativo, anche cio' che il filtro nasconde.
+  // Il pannello elenca tutto il tentativo, anche cio' che il filtro nasconde.
   const allUnits = reviewUnits(graded.map(toEntry), allQuestions);
   const units = onlyWrong ? reviewUnits(shown.map(toEntry), allQuestions) : allUnits;
 
@@ -84,8 +81,7 @@ export function AttemptDetailPage() {
 
   function goToQuestion(position: number) {
     setNavOpen(false);
-    // Con "Incorrectly answered" attivo la card giusta non e' in pagina: si toglie il filtro
-    // e si scorre al giro dopo, quando esiste l'elemento a cui saltare.
+    // La card puo' essere nascosta dal filtro: lo si toglie e si scorre al render successivo.
     if (onlyWrong && outcomeOf(position) !== "wrong") {
       setOnlyWrong(false);
       setPendingScroll(position);

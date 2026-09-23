@@ -7,22 +7,14 @@ interface MultipleChoiceAnswerProps {
   options: OptionDto[];
   value: string[];
   onChange: (next: string[]) => void;
-  /** Presente solo dopo la rivelazione: lettere corrette secondo il backend. */
+  /** Solo dopo la rivelazione. */
   correctLetters?: string[];
-  /** Risposta gia' corretta a schermo: le scelte non si cambiano piu'. */
   locked?: boolean;
 }
 
 /**
- * Multi-selezione con badge quadrato per impostazione predefinita: il DTO pre-risposta non
- * rivela se la domanda vuole una sola risposta o piu' (altrimenti la domanda non avrebbe
- * senso), quindi a differenza del mockup (che lo sapeva in anticipo dai dati finti) qui non
- * si puo' distinguere mono/multi prima di rivelare.
- *
- * L'unica eccezione sono le Yes/No (isYesNoChoice): li' la scelta singola non e' un'ipotesi
- * ma la forma stessa della domanda, e sceglierle entrambe darebbe una risposta inesistente
- * — per giunta sempre premiata, visto che il punteggio a credito parziale conta le lettere
- * giuste senza togliere nulla per le altre. Badge tondo e semantica radio per dirlo a vista.
+ * Sempre multi-selezione: prima di rivelare non si sa quante risposte servano. Eccezione le
+ * Yes/No, a scelta singola (radio): sceglierle entrambe prenderebbe sempre il punto.
  */
 export function MultipleChoiceAnswer({ options, value, onChange, correctLetters, locked }: MultipleChoiceAnswerProps) {
   const { tokens: t } = useTheme();
@@ -32,8 +24,6 @@ export function MultipleChoiceAnswer({ options, value, onChange, correctLetters,
 
   function choose(letter: string) {
     if (locked) return;
-    // Da radio: la scelta sostituisce la precedente e un secondo click non la annulla,
-    // cosi' non si torna "senza risposta" per un click di troppo.
     if (single) {
       onChange([letter]);
       return;
@@ -42,8 +32,6 @@ export function MultipleChoiceAnswer({ options, value, onChange, correctLetters,
   }
 
   return (
-    // Griglia invece di colonna singola: con 4-6 opzioni dimezza l'altezza occupata,
-    // che e' cio' che faceva scrollare la card. auto-fit torna a una colonna sotto i ~700px.
     <div role={single ? "radiogroup" : "group"} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 10 }}>
       {options.map((option) => {
         const grade = grades?.find((g) => g.letter === option.letter);
@@ -70,9 +58,7 @@ export function MultipleChoiceAnswer({ options, value, onChange, correctLetters,
             onClick={() => choose(option.letter)}
             role={single ? "radio" : "checkbox"}
             aria-checked={sel}
-            // aria-disabled e non disabled: "disabled" toglierebbe il bottone dalla navigazione
-            // da tastiera e lascerebbe allo user agent l'ultima parola sui colori, proprio quando
-            // sono i colori a dire se la risposta era giusta.
+            // aria-disabled: "disabled" farebbe decidere i colori allo user agent.
             aria-disabled={locked || undefined}
             style={{
               display: "flex", alignItems: "flex-start", gap: 14, textAlign: "left",

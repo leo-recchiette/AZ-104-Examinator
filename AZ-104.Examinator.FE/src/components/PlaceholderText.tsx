@@ -5,11 +5,7 @@ interface PlaceholderTextProps {
   text: string;
 }
 
-/**
- * Rende un testo del dataset spostando in testa a ogni segmento il segnaposto
- * ("[answer choice]", "[box 1]", ...) e mostrandolo in grassetto.
- * Vedi utils/placeholders.ts per il perche'.
- */
+/** Vedi utils/placeholders.ts. */
 export function PlaceholderText({ text }: PlaceholderTextProps) {
   return (
     <>

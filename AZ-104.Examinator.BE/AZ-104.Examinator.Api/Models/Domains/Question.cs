@@ -12,10 +12,8 @@ public sealed record Question
     public required string Text { get; init; }
     public required string Explanation { get; init; }
 
-    /// <summary>Riassunto della risposta gia' pronto per la UI (es. "C. Assign tags...").</summary>
     public required string AnswerText { get; init; }
 
-    /// <summary>Chiarimento aggiuntivo per le domande basate su immagine. Puo' essere assente.</summary>
     public string? Note { get; init; }
 
     /// <summary>'text_layer' | 'manual_vision' | 'ocr'.</summary>

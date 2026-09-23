@@ -25,8 +25,7 @@ public sealed class ExamResultService : IExamResultService
         var pointsTotal = 0;
         foreach (var submission in submissions)
         {
-            // Un QuestionNumber inesistente non ha una risposta corretta con cui
-            // confrontarsi: non entra ne' nei punti guadagnati ne' nel totale.
+            // Un numero inesistente non entra ne' nei punti ne' nel totale.
             if (!graded.TryGetValue(submission.QuestionNumber, out var question))
                 continue;
 
@@ -59,8 +58,7 @@ public sealed class ExamResultService : IExamResultService
     {
         var graded = await LoadGradedQuestionsAsync(submissions.Select(s => s.QuestionNumber), cancellationToken);
 
-        // I pool row-scoped servono solo qui: senza, le domande 'selection' tornerebbero con i
-        // prompt ma senza le scelte fra cui l'utente aveva scelto, rendendo la rilettura monca.
+        // Pool row-scoped: servono solo per rileggere le domande 'selection'.
         var rowIds = graded.Values.SelectMany(g => g.AnswerRows).Select(r => r.Id).ToList();
         var rowOptions = await _repository.GetAnswerRowOptionsAsync(rowIds, cancellationToken);
         var rowOptionsByAnswerRowId = rowOptions.ToLookup(o => o.AnswerRowId);
@@ -69,8 +67,7 @@ public sealed class ExamResultService : IExamResultService
             .Select(submission =>
             {
                 var userAnswers = submission.UserAnswers ?? [];
-                // Numero che non esiste piu' nel bank (dataset reimportato dopo il tentativo):
-                // resta leggibile cosa era stato risposto, senza testo ne' soluzione.
+                // Domanda sparita dopo un reimport: resta solo la risposta data.
                 if (!graded.TryGetValue(submission.QuestionNumber, out var question))
                     return new AttemptAnswerDto(submission.QuestionNumber, userAnswers, null, null);
 
@@ -81,7 +78,6 @@ public sealed class ExamResultService : IExamResultService
             .ToList();
     }
 
-    /// <summary>Carica in blocco domande, opzioni e answer_rows per un insieme di numeri, pronte per essere corrette.</summary>
     private async Task<Dictionary<int, GradedQuestion>> LoadGradedQuestionsAsync(
         IEnumerable<int> numbers, CancellationToken cancellationToken)
     {

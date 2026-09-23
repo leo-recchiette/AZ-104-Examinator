@@ -5,11 +5,7 @@ interface ExamNoticeProps {
   text: string;
 }
 
-/**
- * Riquadro giallo collassabile per le istruzioni d'esame che precedono le domande di uno
- * scenario. Chiuso di default: sono sempre le stesse e ripeterle aperte ruberebbe la
- * schermata alla domanda, ma restano consultabili perche' fanno parte della consegna reale.
- */
+/** Istruzioni d'esame di uno scenario, chiuse di default: sono sempre le stesse. */
 export function ExamNotice({ text }: ExamNoticeProps) {
   const { tokens: t } = useTheme();
   const [open, setOpen] = useState(false);

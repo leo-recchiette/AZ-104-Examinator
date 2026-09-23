@@ -41,9 +41,7 @@ public sealed class ScoreServiceTests
     [TestMethod]
     public void Should_Score_MultiValueRow_Only_On_Exact_Set_Match()
     {
-        // Riga "Allowed permissions" della domanda 242: risposta corretta salvata come
-        // "{Read,List}" (vedi ScoreService.RowMatches). Il client unisce le scelte multiple
-        // dell'utente con "\n".
+        // Domanda 242: risposta salvata come "{Read,List}", scelte dell'utente unite da "\n".
         var answerRows = new[] { Row(ord: 0, answer: "{Read,List}") };
         var sut = new ScoreService();
         var fullMatch = (Earned: 1, Total: 1);
@@ -58,10 +56,7 @@ public sealed class ScoreServiceTests
     [TestMethod]
     public void Should_Not_Throw_When_A_Row_Was_Never_Answered()
     {
-        // Una riga mai toccata di un hotspot/selection multi-riga arriva come null, non "":
-        // un array JS con un buco li' dentro si serializza cosi'. Regressione: senza il
-        // null-check questo mandava in 500 l'intera submission dell'esame, non solo il
-        // punteggio di questa domanda.
+        // Regressione: una riga mai toccata arriva come null e mandava in 500 l'intera submission.
         var answerRows = new[] { Row(ord: 0, answer: "Blob"), Row(ord: 1, answer: "Container") };
         var sut = new ScoreService();
 

@@ -12,18 +12,11 @@ interface RowSelectAnswerProps {
   onChange: (next: string[]) => void;
   answerRows?: AnswerRowDto[];
   answeredRowsOnly?: boolean;
-  /** Per riga: quelle gia' corrette a schermo non si cambiano piu'. Le righe si bloccano una
-   *  alla volta perche' una alla volta si correggono (vedi answeredRowsOnly). */
+  /** Per riga: si bloccano una alla volta, come si correggono. */
   lockedRows?: boolean[];
 }
 
-/**
- * Ogni riga ammette piu' selezioni (toggle), non solo una: il DTO pre-risposta non
- * rivela mai se una riga vuole una scelta sola o piu' d'una (stesso principio delle
- * multiple choice), quindi il widget resta multiselezione anche per le righe che di
- * fatto ne vogliono una sola. Le scelte multiple si accumulano in value[rowIndex]
- * separate da "\n" (vedi utils/grading.ts#gradeRows e ScoreService.RowMatches).
- */
+/** Righe multiselezione: prima di rivelare non si sa quante scelte servano. Separate da "\n". */
 function chosenLabels(raw: string | undefined): string[] {
   return raw ? raw.split("\n") : [];
 }

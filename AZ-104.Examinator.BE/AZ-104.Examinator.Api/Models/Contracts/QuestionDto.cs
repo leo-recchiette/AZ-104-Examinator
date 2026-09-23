@@ -1,26 +1,12 @@
 namespace Examinator.Api.Models.Contracts;
 
 /// <summary>
-/// Una domanda cosi' come viene proposta all'utente, prima che risponda: niente
-/// su quale sia la risposta corretta. Quale campo e' valorizzato dipende da
-/// AnswerLayout (non da Type: DragAndDrop puo' essere sia ordered_answer che
-/// selection):
-///   Options         - solo MultipleChoice: il pool A..H con relativa lettera.
-///   DraggableItems  - solo answer_layout 'ordered_answer': il pool da
-///                      riordinare, senza indicare quali elementi siano
-///                      distrattori.
-///   SequenceLength  - solo 'ordered_answer': quanti elementi va lunga la
-///                      sequenza da comporre (0 altrimenti). Non e' un indizio:
-///                      lo dice gia' il testo ("Which three actions...") e
-///                      l'esame vero mostra altrettanti slot vuoti.
-///   Prompts         - answer_layout 'selection' o 'yes_no': uno per riga,
-///                      ciascuno con le proprie opzioni cliccabili (per
-///                      'yes_no' sempre ["Yes","No"]).
-/// Images e' lo screenshot (se presente) da mostrare insieme alla domanda,
-/// PRIMA di rispondere - nomi file nudi, risolti dal client su /images/&lt;file&gt;.
-/// GroupId/GroupType sono valorizzati per le domande che condividono uno scenario
-/// e vengono proposte insieme: servono al client per costruire l'elenco delle
-/// sotto-domande. Null per le domande sciolte.
+/// La domanda prima della risposta, senza la soluzione. Il campo valorizzato dipende da
+/// AnswerLayout, non da Type:
+///   Options        - MultipleChoice.
+///   DraggableItems - 'ordered_answer', distrattori compresi; SequenceLength e' la lunghezza
+///                    della sequenza (lo dice gia' il testo della domanda).
+///   Prompts        - 'selection' e 'yes_no', una riga ciascuno.
 /// </summary>
 public sealed record QuestionDto(
     int Number,

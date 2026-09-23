@@ -1,28 +1,10 @@
 -- Question bank AZ-104, alimentato da az104_606_domande.json.
---
--- Il JSON distingue 4 tipi di domanda (campo "type"):
---   multiple_choice  - scelta fra un pool di opzioni A..H, una o piu' corrette
---   drag_and_drop    - risposta come sequenza ordinata, o come coppie prompt/scelta
---   hotspot          - coppie prompt/scelta (un menu per riga)
---   hotspot_yes_no   - coppie statement/risposta, risposta sempre Yes o No
---
--- La forma di storage pero' non segue "type" ma "answer_layout":
---   ordered_answer - sequenza pura (solo drag_and_drop): pool di elementi
---                    trascinabili question-scoped in "options" (letter NULL),
---                    ordine corretto in "answer_rows".
---   selection      - coppie prompt/scelta con un pool per riga (hotspot, ma
---                    anche una minoranza di drag_and_drop che in realta' sono
---                    selezioni, non sequenze): pool row-scoped in
---                    "answer_row_options".
---   yes_no         - coppie statement/risposta (hotspot_yes_no): dominio
---                    Si'/No implicito, nessun pool salvato.
---   (assente)      - multiple_choice: pool question-scoped in "options",
---                    con "letter" valorizzata.
---
--- Solo multiple_choice e ordered_answer/selection portano anche le opzioni
--- sbagliate (un pool da cui l'utente sceglie): solo per yes_no il JSON
--- contiene esclusivamente la risposta corretta (il dominio Si'/No e' fisso,
--- non serve salvarlo).
+-- 
+-- La forma di storage segue answer_layout, non type:
+--   ordered_answer - sequenza: pool in options (letter NULL), ordine corretto in answer_rows.
+--   selection      - un pool per riga in answer_row_options (hotspot e 2 drag_and_drop).
+--   yes_no         - dominio Yes/No fisso, nessun pool salvato.
+--   NULL           - multiple_choice: pool in options, con letter.
 
 CREATE TYPE question_type AS ENUM (
     'multiple_choice',
@@ -35,43 +17,25 @@ CREATE TABLE questions (
     id            SERIAL PRIMARY KEY,
     number        INTEGER       NOT NULL UNIQUE,  -- "id" nel JSON, 1..584
     type          question_type NOT NULL,
-    -- Forma della risposta per i tipi non-MCQ: 'ordered_answer' | 'selection'
-    -- | 'yes_no'. NULL per multiple_choice, che non ne ha bisogno.
+    -- NULL per multiple_choice.
     answer_layout TEXT,
     question      TEXT          NOT NULL,
     explanation   TEXT          NOT NULL,
-    -- Riassunto della risposta gia' pronto per la UI (es. "C. Assign tags...",
-    -- oppure "1. An Azure Key Vault -> 2. An access policy"): evita di dover
-    -- ricostruire la formattazione lato frontend da options/answer_rows.
+    -- Risposta gia' formattata per la UI.
     answer_text   TEXT          NOT NULL,
-    -- Chiarimento aggiuntivo per le domande basate su immagine (es. il comando
-    -- CLI esatto o il percorso evidenziato nello screenshot originale).
     note          TEXT,
-    -- 'text_layer' (estratto dal PDF), 'manual_vision' (letto a mano
-    -- dall'immagine) o 'ocr' (letto automaticamente, da controllare).
+    -- 'text_layer' | 'manual_vision' | 'ocr'.
     source        TEXT          NOT NULL,
-    -- Domande che condividono lo stesso scenario e vanno proposte insieme:
-    -- 'ss01'..'ss24' (scenario_series, le "Solution: ... Does this meet the
-    -- goal?" ripetute) o 'cs01' (case_study). NULL per le 504 domande sciolte.
-    -- Il JSON porta anche "group_members", ma non lo salviamo: e' derivabile
-    -- da group_id, e duplicarlo aprirebbe la porta a due verita' divergenti.
-    -- L'importer lo usa solo per verificare la coerenza di quanto legge.
+    -- 'ss01'..'ss24' per le scenario series. group_members del JSON non si salva: e' derivabile.
     group_id      TEXT,
-    -- 'scenario_series' | 'case_study'. NULL se e solo se group_id e' NULL.
     group_type    TEXT,
     CONSTRAINT questions_group_both_or_neither
         CHECK ((group_id IS NULL) = (group_type IS NULL))
 );
 
--- I fratelli di un gruppo si cercano per group_id a ogni estrazione casuale
--- che ne pesca uno: senza indice sarebbe una scansione completa della tabella.
 CREATE INDEX questions_group_id_idx ON questions (group_id) WHERE group_id IS NOT NULL;
 
--- Il pool di scelte question-scoped: le opzioni A..H di una multiple_choice
--- (letter valorizzata), oppure gli elementi trascinabili di un drag_and_drop
--- 'ordered_answer' (letter NULL, non hanno una lettera). is_correct significa
--- "fa parte della risposta corretta", non "e' la scelta giusta in questa
--- posizione": per ordered_answer la posizione la da' answer_rows.ord.
+-- is_correct = "fa parte della risposta": per ordered_answer la posizione sta in answer_rows.ord.
 CREATE TABLE options (
     id          SERIAL  PRIMARY KEY,
     question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
@@ -81,10 +45,7 @@ CREATE TABLE options (
     is_correct  BOOLEAN NOT NULL
 );
 
--- La risposta corretta di drag_and_drop, hotspot e hotspot_yes_no, una riga
--- per elemento. 'prompt' e' NULL quando la domanda e' un drag_and_drop in
--- sequenza (answer_layout 'ordered_answer'): li' la risposta e' l'ordine
--- stesso, dato da 'ord'.
+-- prompt e' NULL per ordered_answer: la risposta e' l'ordine stesso.
 CREATE TABLE answer_rows (
     id          SERIAL  PRIMARY KEY,
     question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
@@ -93,10 +54,7 @@ CREATE TABLE answer_rows (
     answer      TEXT    NOT NULL
 );
 
--- Il pool di scelte row-scoped di una riga 'selection' (hotspot, e la
--- minoranza di drag_and_drop che sono in realta' selezioni): a differenza di
--- 'options', qui non serve is_correct, la risposta corretta della riga e'
--- gia' in answer_rows.answer.
+-- Niente is_correct: la risposta della riga e' in answer_rows.answer.
 CREATE TABLE answer_row_options (
     id            SERIAL  PRIMARY KEY,
     answer_row_id INTEGER NOT NULL REFERENCES answer_rows (id) ON DELETE CASCADE,
@@ -104,10 +62,7 @@ CREATE TABLE answer_row_options (
     text          TEXT    NOT NULL
 );
 
--- Screenshot associati a una domanda: 'question' (mostrato prima di rispondere,
--- da images_question nel JSON) o 'answer' (mostrato solo dopo, da images_answer
--- - lo stesso stato con la risposta corretta compilata). Serviti da wwwroot/images
--- via app.UseStaticFiles(): qui salviamo solo il nome file, mai un URL completo.
+-- kind: 'question' (prima della risposta) o 'answer' (solo dopo). Solo il nome file.
 CREATE TABLE question_images (
     id          SERIAL  PRIMARY KEY,
     question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
@@ -122,10 +77,7 @@ CREATE INDEX idx_answer_row_options_row ON answer_row_options (answer_row_id);
 CREATE INDEX idx_question_images_question ON question_images (question_id);
 CREATE INDEX idx_questions_type ON questions (type);
 
--- Storico delle sessioni (Practice o Simulation) portate a termine e inviate: alimenta il
--- grafico "Your progress" della mode-select. Tabella indipendente dal question bank sopra:
--- l'importer tronca solo "questions" (con CASCADE sulle sue FK), quindi un re-import del
--- dataset non azzera mai questo storico.
+-- Storico indipendente dal question bank: un reimport non lo azzera.
 CREATE TABLE exam_attempts (
     id             SERIAL PRIMARY KEY,
     mode           TEXT             NOT NULL CHECK (mode IN ('practice', 'exam')),
@@ -133,71 +85,39 @@ CREATE TABLE exam_attempts (
     percentage     DOUBLE PRECISION NOT NULL,
     start_time     TIMESTAMPTZ      NOT NULL,
     end_time       TIMESTAMPTZ      NOT NULL,
-    -- Istante di registrazione della riga (valorizzato dal DB, non dal client): "END" e' parola
-    -- riservata in Postgres, quindi non utilizzabile come nome colonna senza quoting.
     completed_at   TIMESTAMPTZ      NOT NULL DEFAULT now()
 );
 
 CREATE INDEX idx_exam_attempts_end_time ON exam_attempts (end_time);
 
--- Il dettaglio di un tentativo: una riga per domanda proposta, con la risposta data
--- dall'utente (vuota se la domanda e' stata saltata). E' cio' che rende lo storico
--- consultabile a distanza di tempo e non solo un punteggio secco.
---
--- ATTENZIONE: question_number NON e' una foreign key verso questions. L'importer fa
--- "TRUNCATE questions RESTART IDENTITY CASCADE" a ogni run: una FK propagherebbe il
--- CASCADE fin qui e un re-import del dataset cancellerebbe lo storico, che invece deve
--- sopravvivergli (stessa ragione per cui exam_attempts e' una tabella indipendente).
--- Il prezzo e' che una domanda puo' non esistere piu' al momento della rilettura: il
--- dettaglio la restituisce allora senza testo ne' soluzione, non fallisce.
+-- question_number non e' una FK: il TRUNCATE ... CASCADE dell'importer cancellerebbe lo storico.
+-- Una domanda puo' quindi non esistere piu' alla rilettura.
 CREATE TABLE exam_attempt_answers (
     id              SERIAL  PRIMARY KEY,
     attempt_id      INTEGER NOT NULL REFERENCES exam_attempts (id) ON DELETE CASCADE,
-    -- Posizione nella sessione: le domande vanno rilette nell'ordine in cui sono
-    -- state proposte, che per i gruppi non coincide con l'ordine di question_number.
+    -- Ordine di presentazione: per i gruppi non e' quello dei numeri.
     ord             INTEGER NOT NULL,
     question_number INTEGER NOT NULL,
-    -- Risposta dell'utente nella stessa forma posizionale di AnswerSubmissionDto:
-    -- lettere scelte (multiple_choice), sequenza scelta (ordered_answer) o una voce
-    -- per riga (selection/yes_no). Array vuoto = domanda lasciata in bianco.
+    -- Forma di AnswerSubmissionDto; vuoto = domanda in bianco.
     user_answers    TEXT[]  NOT NULL,
     CONSTRAINT exam_attempt_answers_ord_unique UNIQUE (attempt_id, ord)
 );
 
 CREATE INDEX idx_exam_attempt_answers_attempt ON exam_attempt_answers (attempt_id);
 
--- La sessione attualmente in corso, salvata a ogni passo per poterla riprendere dopo un
--- reload, una scheda chiusa o un computer andato in sospensione. E' l'unico stato "vivo"
--- del progetto: lo storico (exam_attempts) registra le sessioni finite, questa registra
--- quella che si sta ancora giocando e viene cancellata appena la sessione viene inviata.
---
--- Una riga sola: l'app e' mono-utente e non ha autenticazione, quindi non esiste un
--- proprietario da cui distinguere le sessioni. Il CHECK rende l'unicita' un fatto dello
--- schema invece di una convenzione da ricordare, e permette l'upsert su chiave fissa.
---
--- Come exam_attempt_answers, question_numbers NON e' vincolato a questions: l'importer fa
--- TRUNCATE ... CASCADE e si porterebbe via la sessione in corso. Se dopo un re-import un
--- numero non esiste piu', la sessione non e' piu' ricostruibile e viene scartata (il
--- servizio la cancella e risponde "nessuna sessione"), invece di restituirla con dei buchi.
+-- La sessione in corso. Una riga sola (app mono-utente, il CHECK lo impone). question_numbers
+-- non e' vincolato a questions per lo stesso motivo di exam_attempt_answers.
 CREATE TABLE active_session (
     id                  INTEGER   PRIMARY KEY DEFAULT 1 CHECK (id = 1),
     mode                TEXT      NOT NULL CHECK (mode IN ('practice', 'exam')),
-    -- Le domande nell'ordine in cui sono state proposte: per i gruppi non coincide con
-    -- l'ordine dei numeri, e quell'ordine e' parte della sessione da ripristinare.
     question_numbers    INTEGER[] NOT NULL,
-    -- Mappa questionNumber -> risposta data, nella stessa forma posizionale di
-    -- AnswerSubmissionDto. jsonb e non una tabella figlia: e' stato temporaneo che si
-    -- riscrive per intero a ogni salvataggio, non un dato su cui si interroga.
+    -- questionNumber -> risposta. jsonb: si riscrive per intero, non si interroga.
     answers             JSONB     NOT NULL DEFAULT '{}'::jsonb,
-    -- Indici (nell'array question_numbers) delle domande marcate per la revisione.
     flagged_indexes     INTEGER[] NOT NULL DEFAULT '{}',
     current_index       INTEGER   NOT NULL DEFAULT 0,
     time_limit_seconds  INTEGER,
     auto_reveal         BOOLEAN   NOT NULL DEFAULT FALSE,
-    -- Entrambi presi dall'orologio del CLIENT: la loro differenza e' il tempo giocato fino
-    -- all'ultimo salvataggio, ed e' quella differenza (non l'ora del server) che permette al
-    -- cronometro di ripartire da dov'era. Confrontarli con now() del server darebbe risultati
-    -- sbagliati appena i due orologi divergono.
+    -- Orologio del client: mai confrontarli con now() del server.
     started_at          TIMESTAMPTZ NOT NULL,
     saved_at            TIMESTAMPTZ NOT NULL,
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT now()

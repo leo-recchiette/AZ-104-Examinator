@@ -20,10 +20,7 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-/**
- * Come request, ma accetta anche una risposta senza corpo: 204 diventa null invece di far
- * esplodere res.json(). La sessione in corso puo' legittimamente non esserci.
- */
+/** Come request, ma un 204 diventa null. */
 export async function requestOptional<T>(path: string, init?: RequestInit): Promise<T | null> {
   const res = await fetch(`${BASE_URL}${path}`, {
     headers: { "Content-Type": "application/json" },

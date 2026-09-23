@@ -19,8 +19,7 @@ export function HistoryPage() {
 
   useEffect(() => {
     getAllAttempts()
-      // L'API li restituisce dal piu' vecchio (ordine che serve al grafico "Your progress"):
-      // in elenco interessa prima l'ultima sessione fatta.
+      // L'API li da' dal piu' vecchio; qui serve prima il piu' recente.
       .then((all) => setAttempts(all.slice().reverse()))
       .catch((err) => setError(err instanceof ApiError ? err.message : "Impossibile caricare lo storico."));
   }, []);

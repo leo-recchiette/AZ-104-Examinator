@@ -45,7 +45,7 @@ export const DARK: ThemeTokens = {
   warn: "#e8c46a", warnbg: "#2a2313", warnbd: "#7a6420",
 };
 
-/** Banner blu del header durante Exam/Review — non e' un token del tema, resta identico in light/dark salvo la tinta. */
+/** Banner blu dell'header: fuori dai token del tema. */
 export const HEADER_GRADIENT = {
   light: "linear-gradient(135deg,#2b7cf6,#0b3fae)",
   dark: "linear-gradient(135deg,#123a7a,#061638)",

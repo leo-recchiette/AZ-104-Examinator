@@ -1,16 +1,6 @@
 /**
- * Le domande di uno scenario (case study e scenario series) iniziano con le istruzioni
- * d'esame di Microsoft, identiche per tutte: 194, 433 o 1490 caratteri di testo che non
- * ha nulla a che vedere con la domanda. Qui viene staccato dal corpo, per mostrarlo in un
- * riquadro collassabile a parte (components/session/ExamNotice.tsx).
- *
- * E' una trasformazione di sola presentazione: il dataset resta ground truth.
- */
-
-/**
- * Un preambolo si riconosce dall'incipit e si chiude sulla propria frase finale.
- * Non si confrontano i tre testi per intero di proposito: la domanda 321 ha lo stesso
- * preambolo con un refuso ("Some questions sets"), e un match esatto la lascerebbe fuori.
+ * Istruzioni d'esame di Microsoft da staccare dal corpo della domanda (vedi ExamNotice).
+ * Riconosciute da incipit e frase finale, non per intero: la 321 ne ha una copia con un refuso.
  */
 const PREAMBLES: ReadonlyArray<{ startsWith: string; endsWith: string }> = [
   {
@@ -28,9 +18,7 @@ const PREAMBLES: ReadonlyArray<{ startsWith: string; endsWith: string }> = [
 ];
 
 export interface SplitQuestion {
-  /** Le istruzioni d'esame, null se la domanda non ne ha. */
   preamble: string | null;
-  /** La domanda vera e propria, senza preambolo. */
   body: string;
 }
 
@@ -45,31 +33,16 @@ export function splitPreamble(text: string): SplitQuestion {
   return { preamble: null, body: text };
 }
 
-/**
- * Sotto a questa soglia lo scenario condiviso non vale la pena di essere estratto: meglio
- * lasciare a ogni parte il proprio testo intero che spezzarlo su una manciata di parole.
- */
 const MIN_SHARED_SCENARIO = 80;
 
 export interface SplitScenario {
-  /** Il testo comune a tutte le parti, stringa vuota se non ce n'e' uno significativo. */
   shared: string;
-  /** Il corpo di ogni parte senza lo scenario condiviso, allineato all'array in ingresso. */
   parts: string[];
 }
 
 /**
- * Lo scenario che i membri di una scenario series si ripetono identico: nel dataset e'
- * copiato parola per parola in ogni fratello (in ss01 sono 334 caratteri per 3 volte) e
- * cambia solo la frase "Solution: ...". Serve per mostrarlo una volta sola in cima alla
- * card di gruppo, invece che N volte.
- *
- * Si ricava dal prefisso comune EFFETTIVO fra i corpi, non dal primo membro preso a
- * modello: in 3 gruppi su 24 (ss02, ss03, ss21) i testi divergono quasi subito, e li'
- * mostrare lo scenario del primo come se valesse per tutti nasconderebbe differenze reali.
- * In quel caso non c'e' scenario condiviso e ogni parte resta per intero.
- *
- * Trasformazione di sola presentazione come splitPreamble: il dataset resta ground truth.
+ * Lo scenario ripetuto dai membri di una scenario series, da mostrare una volta sola. Si usa il
+ * prefisso comune effettivo: in alcuni gruppi (ss02, ss03, ss21) i testi divergono subito.
  */
 export function splitSharedScenario(bodies: string[]): SplitScenario {
   if (bodies.length < 2) return { shared: "", parts: bodies };
@@ -82,9 +55,7 @@ export function splitSharedScenario(bodies: string[]): SplitScenario {
     common = i;
   }
 
-  // Il prefisso comune si interrompe dove i testi divergono, che è quasi sempre in mezzo
-  // alla frase della soluzione ("Solution: You access the ..."): si torna indietro
-  // all'ultimo confine di frase, altrimenti lo scenario finirebbe troncato a metà.
+  // Si torna all'ultimo confine di frase, per non troncare lo scenario a metà.
   const cut = lastSentenceEnd(first.slice(0, common));
   if (cut < MIN_SHARED_SCENARIO) return { shared: "", parts: bodies };
 

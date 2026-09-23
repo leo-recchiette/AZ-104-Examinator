@@ -11,9 +11,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    // Nessuna autenticazione in gioco e il frontend gira su un'origine diversa
-    // in sviluppo (es. Vite su localhost:5173): per ora si accetta qualunque
-    // origine. Da restringere quando l'app avra' un dominio reale.
+    // Nessuna auth e frontend su un'altra origine in sviluppo: da restringere con un dominio reale.
     options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 

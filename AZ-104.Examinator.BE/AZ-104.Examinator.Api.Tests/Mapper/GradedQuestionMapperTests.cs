@@ -33,9 +33,7 @@ public sealed class GradedQuestionMapperTests
     [TestMethod]
     public void Should_Not_Populate_CorrectLetters_For_NonMultipleChoice_Even_When_Options_Is_Not_Empty()
     {
-        // Un DragAndDrop 'ordered_answer' ha un pool in Options (i suoi
-        // all_actions, con IsCorrect valorizzato) che pero' non sono "lettere
-        // corrette": CorrectLetters resta [], la risposta vera sta in AnswerRows.
+        // Il pool di un 'ordered_answer' non sono lettere corrette: la risposta sta in AnswerRows.
         var question = Question() with { Type = QuestionType.DragAndDrop };
         var options = new[]
         {
@@ -53,9 +51,7 @@ public sealed class GradedQuestionMapperTests
     [TestMethod]
     public void Should_Map_Only_AnswerKind_Images_Not_QuestionKind()
     {
-        // Le immagini 'question' sono gia' state mostrate prima di rispondere
-        // (via QuestionDto): qui, nella risposta corretta, contano solo quelle
-        // 'answer' (lo stesso stato con la soluzione compilata).
+        // Nella risposta corretta contano solo le immagini 'answer'.
         var question = Question();
         var images = new[]
         {

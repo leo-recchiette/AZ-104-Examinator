@@ -1,6 +1,5 @@
 namespace Examinator.Api.Models.Domains;
 
-/// <summary>Una sessione (Practice o Simulation) portata a termine e inviata, cosi' com'e' salvata in exam_attempts.</summary>
 public sealed record ExamAttempt
 {
     public int Id { get; init; }

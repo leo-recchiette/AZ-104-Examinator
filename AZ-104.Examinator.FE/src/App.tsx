@@ -9,11 +9,7 @@ import { ResultsPage } from "./pages/ResultsPage";
 import { HistoryPage } from "./pages/HistoryPage";
 import { AttemptDetailPage } from "./pages/AttemptDetailPage";
 
-/**
- * Impedisce di arrivare a /session o /results senza una sessione avviata. Finche' il recupero di
- * quella salvata sul server e' in corso non decide nulla: rimbalzare subito sulla home vorrebbe
- * dire buttare fuori chi ha appena ricaricato la pagina proprio mentre la sua sessione sta tornando.
- */
+/** Aspetta il ripristino prima di decidere, altrimenti un reload rimanderebbe alla home. */
 function RequireSession({ children }: { children: ReactNode }) {
   const { state, restoring } = useSession();
   if (restoring) return <RestoringScreen />;

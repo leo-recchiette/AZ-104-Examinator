@@ -35,9 +35,7 @@ public sealed class ExamAttemptRepository : IExamAttemptRepository
 
         if (answers.Count > 0)
         {
-            // Dapper espande una lista di parametri in N esecuzioni della stessa INSERT, tutte
-            // dentro questa transazione: nessun array bidimensionale da costruire a mano (le
-            // risposte hanno lunghezze diverse fra loro e non formerebbero una matrice).
+            // Dapper esegue la INSERT una volta per elemento, dentro la transazione.
             const string insertOne = """
                 INSERT INTO exam_attempt_answers (attempt_id, ord, question_number, user_answers)
                 VALUES (@AttemptId, @Ord, @QuestionNumber, @UserAnswers)

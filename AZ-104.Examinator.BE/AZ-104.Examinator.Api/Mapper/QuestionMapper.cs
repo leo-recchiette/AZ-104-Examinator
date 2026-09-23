@@ -3,7 +3,6 @@ using Examinator.Api.Models.Domains;
 
 namespace Examinator.Api.Mapper;
 
-/// <summary>Traduce una Question (con le sue opzioni/righe) nella forma esposta prima che l'utente risponda (QuestionDto).</summary>
 public static class QuestionMapper
 {
     private const string OrderedAnswer = "ordered_answer";
