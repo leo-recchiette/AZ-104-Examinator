@@ -20,11 +20,10 @@ export function getAnswerShape(question: QuestionDto): AnswerShape {
  * valorizzata), non solo l'aver iniziato — altrimenti il conteggio "N answered"
  * del footer sarebbe fuorviante. Per "draggable" invece basta un elemento
  * posizionato: draggableItems e' l'intero pool CON i distrattori (vedi
- * QuestionDto), non la lunghezza della sequenza corretta, che il DTO pre-risposta
- * tace deliberatamente (stesso principio delle multiple choice, dove non si
- * rivela quante risposte servano) — pretendere value.length === draggableItems.length
- * renderebbe "answered" irraggiungibile in tutti i casi (la maggioranza) in cui
- * il pool e' piu' grande della sequenza da comporre.
+ * QuestionDto) — pretendere value.length === draggableItems.length renderebbe
+ * "answered" irraggiungibile in tutti i casi (la maggioranza) in cui il pool e'
+ * piu' grande della sequenza da comporre. sequenceLength ne da' la lunghezza, ma
+ * serve solo a dimensionare gli slot in SequenceAnswer.
  */
 export function isQuestionAnswered(question: QuestionDto, value: string[]): boolean {
   const shape = getAnswerShape(question);

@@ -15,8 +15,6 @@ export function QuestionBody({ text, fontSize, marginBottom }: QuestionBodyProps
   const segments = splitQuestionBody(text);
 
   return (
-    // lang="en": il testo delle domande e' inglese, e la sillabazione di "hyphens: auto" segue la
-    // lingua dichiarata — senza, varrebbe l'"it" di <html> e le righe giustificate si allargherebbero.
     <div lang="en" style={{ marginBottom }}>
       {segments.map((segment, i) => {
         const spacing = i === segments.length - 1 ? 0 : 12;
@@ -86,7 +84,13 @@ export function QuestionBody({ text, fontSize, marginBottom }: QuestionBodyProps
               background: t.sub,
             }}
           >
-            {segment.pairs.map((pair, j) => (
+            {segment.pairs.map((pair, j) =>
+              pair.value === "" ? (
+                // Chiave senza valore ("Parameters:"): intestazione dei campi che seguono, su tutta la riga.
+                <span key={j} style={{ gridColumn: "1 / -1", fontSize: 11.5, letterSpacing: ".05em", textTransform: "uppercase", fontWeight: 600, color: t.fa, marginTop: j === 0 ? 0 : 4 }}>
+                  {pair.key}
+                </span>
+              ) : (
               <Fragment key={j}>
                 <span style={{ fontSize: 11.5, letterSpacing: ".05em", textTransform: "uppercase", fontWeight: 600, color: t.fa, alignSelf: "center" }}>
                   {pair.key}
@@ -95,7 +99,8 @@ export function QuestionBody({ text, fontSize, marginBottom }: QuestionBodyProps
                   {pair.value}
                 </span>
               </Fragment>
-            ))}
+              ),
+            )}
           </div>
         );
       })}

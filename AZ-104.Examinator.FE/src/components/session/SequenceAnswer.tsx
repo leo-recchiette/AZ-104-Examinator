@@ -4,6 +4,7 @@ import type { AnswerRowDto } from "../../types/answer";
 
 interface SequenceAnswerProps {
   draggableItems: string[];
+  sequenceLength: number;
   value: string[];
   onChange: (next: string[]) => void;
   /** Presente solo dopo la rivelazione: sequenza corretta, posizionale. */
@@ -17,13 +18,14 @@ interface SequenceAnswerProps {
  * sequenza a destra riordinabile con frecce su/giu'/rimuovi — lo stesso
  * pattern del mockup, piu' semplice e accessibile di un drag reale.
  */
-export function SequenceAnswer({ draggableItems, value, onChange, answerRows, locked }: SequenceAnswerProps) {
+export function SequenceAnswer({ draggableItems, sequenceLength, value, onChange, answerRows, locked }: SequenceAnswerProps) {
   const { tokens: t } = useTheme();
   const revealed = answerRows !== undefined;
   const chosen = value;
+  const slots = sequenceLength > 0 ? sequenceLength : draggableItems.length;
 
   function append(label: string) {
-    if (locked || chosen.includes(label) || chosen.length >= draggableItems.length) return;
+    if (locked || chosen.includes(label) || chosen.length >= slots) return;
     onChange([...chosen, label]);
   }
   function moveUp(i: number) {
@@ -55,7 +57,7 @@ export function SequenceAnswer({ draggableItems, value, onChange, answerRows, lo
               <button
                 key={label}
                 onClick={() => append(label)}
-                disabled={used || locked}
+                disabled={used || locked || chosen.length >= slots}
                 style={{
                   textAlign: "left", padding: "12px 14px", borderRadius: 10,
                   border: `1px dashed ${used ? t.bd2 : t.bd3}`, background: used ? t.bg : t.card,
@@ -70,7 +72,7 @@ export function SequenceAnswer({ draggableItems, value, onChange, answerRows, lo
       </div>
       <div>
         <div style={{ fontSize: 11, letterSpacing: ".1em", textTransform: "uppercase", fontWeight: 600, color: t.fa, marginBottom: 10 }}>
-          Your sequence ({chosen.length} of {draggableItems.length})
+          Your sequence ({chosen.length} of {slots})
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8, minHeight: 60 }}>
           {chosen.map((label, i) => {

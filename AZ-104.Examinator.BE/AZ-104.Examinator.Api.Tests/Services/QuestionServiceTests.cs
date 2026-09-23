@@ -91,6 +91,7 @@ public sealed class QuestionServiceTests
         Text: "Domanda di prova",
         Options: [new OptionDto(CorrectOption, "Opzione corretta")],
         DraggableItems: [],
+        SequenceLength: 0,
         Prompts: [],
         Images: [],
         GroupId: null,

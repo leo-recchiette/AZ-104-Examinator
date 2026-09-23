@@ -26,6 +26,7 @@ public sealed class QuestionMapperTests
             Text: "Domanda di prova",
             Options: [new OptionDto("A", "Opzione sbagliata"), new OptionDto("C", "Opzione corretta")],
             DraggableItems: [],
+            SequenceLength: 0,
             Prompts: [],
             Images: [],
             GroupId: null,
@@ -44,8 +45,13 @@ public sealed class QuestionMapperTests
             Option(ord: 1, letter: null, text: "An Azure Storage account", isCorrect: false),
             Option(ord: 2, letter: null, text: "An access policy", isCorrect: true),
         };
+        var sequence = new[]
+        {
+            AnswerRow(id: 30, ord: 0, prompt: null, answer: "An Azure Key Vault"),
+            AnswerRow(id: 31, ord: 1, prompt: null, answer: "An access policy"),
+        };
 
-        var sut = input.ToQuestionDto(options, [], NoRowOptions(), NoImages());
+        var sut = input.ToQuestionDto(options, sequence, NoRowOptions(), NoImages());
 
         var expected = new QuestionDto(
             Number: 1,
@@ -53,6 +59,7 @@ public sealed class QuestionMapperTests
             Text: "Domanda di prova",
             Options: [],
             DraggableItems: ["An Azure Key Vault", "An Azure Storage account", "An access policy"],
+            SequenceLength: 2,
             Prompts: [],
             Images: [],
             GroupId: null,
@@ -90,6 +97,7 @@ public sealed class QuestionMapperTests
             Text: "Domanda di prova",
             Options: [],
             DraggableItems: [],
+            SequenceLength: 0,
             Prompts: [
                 new PromptOptionsDto("To add a backend pool to LB1", ["Contributor on LB1", "Network Contributor on LB1"]),
                 new PromptOptionsDto("To add a health probe to LB2", ["Contributor on LB2", "Network Contributor on LB2"]),
@@ -115,6 +123,7 @@ public sealed class QuestionMapperTests
             Text: "Domanda di prova",
             Options: [],
             DraggableItems: [],
+            SequenceLength: 0,
             Prompts: [new PromptOptionsDto("Statement 1", ["Yes", "No"])],
             Images: [],
             GroupId: null,

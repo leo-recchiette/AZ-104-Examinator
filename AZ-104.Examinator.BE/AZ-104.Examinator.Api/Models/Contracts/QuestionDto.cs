@@ -9,6 +9,10 @@ namespace Examinator.Api.Models.Contracts;
 ///   DraggableItems  - solo answer_layout 'ordered_answer': il pool da
 ///                      riordinare, senza indicare quali elementi siano
 ///                      distrattori.
+///   SequenceLength  - solo 'ordered_answer': quanti elementi va lunga la
+///                      sequenza da comporre (0 altrimenti). Non e' un indizio:
+///                      lo dice gia' il testo ("Which three actions...") e
+///                      l'esame vero mostra altrettanti slot vuoti.
 ///   Prompts         - answer_layout 'selection' o 'yes_no': uno per riga,
 ///                      ciascuno con le proprie opzioni cliccabili (per
 ///                      'yes_no' sempre ["Yes","No"]).
@@ -24,6 +28,7 @@ public sealed record QuestionDto(
     string Text,
     IReadOnlyList<OptionDto> Options,
     IReadOnlyList<string> DraggableItems,
+    int SequenceLength,
     IReadOnlyList<PromptOptionsDto> Prompts,
     IReadOnlyList<string> Images,
     string? GroupId,

@@ -22,6 +22,8 @@ export interface QuestionDto {
   text: string;
   options: OptionDto[];
   draggableItems: string[];
+  /** Solo per draggableItems: quanti elementi va lunga la sequenza (0 altrimenti). Lo dice gia' il testo della domanda. */
+  sequenceLength: number;
   prompts: PromptOptionsDto[];
   /** Screenshot da mostrare PRIMA di rispondere (nomi file nudi, risolti con utils/images.ts#imageUrl). */
   images: string[];

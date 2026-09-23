@@ -9,6 +9,7 @@ interface ImageStackProps {
 const ZOOM_MIN = 0.5;
 const ZOOM_MAX = 4;
 const ZOOM_STEP = 0.25;
+const ZOOM_DEFAULT = 0.75;
 
 /**
  * Pila di screenshot (spesso 1, a volte 2-3 per domanda), usata sia per le immagini pre-risposta
@@ -25,11 +26,14 @@ const ZOOM_STEP = 0.25;
  * esattamente cio' che l'utente sta vedendo, qualunque sia il vincolo che ha deciso quella dimensione
  * (larghezza naturale, larghezza della card o il cap di 78vh). Tornando a 1x le misure vengono buttate e
  * l'immagine ricade sugli stili di fit, quindi torna a seguire i resize della finestra.
+ *
+ * Si parte da ZOOM_DEFAULT, non da 1x: finche' un'immagine non ha la sua misura resta sugli stili di fit,
+ * e la misura si prende appena e' caricata (measureBase), poi lo zoom le si applica.
  */
 export function ImageStack({ filenames }: ImageStackProps) {
   const { tokens: t } = useTheme();
   const [open, setOpen] = useState(true);
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(ZOOM_DEFAULT);
   const [baseWidths, setBaseWidths] = useState<Record<string, number>>({});
   const imgRefs = useRef<Record<string, HTMLImageElement | null>>({});
   if (filenames.length === 0) return null;
@@ -40,7 +44,7 @@ export function ImageStack({ filenames }: ImageStackProps) {
     // Chiudendo si torna a 1x: cosi' alla riapertura le img montano sempre con gli stili di fit,
     // e la misura della base resta valida.
     if (open) {
-      setZoom(1);
+      setZoom(ZOOM_DEFAULT);
       setBaseWidths({});
     }
     setOpen(!open);
@@ -59,6 +63,14 @@ export function ImageStack({ filenames }: ImageStackProps) {
       setBaseWidths({});
     }
     setZoom(next);
+  }
+
+  // Misura la larghezza di fit di un'immagine appena caricata, se lo zoom corrente ne ha bisogno. Si
+  // chiama anche dal ref: un'immagine gia' in cache puo' risultare completa prima dell'onLoad.
+  function measureBase(filename: string, el: HTMLImageElement) {
+    if (zoom === 1 || baseWidths[filename] !== undefined || !el.complete || el.naturalWidth === 0) return;
+    const width = el.getBoundingClientRect().width;
+    if (width > 0) setBaseWidths((prev) => (prev[filename] !== undefined ? prev : { ...prev, [filename]: width }));
   }
 
   const zoomBtn = (text: string, onClick: () => void, disabled: boolean, title: string) => (
@@ -105,12 +117,12 @@ export function ImageStack({ filenames }: ImageStackProps) {
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             {zoomBtn("−", () => changeZoom(-ZOOM_STEP), zoom <= ZOOM_MIN, "Zoom out")}
             <button
-              onClick={() => changeZoom(1 - zoom)}
-              disabled={zoom === 1}
+              onClick={() => changeZoom(ZOOM_DEFAULT - zoom)}
+              disabled={zoom === ZOOM_DEFAULT}
               title="Reset zoom"
               style={{
                 background: "none", border: "none", padding: 0, minWidth: 34, textAlign: "center",
-                color: zoom === 1 ? t.fa : t.tx2, cursor: zoom === 1 ? "default" : "pointer",
+                color: zoom === ZOOM_DEFAULT ? t.fa : t.tx2, cursor: zoom === ZOOM_DEFAULT ? "default" : "pointer",
                 fontSize: 11, fontWeight: 600, fontVariantNumeric: "tabular-nums",
               }}
             >
@@ -146,7 +158,9 @@ export function ImageStack({ filenames }: ImageStackProps) {
                 key={filename}
                 ref={(el) => {
                   imgRefs.current[filename] = el;
+                  if (el) measureBase(filename, el);
                 }}
+                onLoad={(e) => measureBase(filename, e.currentTarget)}
                 src={imageUrl(filename)}
                 alt=""
                 style={{

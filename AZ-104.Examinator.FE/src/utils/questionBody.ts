@@ -4,7 +4,6 @@ export interface SpecPair {
 }
 
 export type QuestionSegment =
-  /** `lead` e' l'etichetta che apre il segmento ("Solution:"), da rendere in grassetto. */
   | { kind: "text"; lead?: string; text: string }
   | { kind: "spec"; pairs: SpecPair[] }
   | { kind: "list"; items: string[] };
@@ -16,6 +15,7 @@ const SPEC_KEYS = [
   "Container name", "Networking type", "OS type", "Operating system", "Memory (GiB)", "Memory",
   "Number of CPU cores", "Image", "Restart policy", "DNS name label", "Resource group",
   "Scope", "Exclusions", "Policy definition", "Policy enforcement", "Tag name", "Tag value",
+  "Tag", "Tags", "Assignment name", "Parameters",
 ];
 
 const KEY = new RegExp(
@@ -30,6 +30,35 @@ const SENTENCE_END = /[.?!](\s|$)/;
 const MAX_VALUE_LENGTH = 60;
 
 const MIN_PAIRS = 3;
+
+/** Un tag scritto come nel dataset, "`tag1`: `value1`": i due punti interni non aprono un'altra coppia. */
+const TAG_PAIR = "`[^`]*`:\\s*`[^`]*`";
+
+/** Il valore di una coppia dopo cui riparte la prosa: un tag intero oppure un token solo. */
+const CLOSING_VALUE = new RegExp(`^\\s*(?:${TAG_PAIR}|\\S+)`);
+
+/** La prosa che riparte dopo l'ultimo valore: una maiuscola, o il " - " con cui la fonte a volte la stacca. */
+const PROSE_RESTART = /^\s+(?:[-–—]\s|[A-Z])/;
+
+/** Il trattino che la fonte lascia in testa alla prosa dopo un elenco di campi ("value2 - After Policy1 ..."). */
+const LEADING_DASH = /^[-–—]\s*/;
+
+/**
+ * Valore di chiusura di una catena di campi seguita da altri campi piu' avanti: in "Tag value: value2
+ * - After Policy1 is assigned, ... Name: storage1" il valore arriverebbe fino a "Name:" e, troppo
+ * lungo, la coppia andrebbe persa. Si tiene il primo token solo se dopo riparte davvero una frase:
+ * "Policy definition: Append a tag ..." non ha nessuna ripresa dopo "Append" e resta scartato.
+ */
+function closingValue(rest: string): string | null {
+  const match = CLOSING_VALUE.exec(rest);
+  if (!match || !PROSE_RESTART.test(rest.slice(match[0].length))) return null;
+  return match[0];
+}
+
+function cleanValue(raw: string): string {
+  // I backtick sono la notazione dei tag nel dataset: nel riquadro, gia' monospaziato, sono solo rumore.
+  return raw.trim().replace(/[,;–—-]+$/, "").replace(/`/g, "").trim();
+}
 
 const LEAD = /(^|[^A-Za-z])(Solution:)\s*/;
 
@@ -113,7 +142,11 @@ function splitLead(text: string): QuestionSegment[] {
   return segments;
 }
 
-export function splitQuestionBody(text: string): QuestionSegment[] {
+
+const EXHIBIT_TAB_HINT = /\s*\(Click the [^()]+ tab\.\)/g;
+
+export function splitQuestionBody(rawText: string): QuestionSegment[] {
+  const text = rawText.replace(EXHIBIT_TAB_HINT, "").trim();
   const segments: QuestionSegment[] = [];
   let chain: { key: string; value: string; start: number; end: number }[] = [];
   let cursor = 0;
@@ -127,33 +160,47 @@ export function splitQuestionBody(text: string): QuestionSegment[] {
       chain = [];
       return;
     }
-    const head = text.slice(cursor, chain[0].start).trim();
+    const head = text.slice(cursor, chain[0].start).trim().replace(LEADING_DASH, "");
     if (head) segments.push(...splitText(head));
     segments.push({ kind: "spec", pairs: chain.map(({ key, value }) => ({ key, value })) });
     cursor = chain[chain.length - 1].end;
     chain = [];
   }
 
-  // Il valore arriva fino alla chiave seguente, cosi' regge anche quando e' una frase
-  // ("Policy definition: Append a tag and its value to resources"). Sull'ultima coppia quella
-  // chiave non c'e' e dopo il valore riparte la prosa, quindi li' si prende un token solo.
   const keys = [...text.matchAll(KEY)];
   for (let i = 0; i < keys.length; i++) {
     const match = keys[i];
     const valueStart = match.index + match[0].length;
     const next = keys[i + 1];
-    const raw = next ? text.slice(valueStart, next.index) : (text.slice(valueStart).match(/^\S*/)?.[0] ?? "");
-    const value = raw.trim().replace(/[,;–—-]+$/, "").trim();
+    const rest = text.slice(valueStart, next?.index);
+    let raw = next ? rest : (CLOSING_VALUE.exec(rest)?.[0] ?? "");
+    let closes = false;
 
-    if (!value || (next && (value.length > MAX_VALUE_LENGTH || SENTENCE_END.test(value)))) {
+    if (next && (cleanValue(raw).length > MAX_VALUE_LENGTH || SENTENCE_END.test(cleanValue(raw)))) {
+      const closing = closingValue(rest);
+      if (closing === null) {
+        flush();
+        continue;
+      }
+      raw = closing;
+      closes = true;
+    }
+
+    // Un valore vuoto e' ammesso solo se la chiave seguente arriva subito: e' un'intestazione
+    // ("Parameters: Tag name: tag2 ..."), non un campo rimasto senza valore.
+    const value = cleanValue(raw);
+    if (!value && !next) {
       flush();
       continue;
     }
     chain.push({ key: match[1], value, start: match.index, end: valueStart + raw.length });
+    // Dopo un valore di chiusura riparte la prosa: la catena finisce qui anche se piu' avanti
+    // ci sono altri campi, che formano un riquadro a parte.
+    if (closes) flush();
   }
   flush();
 
-  const tail = text.slice(cursor).trim();
+  const tail = text.slice(cursor).trim().replace(LEADING_DASH, "");
   if (tail) segments.push(...splitText(tail));
   return segments;
 }

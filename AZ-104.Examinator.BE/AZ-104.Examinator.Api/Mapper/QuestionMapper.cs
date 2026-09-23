@@ -28,7 +28,7 @@ public static class QuestionMapper
             Text: question.Text,
             Options: isMultipleChoice ? options.Select(o => new OptionDto(o.Letter!, o.Text)).ToList() : [],
             DraggableItems: isOrderedAnswer ? options.Select(o => o.Text).ToList() : [],
-            
+            SequenceLength: isOrderedAnswer ? answerRows.Count() : 0,
             Prompts: isMultipleChoice || isOrderedAnswer
                 ? []
                 : answerRows.Where(r => r.Prompt is not null).Select(r => new PromptOptionsDto(
