@@ -9,6 +9,7 @@ import { SequenceAnswer } from "./SequenceAnswer";
 import { RowSelectAnswer } from "./RowSelectAnswer";
 import { ImageStack } from "./ImageStack";
 import { PlaceholderText } from "../PlaceholderText";
+import { ExplanationText } from "../ExplanationText";
 import { ExamNotice } from "./ExamNotice";
 import { QuestionBody } from "../QuestionBody";
 import { splitPreamble } from "../../utils/preamble";
@@ -154,7 +155,7 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
                       Explanation
                     </div>
                     <div lang="en" style={{ fontSize: 14.5, lineHeight: 1.6, color: t.tx2, textAlign: "justify", hyphens: "auto" }}>
-                      {correct.explanation}
+                      <ExplanationText text={correct.explanation} />
                     </div>
                   </>
                 )}

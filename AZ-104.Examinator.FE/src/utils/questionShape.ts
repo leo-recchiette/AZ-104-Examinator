@@ -1,5 +1,6 @@
 import type { OptionDto, QuestionDto } from "../types/question";
 import type { QuestionAnswerDto } from "../types/answer";
+import { gradeMultipleChoice, gradeRows } from "./grading";
 
 export type AnswerShape = "options" | "draggable" | "prompts";
 
@@ -78,18 +79,41 @@ function prettyArrow(line: string): string {
 }
 
 /** "La tua risposta" nella revisione: il backend fornisce il testo solo per la soluzione. */
-export function formatYourAnswer(question: QuestionDto, submitted: string[]): string {
-  if (submitted.length === 0) return "Not answered";
+export function formatYourAnswer(question: QuestionDto, submitted: string[]): string[] {
+  if (submitted.length === 0) return ["Not answered"];
   const shape = getAnswerShape(question);
   if (shape === "options") {
     return submitted
       .slice()
       .sort()
-      .map((letter) => `${letter} — ${question.options.find((o) => o.letter === letter)?.text ?? "?"}`)
-      .join("\n");
+      .map((letter) => `${letter} — ${question.options.find((o) => o.letter === letter)?.text ?? "?"}`);
   }
   if (shape === "draggable") {
-    return submitted.map((v, i) => `${i + 1}. ${v}`).join("\n");
+    return submitted.map((v, i) => `${i + 1}. ${v}`);
   }
-  return question.prompts.map((_, i) => (submitted[i] ? submitted[i].split("\n").join(", ") : "—")).join(" · ");
+  return question.prompts.map((_, i) => (submitted[i] ? submitted[i].split("\n").join(", ") : "—"));
+}
+
+/**
+ * Esito di ogni riga della soluzione, nello stesso ordine di correctAnswerLines. Null quando le
+ * righe del testo non corrispondono una a una ai componenti valutati: meglio il pallino neutro
+ * che una spunta sulla riga sbagliata.
+ */
+export function correctLineOutcomes(
+  question: QuestionDto,
+  submitted: string[],
+  correct: QuestionAnswerDto,
+  lines: string[],
+): boolean[] | null {
+  const shape = getAnswerShape(question);
+  if (shape === "options") {
+    const grades = gradeMultipleChoice(submitted, correct.correctLetters, question.options.map((o) => o.letter));
+    const outcomes = lines.map((line) => {
+      const letter = /^([A-Z])\. /.exec(line)?.[1];
+      return letter ? (grades.find((g) => g.letter.toUpperCase() === letter)?.selected ?? null) : null;
+    });
+    return outcomes.every((o) => o !== null) ? (outcomes as boolean[]) : null;
+  }
+  const grades = gradeRows(submitted, correct.answerRows);
+  return grades.length === lines.length ? grades.map((g) => g.isCorrect) : null;
 }
