@@ -6347,12 +6347,13 @@ Note: This question is part of a series of questions that present the same scena
 
 Note: This question is part of a series of questions that present the same scenario. Each question in the series contains a unique solution that might meet the stated goals. Some question sets might have more than one correct solution, while others might not have a correct solution. After you answer a question in this section, you will NOT be able to return to it. As a result, these questions will not appear in the review screen. You have an Azure subscription that contains 10 virtual networks. The virtual networks are hosted in separate resource groups. Another administrator plans to create several network security groups (NSGs) in the subscription. You need to ensure that when an NSG is created, it automatically blocks TCP port 8080 between the virtual networks. Solution: You configure a custom policy definition, and then you assign the policy to the subscription. Does this meet the goal?
 
-- **A.** Yes
-- **B.** No **← CORRETTA**
+- **A.** Yes **← CORRETTA**
+- **B.** No
 
-**Risposta corretta:** B
+**Risposta corretta:** A
+> Nota: Risposta corretta a mano da No a Yes: una custom policy con effetto append (o modify/deployIfNotExists) sull'alias securityRules[*] aggiunge la regola di Deny su TCP 8080 a ogni NSG creato nello scope. La spiegazione originale sosteneva che una policy non puo' configurare gli NSG, il che e' falso per questi effetti.
 
-**Spiegazione:** A custom policy definition in Azure Policy is primarily used to enforce organizational standards and assess compliance at-scale. However, it does not directly configure or manage network security groups (NSGs) to apply specific security rules. To ensure that a new NSG automatically blocks TCP port 8080, you need to create and apply an NSG rule directly, not through a policy definition. Therefore, configuring a custom policy definition and assigning it to the subscription would not meet the goal of automatically blocking TCP port 8080 between the virtual networks.
+**Spiegazione:** Azure Policy can do more than audit or deny: some effects change the resource while it is being created. A custom policy definition that targets Microsoft.Network/networkSecurityGroups and uses the append effect on the Microsoft.Network/networkSecurityGroups/securityRules[*] alias adds a security rule to every new NSG, here a Deny rule for TCP port 8080 between the virtual networks' address spaces (the modify or deployIfNotExists effects can reach the same result). Assigned at the subscription scope, it applies to every NSG the other administrator creates, whatever resource group it lands in. This is also why a custom definition is needed: no built-in policy definition adds this specific rule, which is why assigning a built-in definition does not meet the goal. Reference: https://learn.microsoft.com/azure/governance/policy/concepts/effect-append
 
 ---
 
@@ -8372,7 +8373,7 @@ You create a Recovery Services vault backup policy named Policy1 as shown in the
 **Risposta corretta:** The backup that occurs on Sunday, March 1, will be retained for [answer choice]. -> 10 years | The backup that occurs on Sunday, November 1, will be retained for [answer choice]. -> 36 months
 > Immagini: q572_post0.png
 
-**Spiegazione:**
+**Spiegazione:** Policy1 takes a single backup every day at 11:00 PM UTC; the retention rules do not create extra backups, they tag that same daily backup point depending on the date it falls on. Daily: every backup point is kept for 30 days. Weekly: the backup taken on a Sunday is kept for 10 weeks. Monthly (Day Based): the backup taken on day 1 of each month is kept for 36 months. Yearly (Day Based): the backup taken on March 1 is kept for 10 years. Day Based means the rule matches a calendar date (day 1, March 1); Week Based would instead match a weekday position, such as the first Sunday of the month. When a backup point matches more than one rule, the retentions do not add up and no copies are made: the point is kept for the longest of the matching retentions. To read any date, check whether it is a Sunday, whether it is day 1 of the month and whether it is March 1, then take the longest retention among the rules that apply. Sunday, March 1 matches daily, weekly, monthly and yearly, so the yearly rule wins: 10 years. Sunday, November 1 matches daily, weekly and monthly, but not yearly, so the monthly rule wins: 36 months. The Instant Restore setting (2 days) is unrelated: it keeps local snapshots next to the VM for faster restores and is not part of the vault retention range. Reference: https://learn.microsoft.com/azure/backup/backup-azure-vms-first-look-arm
 
 ---
 
