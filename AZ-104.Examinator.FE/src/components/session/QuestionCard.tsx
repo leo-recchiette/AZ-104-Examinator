@@ -3,7 +3,7 @@ import { useTheme } from "../../theme/ThemeContext";
 import { useDisplaySettings } from "../../settings/DisplaySettingsContext";
 import type { QuestionDto } from "../../types/question";
 import type { AnswerCheckResultDto } from "../../types/answer";
-import { getAnswerShape, isAnswerComplete, questionTypeLabel, correctAnswerLines } from "../../utils/questionShape";
+import { getAnswerShape, isAnswerComplete, questionTypeLabel, correctAnswerLines, needsBullets } from "../../utils/questionShape";
 import { MultipleChoiceAnswer } from "./MultipleChoiceAnswer";
 import { SequenceAnswer } from "./SequenceAnswer";
 import { RowSelectAnswer } from "./RowSelectAnswer";
@@ -140,7 +140,7 @@ export function QuestionCard({ question, value, onChange, flagged, onToggleFlag,
                 <div style={{ display: "grid", gap: 6, fontSize: 15, lineHeight: 1.55, fontWeight: 500, marginBottom: 16 }}>
                   {correctAnswerLines(correct.answerText).map((line, i, lines) => (
                     <div key={i} style={{ display: "flex", gap: 8, alignItems: "baseline" }}>
-                      {lines.length > 1 && <span style={{ flex: "none", color: t.ok }}>•</span>}
+                      {needsBullets(lines) && <span style={{ flex: "none", color: t.ok }}>•</span>}
                       <span style={{ whiteSpace: "pre-line" }}>
                         <PlaceholderText text={line} />
                       </span>

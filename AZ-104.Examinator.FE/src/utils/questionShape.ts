@@ -49,11 +49,13 @@ export function questionTypeLabel(question: QuestionDto, shape: AnswerShape = ge
   return question.type === "hotspot_yes_no" ? "Hotspot · Yes/No" : "Hotspot";
 }
 
-/**
- * Spezza l'answerText (righe unite da " | ") in righe. Nei testi a righe si va a capo solo sui
- * pezzi con " ->": il pipe puo' far parte del valore (domanda 545, KQL "| project").
- */
+/** Separatore fra i passi di una sequenza: "1. A -> 2. B -> 3. C". */
+const SEQUENCE_STEP = / -> (?=\d+\. )/;
+
+
 export function correctAnswerLines(answerText: string): string[] {
+  if (/^1\. /.test(answerText) && SEQUENCE_STEP.test(answerText)) return answerText.split(SEQUENCE_STEP);
+
   const chunks = answerText.split(" | ");
   if (chunks.length < 2 || !answerText.includes(" ->")) return chunks.map(prettyArrow);
 
@@ -63,6 +65,11 @@ export function correctAnswerLines(answerText: string): string[] {
     else lines[lines.length - 1] += ` | ${chunk}`;
   }
   return lines.map(prettyArrow);
+}
+
+/** Le righe gia' numerate ("1. ...") non vogliono anche il pallino. */
+export function needsBullets(lines: string[]): boolean {
+  return lines.length > 1 && !/^\d+\. /.test(lines[0]);
 }
 
 /** Solo il "->" spaziato e' un separatore; attaccato al testo sarebbe codice. */

@@ -2,7 +2,7 @@ import { useTheme } from "../../theme/ThemeContext";
 import { useDisplaySettings } from "../../settings/DisplaySettingsContext";
 import type { QuestionDto } from "../../types/question";
 import type { QuestionAnswerDto } from "../../types/answer";
-import { getAnswerShape, questionTypeLabel, formatYourAnswer, correctAnswerLines } from "../../utils/questionShape";
+import { getAnswerShape, questionTypeLabel, formatYourAnswer, correctAnswerLines, needsBullets } from "../../utils/questionShape";
 import { pointsEarned } from "../../utils/grading";
 import { splitPreamble } from "../../utils/preamble";
 import { reviewAnchorId } from "../../utils/reviewUnits";
@@ -84,7 +84,7 @@ export function ReviewQuestionCard({ position, question, submitted, correct, asP
           <div style={{ display: "grid", gap: 5, fontSize: 14, lineHeight: 1.5, color: t.tx2 }}>
             {correctLines.map((line, i) => (
               <div key={i} style={{ display: "flex", gap: 8, alignItems: "baseline" }}>
-                {correctLines.length > 1 && <span style={{ flex: "none", color: t.ok }}>•</span>}
+                {needsBullets(correctLines) && <span style={{ flex: "none", color: t.ok }}>•</span>}
                 <span style={{ whiteSpace: "pre-line" }}>
                   <PlaceholderText text={line} />
                 </span>

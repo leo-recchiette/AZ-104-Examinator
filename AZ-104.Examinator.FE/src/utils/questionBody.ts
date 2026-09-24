@@ -16,6 +16,7 @@ const SPEC_KEYS = [
   "Number of CPU cores", "Image", "Restart policy", "DNS name label", "Resource group",
   "Scope", "Exclusions", "Policy definition", "Policy enforcement", "Tag name", "Tag value",
   "Tag", "Tags", "Assignment name", "Parameters",
+  "Performance", "Replication", "Access tier (default)", "Hierarchical namespace",
 ];
 
 const KEY = new RegExp(
